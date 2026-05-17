@@ -3,139 +3,206 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Inbox | Engel &amp; Völkers</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>Inbox | E&V Shopworld</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="ev-supabase.js"></script>
 <style>
 :root{
-  --red:#C41E3A;--dark:#1a1a1a;--mid:#e0e0e0;--light:#f7f6f4;--white:#fff;
-  --green:#2d7a4f;--amber:#c17b00;--blue:#1a5fa8;
+  --red:#C41E3A; --dark:#1a1a1a; --light:#f7f6f4; --white:#fff;
+  --mid:#e8e8e8;
+  --col-new:#2563eb;    /* Eingang — Blau */
+  --col-prog:#c17b00;   /* In Bearbeitung — Amber */
+  --col-wait:#7c3aed;   /* Wartend — Violett */
+  --col-done:#2d7a4f;   /* Abgeschlossen — Grün */
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Raleway','Segoe UI',Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);background:var(--light);color:var(--dark);min-height:100vh;display:grid;grid-template-rows:64px 1fr auto;}
+body{font-family:var(--sans);background:var(--light);color:var(--dark);
+  display:grid;grid-template-rows:64px 1fr;min-height:100vh;overflow:hidden;}
 
-/* HEADER */
-header{background:var(--white);border-bottom:1px solid #e8e8e8;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+/* ── HEADER ── */
+header{background:var(--white);border-bottom:2px solid var(--mid);
+  padding:0 32px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 1px 8px rgba(0,0,0,.06);z-index:50;position:relative;}
 .hlogo{display:flex;align-items:center;gap:14px;}
-.hev{width:34px;height:34px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:.82rem;flex-shrink:0;}
-.hname{font-family:var(--serif);font-size:1rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--dark);}
-.hsub{font-size:.58rem;color:#bbb;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
-.hright{display:flex;align-items:center;gap:16px;}
-.hback{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);text-decoration:none;}
-.hback:hover{text-decoration:underline;}
-.hrole-pill{font-size:.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;background:#f0f0f0;color:#888;}
-.hrole-pill.gf{background:#fdf0f2;color:var(--red);}
-.hrole-pill.bo{background:#f0f4ff;color:var(--blue);}
-.hrole-pill.ib{background:#f0faf5;color:var(--green);}
+.hlogo-ev{width:32px;height:32px;background:var(--red);display:flex;align-items:center;
+  justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:.82rem;}
+.hlogo-name{font-family:var(--serif);font-size:1rem;font-weight:600;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--dark);}
+.hlogo-sub{font-size:.56rem;color:#bbb;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+.htoolbar{display:flex;align-items:center;gap:10px;}
+.hrole{font-size:.56rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 10px;margin-right:4px;}
+.role-gf{background:#fdf0f2;color:var(--red);}
+.role-ib{background:#f0faf5;color:#2d7a4f;}
+.role-bo{background:#f0f4ff;color:#1a5fa8;}
+.hbtn{display:flex;align-items:center;gap:5px;font-size:.56rem;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid var(--mid);
+  padding:6px 12px;background:var(--white);cursor:pointer;color:#888;
+  font-family:var(--sans);text-decoration:none;transition:all .2s;}
+.hbtn:hover{border-color:var(--red);color:var(--red);}
+.hbtn svg{flex-shrink:0;}
+#hUserName{font-size:.76rem;font-weight:700;color:#111;}
+#hUserEmail{font-size:.58rem;color:#bbb;}
+.h-avatar{width:32px;height:32px;background:var(--red);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.68rem;font-weight:700;font-family:var(--serif);flex-shrink:0;}
 
-/* LAYOUT */
-.inbox-layout{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 64px);overflow:hidden;}
+/* ── BOARD LAYOUT ── */
+.board-wrap{display:flex;flex-direction:column;height:calc(100vh - 64px);overflow:hidden;}
+.board-filter{background:var(--white);border-bottom:1px solid var(--mid);
+  padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.filter-label{font-size:.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-right:4px;}
+.fbtn{font-size:.58rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:4px 12px;border:1.5px solid var(--mid);background:var(--white);
+  cursor:pointer;color:#888;font-family:var(--sans);transition:all .2s;}
+.fbtn:hover,.fbtn.active{border-color:var(--red);color:var(--red);background:#fdf5f6;}
+.fsearch{border:none;border-bottom:1.5px solid var(--mid);padding:4px 0;
+  font-size:.76rem;font-family:var(--sans);color:var(--dark);background:transparent;
+  outline:none;width:180px;transition:border-color .2s;margin-left:auto;}
+.fsearch:focus{border-bottom-color:var(--red);}
+.fcount{font-size:.6rem;color:#bbb;margin-left:4px;white-space:nowrap;}
 
-/* SIDEBAR */
-.inbox-sidebar{background:var(--white);border-right:1px solid #eee;display:flex;flex-direction:column;overflow:hidden;}
-.sidebar-head{padding:18px 20px 14px;border-bottom:1px solid #f0f0f0;}
-.sidebar-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--dark);margin-bottom:10px;}
-.filter-tabs{display:flex;gap:2px;}
-.ftab{flex:1;padding:6px 0;text-align:center;font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:var(--white);color:#bbb;border-bottom:2px solid #eee;transition:all .2s;font-family:var(--sans);}
-.ftab.active{color:var(--red);border-bottom-color:var(--red);}
-.search-input{width:100%;border:none;border-bottom:1.5px solid #eee;padding:10px 20px;font-size:.78rem;font-family:var(--sans);background:var(--light);color:var(--dark);outline:none;transition:border-color .2s;}
-.search-input:focus{border-bottom-color:var(--red);}
-.ticket-list{flex:1;overflow-y:auto;}
-.ticket-item{padding:14px 20px;border-bottom:1px solid #f5f5f5;cursor:pointer;transition:background .15s;display:grid;grid-template-columns:8px 1fr;gap:10px;align-items:start;}
-.ticket-item:hover{background:#fafafa;}
-.ticket-item.active{background:#fdf5f6;border-left:2px solid var(--red);}
-.ticket-item.done{opacity:.45;}
-.ti-accent{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
-.ti-body{}
-.ti-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
-.ti-type{font-size:.5rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
-.ti-time{font-size:.58rem;color:#ccc;}
-.ti-title{font-size:.8rem;font-weight:600;color:var(--dark);margin-bottom:3px;line-height:1.3;}
-.ti-from{font-size:.65rem;color:#bbb;}
-.ti-badges{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;}
-.badge{font-size:.52rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 7px;}
-.bdg-new{background:#fdf0f2;color:var(--red);}
-.bdg-open{background:#f0f4ff;color:var(--blue);}
-.bdg-done{background:#f5f5f5;color:#bbb;}
-.bdg-prio{background:#fff7ed;color:var(--amber);}
-.sidebar-empty{padding:32px 20px;text-align:center;color:#ccc;font-size:.72rem;}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  flex:1;overflow:hidden;border-top:1px solid var(--mid);}
 
-/* MAIN PANE */
-.inbox-main{display:flex;flex-direction:column;overflow:hidden;background:var(--light);}
-.main-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#ccc;gap:12px;}
-.main-empty-icon{font-size:2.5rem;opacity:.4;}
-.main-empty-text{font-size:.75rem;letter-spacing:.5px;}
-.ticket-detail{flex:1;overflow-y:auto;padding:28px 32px;}
-.td-header{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #eee;}
-.td-eyebrow{font-size:.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
-.td-title{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--dark);letter-spacing:-.3px;margin-bottom:8px;}
-.td-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.65rem;color:#bbb;}
-.td-meta span{display:flex;align-items:center;gap:4px;}
-.td-body{font-size:.82rem;color:#444;line-height:1.8;margin-bottom:20px;white-space:pre-wrap;}
-.td-fields{background:var(--white);border:1px solid #eee;padding:16px 20px;margin-bottom:20px;}
-.td-field-title{font-size:.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#bbb;margin-bottom:10px;}
-.td-field-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid #fafafa;font-size:.75rem;}
-.td-field-row:last-child{border-bottom:none;}
-.td-field-key{color:#bbb;width:160px;flex-shrink:0;font-size:.65rem;text-transform:uppercase;letter-spacing:.5px;}
-.td-field-val{color:var(--dark);font-weight:500;}
+/* ── COLUMN ── */
+.col{display:flex;flex-direction:column;border-right:1px solid var(--mid);
+  background:var(--light);overflow:hidden;}
+.col:last-child{border-right:none;}
+.col-head{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:3px solid var(--col-new);background:var(--white);flex-shrink:0;}
+.col-head.prog{border-bottom-color:var(--col-prog);}
+.col-head.wait{border-bottom-color:var(--col-wait);}
+.col-head.done{border-bottom-color:var(--col-done);}
+.col-title{font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  display:flex;align-items:center;gap:7px;}
+.col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.col-badge{font-size:.55rem;font-weight:700;padding:2px 8px;border-radius:0;}
+.badge-new{background:rgba(37,99,235,.12);color:var(--col-new);}
+.badge-prog{background:rgba(193,123,0,.12);color:var(--col-prog);}
+.badge-wait{background:rgba(124,58,237,.12);color:var(--col-wait);}
+.badge-done{background:rgba(45,122,79,.12);color:var(--col-done);}
+.col-cards{flex:1;overflow-y:auto;padding:10px 8px;display:flex;flex-direction:column;gap:8px;}
+.col-cards::-webkit-scrollbar{width:3px;}
+.col-cards::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
 
-/* COMMENTS */
-.comments-section{margin-bottom:20px;}
-.cs-title{font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee;}
-.comment-item{display:flex;gap:10px;margin-bottom:14px;}
-.ci-avatar{width:28px;height:28px;background:var(--dark);color:#fff;font-size:.65rem;font-weight:700;font-family:var(--serif);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ci-bubble{background:var(--white);border:1px solid #eee;padding:10px 14px;flex:1;}
-.ci-header{display:flex;justify-content:space-between;margin-bottom:4px;}
-.ci-name{font-size:.68rem;font-weight:700;color:var(--dark);}
-.ci-time{font-size:.6rem;color:#ccc;}
-.ci-text{font-size:.78rem;color:#444;line-height:1.6;}
-.comment-input-wrap{display:flex;gap:10px;align-items:flex-start;}
-.ci-in-avatar{width:28px;height:28px;background:var(--red);color:#fff;font-size:.65rem;font-weight:700;font-family:var(--serif);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.comment-input{flex:1;border:1.5px solid #ddd;padding:10px 12px;font-family:var(--sans);font-size:.78rem;resize:none;min-height:60px;background:var(--white);color:var(--dark);outline:none;transition:border-color .2s;}
+/* ── TICKET CARD ── */
+.ticket{background:var(--white);border-left:3px solid #ddd;padding:12px 13px 10px;
+  cursor:pointer;transition:all .2s;position:relative;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.ticket:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.ticket.prio-high{border-left-color:var(--red);}
+.ticket.prio-med{border-left-color:var(--col-prog);}
+.ticket.prio-low{border-left-color:#aaa;}
+.ticket.overdue{background:#fff8f8;}
+.ticket.due-soon{background:#fffbf0;}
+.t-type{font-size:.5rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.t-icon{font-size:.9rem;flex-shrink:0;}
+.t-title{font-size:.8rem;font-weight:700;color:#111;line-height:1.35;margin-bottom:5px;}
+.t-sub{font-size:.65rem;color:#888;line-height:1.5;margin-bottom:7px;}
+.t-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;}
+.t-from{font-size:.58rem;color:#bbb;display:flex;align-items:center;gap:4px;}
+.t-from-dot{width:16px;height:16px;border-radius:50%;background:var(--dark);
+  color:#fff;font-size:.48rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.t-due{font-size:.56rem;font-weight:700;padding:2px 7px;}
+.due-ok{background:#f0faf5;color:#2d7a4f;}
+.due-soon-pill{background:#fffbf0;color:var(--col-prog);}
+.due-late{background:#fdf0f2;color:var(--red);}
+.t-actions{display:flex;gap:4px;margin-top:7px;padding-top:7px;border-top:1px solid #f5f5f5;}
+.t-act{font-size:.53rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  padding:3px 8px;border:1px solid var(--mid);background:var(--white);
+  cursor:pointer;color:#888;font-family:var(--sans);transition:all .2s;flex:1;text-align:center;}
+.t-act:hover{border-color:var(--red);color:var(--red);}
+.t-act.advance{background:var(--dark);color:#fff;border-color:var(--dark);}
+.t-act.advance:hover{background:#333;}
+.col-empty{color:#ccc;font-size:.7rem;text-align:center;padding:32px 16px;
+  border:1.5px dashed #e0e0e0;margin:8px;font-style:italic;}
+
+/* ── DETAIL MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(10,10,10,.5);z-index:200;
+  display:none;align-items:flex-start;justify-content:center;
+  padding:40px 20px;overflow-y:auto;backdrop-filter:blur(3px);}
+.overlay.open{display:flex;}
+.modal{background:var(--white);width:100%;max-width:640px;
+  border-top:3px solid var(--red);animation:slideUp .22s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.modal-head{padding:22px 28px 16px;border-bottom:1px solid #f0f0f0;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.mh-ey{font-size:.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.mh-title{font-family:var(--serif);font-size:1.4rem;font-weight:400;
+  color:var(--dark);letter-spacing:-.3px;}
+.mh-meta{font-size:.65rem;color:#bbb;margin-top:4px;}
+.modal-close{width:30px;height:30px;border:1.5px solid #ddd;background:none;
+  cursor:pointer;font-size:1rem;color:#aaa;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;transition:all .2s;}
+.modal-close:hover{border-color:var(--red);color:var(--red);}
+.modal-body{padding:22px 28px;}
+.modal-foot{padding:16px 28px;border-top:1px solid #f0f0f0;
+  display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+.mbtn{padding:8px 20px;border:none;font-family:var(--sans);font-size:.58rem;
+  font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.mbtn-primary{background:var(--dark);color:#fff;}
+.mbtn-primary:hover{background:#333;}
+.mbtn-red{background:var(--red);color:#fff;}
+.mbtn-red:hover{background:#a01830;}
+.mbtn-outline{background:var(--white);border:1.5px solid #ddd;color:#888;}
+.mbtn-outline:hover{border-color:var(--red);color:var(--red);}
+.mbtn-green{background:#2d7a4f;color:#fff;}
+.mbtn-green:hover{background:#1e5e38;}
+.field-grid{display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:16px;
+  border:1px solid #f0f0f0;}
+.fg-row{display:contents;}
+.fg-k{font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:#bbb;padding:7px 12px;border-bottom:1px solid #f8f8f8;background:#fafafa;}
+.fg-v{font-size:.76rem;color:#333;padding:7px 12px;border-bottom:1px solid #f8f8f8;}
+.fg-k:last-of-type,.fg-v:last-of-type{border-bottom:none;}
+.comment-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.ci{display:flex;gap:9px;}
+.ci-av{width:26px;height:26px;border-radius:50%;background:var(--dark);
+  color:#fff;font-size:.6rem;font-weight:700;font-family:var(--serif);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ci-bubble{background:#fafafa;border:1px solid #eee;padding:9px 12px;flex:1;}
+.ci-hd{display:flex;justify-content:space-between;margin-bottom:3px;}
+.ci-name{font-size:.66rem;font-weight:700;color:var(--dark);}
+.ci-time{font-size:.58rem;color:#ccc;}
+.ci-text{font-size:.75rem;color:#444;line-height:1.55;}
+.comment-input{width:100%;border:1.5px solid #ddd;padding:9px 12px;
+  font-family:var(--sans);font-size:.78rem;resize:none;min-height:58px;
+  background:var(--white);color:var(--dark);outline:none;transition:border-color .2s;}
 .comment-input:focus{border-color:var(--red);}
-
-/* ACTION BAR */
-.ticket-actions{padding:16px 32px;background:var(--white);border-top:1px solid #eee;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.btn{padding:9px 22px;border:none;font-family:var(--sans);font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
-.btn-primary{background:var(--red);color:#fff;}
-.btn-primary:hover{background:#a01830;}
-.btn-secondary{background:#f0f0f0;color:#666;}
-.btn-secondary:hover{background:#e0e0e0;}
-.btn-success{background:var(--green);color:#fff;}
-.btn-success:hover{background:#1e5e38;}
-.btn-outline{background:var(--white);border:1.5px solid #ddd;color:#888;}
-.btn-outline:hover{border-color:var(--red);color:var(--red);}
-.ta-label{font-size:.62rem;color:#bbb;margin-left:auto;}
-
-/* LOADING */
-.loading{padding:32px;text-align:center;color:#ccc;font-size:.72rem;}
+.status-bar{padding:8px 12px;font-size:.7rem;font-weight:600;margin-top:10px;display:none;}
+.status-ok{background:#f0faf5;color:#2d7a4f;}
+.status-err{background:#fdf0f2;color:var(--red);}
 
 /* TYPE COLORS */
-.type-weekly{color:#2d7a4f;} .type-finanz{color:#1a5fa8;} .type-social{color:#9333ea;}
-.type-unterlagen{color:#c17b00;} .type-gebot{color:var(--red);} .type-expose{color:#0891b2;}
-.type-qaa{color:#be185d;} .type-abschluss{color:#059669;} .type-koop{color:#7c3aed;}
-.type-status{color:#dc2626;} .type-umsatz{color:#d97706;}
+.tc-weekly{color:#2d7a4f;} .tc-umsatz{color:#d97706;} .tc-gebot{color:var(--red);}
+.tc-koop{color:#7c3aed;} .tc-expose{color:#0891b2;} .tc-status{color:#dc2626;}
+.tc-abschluss{color:#059669;} .tc-unterlagen{color:#c17b00;} .tc-qaa{color:#be185d;}
+.tc-social{color:#9333ea;} .tc-finanz{color:#1a5fa8;}
+.bc-weekly{background:#2d7a4f;} .bc-umsatz{background:#d97706;} .bc-gebot{background:var(--red);}
+.bc-koop{background:#7c3aed;} .bc-expose{background:#0891b2;} .bc-status{background:#dc2626;}
+.bc-abschluss{background:#059669;} .bc-unterlagen{background:#c17b00;} .bc-qaa{background:#be185d;}
+.bc-social{background:#9333ea;} .bc-finanz{background:#1a5fa8;}
 
-.dot-weekly{background:#2d7a4f;} .dot-finanz{background:#1a5fa8;} .dot-social{background:#9333ea;}
-.dot-unterlagen{background:#c17b00;} .dot-gebot{background:var(--red);} .dot-expose{background:#0891b2;}
-.dot-qaa{background:#be185d;} .dot-abschluss{background:#059669;} .dot-koop{background:#7c3aed;}
-.dot-status{background:#dc2626;} .dot-umsatz{background:#d97706;}
-
-@media(max-width:700px){
-  .inbox-layout{grid-template-columns:1fr;}
-  .inbox-sidebar{height:50vh;}
-  header{padding:0 16px;}
+@media(max-width:800px){
+  .kanban{grid-template-columns:1fr;overflow-y:auto;overflow-x:hidden;}
+  .col{min-height:200px;border-right:none;border-bottom:1px solid var(--mid);}
+  header{padding:0 14px;}
 }
 </style>
 
 <script>
-// Hide standalone back-links when running inside portal overlay iframe
 if(window.self !== window.top){
   document.addEventListener('DOMContentLoaded',function(){
-    document.querySelectorAll('.hback,a[href="ev-portal.html"]').forEach(function(el){
-      el.style.display='none';
+    document.querySelectorAll('a[href="ev-portal.html"]').forEach(function(el){
+      el.addEventListener('click',function(e){
+        e.preventDefault();
+        try{ window.top.closeApp('inbox'); }catch(_){ window.top.location='ev-portal.html'; }
+      });
     });
   });
 }
@@ -143,383 +210,467 @@ if(window.self !== window.top){
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="hlogo">
-    <div class="hev">E&amp;V</div>
+    <div class="hlogo-ev">E&amp;V</div>
     <div>
-      <div class="hname">Engel &amp; Völkers</div>
-      <div class="hsub">Inbox · Mittleres Ruhrgebiet</div>
+      <div class="hlogo-name">Shopworld</div>
+      <div class="hlogo-sub">Inbox &amp; Aufgaben</div>
     </div>
   </div>
-  <div class="hright">
-    <span class="hrole-pill" id="rolePill">–</span>
-    <a class="hback" href="ev-portal.html">← Portal</a>
+  <div class="htoolbar">
+    <span class="hrole" id="rolePill">–</span>
+    <div style="margin-right:4px;">
+      <div id="hUserName">–</div>
+      <div id="hUserEmail">–</div>
+    </div>
+    <div class="h-avatar" id="hAvatar">EV</div>
+    <a class="hbtn" href="ev-portal.html" onclick="if(window.self!==window.top){window.top.closeApp('inbox');return false;}">
+      <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Portal
+    </a>
   </div>
 </header>
 
-<div class="inbox-layout">
-
-  <!-- SIDEBAR -->
-  <div class="inbox-sidebar">
-    <div class="sidebar-head">
-      <div class="sidebar-title">Inbox <span id="unreadCount" style="font-size:.7rem;color:#bbb;font-family:var(--sans);font-weight:400;"></span></div>
-      <div class="filter-tabs">
-        <button class="ftab active" onclick="setFilter('open',this)">Offen</button>
-        <button class="ftab" onclick="setFilter('done',this)">Erledigt</button>
-        <button class="ftab" onclick="setFilter('all',this)">Alle</button>
-      </div>
-    </div>
-    <input class="search-input" type="text" placeholder="Suchen …" id="searchField" oninput="renderList()"/>
-    <div class="ticket-list" id="ticketList">
-      <div class="loading">Laden …</div>
-    </div>
+<!-- FILTER BAR -->
+<div class="board-wrap">
+  <div class="board-filter">
+    <span class="filter-label">Filter</span>
+    <button class="fbtn active" onclick="setFilter('all',this)">Alle</button>
+    <button class="fbtn" onclick="setFilter('gebot',this)">🤝 Gebote</button>
+    <button class="fbtn" onclick="setFilter('unterlagen',this)">🗂 Unterlagen</button>
+    <button class="fbtn" onclick="setFilter('expose',this)">📄 Exposés</button>
+    <button class="fbtn" onclick="setFilter('weekly',this)">📋 Weekly</button>
+    <button class="fbtn" onclick="setFilter('finanz',this)">🏦 Finanzierung</button>
+    <button class="fbtn" onclick="setFilter('qaa',this)">📝 QAA</button>
+    <button class="fbtn" onclick="setFilter('social',this)">📲 Social</button>
+    <span class="fcount" id="fcount"></span>
+    <input class="fsearch" type="text" placeholder="Suchen …" id="searchInput" oninput="renderBoard()"/>
   </div>
 
-  <!-- MAIN PANE -->
-  <div class="inbox-main" id="inboxMain">
-    <div class="main-empty" id="emptyState">
-      <div class="main-empty-icon">📬</div>
-      <div class="main-empty-text">Ticket auswählen</div>
-    </div>
-    <div id="ticketDetail" style="display:none;flex:1;overflow-y:auto;flex-direction:column;">
-      <div class="ticket-detail" id="detailContent"></div>
-      <div class="comments-section" id="commentsSection" style="padding:0 32px 20px;"></div>
-      <div style="padding:0 32px 20px;">
-        <div class="comment-input-wrap">
-          <div class="ci-in-avatar" id="myAvatar">EV</div>
-          <textarea class="comment-input" id="commentInput" placeholder="Kommentar hinzufügen …" rows="3"></textarea>
-        </div>
+  <!-- KANBAN BOARD -->
+  <div class="kanban" id="kanban">
+    <div class="col">
+      <div class="col-head">
+        <div class="col-title"><div class="col-dot" style="background:var(--col-new)"></div> Eingang</div>
+        <span class="col-badge badge-new" id="cnt-new">0</span>
       </div>
+      <div class="col-cards" id="col-new"></div>
     </div>
-    <div class="ticket-actions" id="ticketActions" style="display:none;">
-      <button class="btn btn-outline" onclick="addComment()">💬 Kommentar senden</button>
-      <button class="btn btn-success" id="doneBtn" onclick="markDone()">✓ Als erledigt markieren</button>
-      <button class="btn btn-secondary" onclick="markOpen()">↩ Wieder öffnen</button>
-      <span class="ta-label" id="taLabel"></span>
+    <div class="col">
+      <div class="col-head prog">
+        <div class="col-title"><div class="col-dot" style="background:var(--col-prog)"></div> In Bearbeitung</div>
+        <span class="col-badge badge-prog" id="cnt-prog">0</span>
+      </div>
+      <div class="col-cards" id="col-prog"></div>
+    </div>
+    <div class="col">
+      <div class="col-head wait">
+        <div class="col-title"><div class="col-dot" style="background:var(--col-wait)"></div> Wartend</div>
+        <span class="col-badge badge-wait" id="cnt-wait">0</span>
+      </div>
+      <div class="col-cards" id="col-wait"></div>
+    </div>
+    <div class="col">
+      <div class="col-head done">
+        <div class="col-title"><div class="col-dot" style="background:var(--col-done)"></div> Abgeschlossen</div>
+        <span class="col-badge badge-done" id="cnt-done">0</span>
+      </div>
+      <div class="col-cards" id="col-done"></div>
     </div>
   </div>
+</div>
 
+<!-- DETAIL MODAL -->
+<div class="overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="mh-ey" id="mhEy">–</div>
+        <div class="mh-title" id="mhTitle">–</div>
+        <div class="mh-meta" id="mhMeta">–</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-grid" id="mhFields"></div>
+      <div style="font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-bottom:10px;margin-top:4px;">Kommentare</div>
+      <div class="comment-list" id="commentList"></div>
+      <textarea class="comment-input" id="commentInput" placeholder="Kommentar hinzufügen …" rows="2"></textarea>
+      <div class="status-bar" id="statusBar"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="mbtn mbtn-outline" onclick="closeModal()">Schließen</button>
+      <button class="mbtn mbtn-outline" onclick="addComment()">💬 Kommentieren</button>
+      <button class="mbtn mbtn-primary" id="advanceBtn" onclick="advanceTicket()">→ Weiterleiten</button>
+      <button class="mbtn mbtn-green" id="doneBtn" onclick="completeTicket()">✓ Abschließen</button>
+    </div>
+  </div>
 </div>
 
 <script>
+// ── CONFIG ───────────────────────────────────────────────────────
+const SB_URL = 'https://pwkoxtyficedetiymgcj.supabase.co';
+const SB_KEY = 'sb_publishable_fQvTH65W8d6NTxX_KEp3SQ_SVU4YvGV';
+
+const TYPE_CFG = {
+  weekly:    {label:'Weekly Check-In',  icon:'📋', color:'#2d7a4f'},
+  umsatz:    {label:'Umsatzplanung',    icon:'💰', color:'#d97706'},
+  gebot:     {label:'Gebot',            icon:'🤝', color:'#C41E3A'},
+  koop:      {label:'Kooperation',      icon:'🔗', color:'#7c3aed'},
+  expose:    {label:'Exposé-Freigabe',  icon:'📄', color:'#0891b2'},
+  status:    {label:'Objektstatus',     icon:'🔄', color:'#dc2626'},
+  abschluss: {label:'Objektabschluss',  icon:'✅', color:'#059669'},
+  unterlagen:{label:'Unterlagen',       icon:'🗂', color:'#c17b00'},
+  qaa:       {label:'QAA-Bestellung',   icon:'📝', color:'#be185d'},
+  social:    {label:'Social Media',     icon:'📲', color:'#9333ea'},
+  finanz:    {label:'Finanzierung',     icon:'🏦', color:'#1a5fa8'},
+};
+
+const STATUS_FLOW = ['open','in_progress','waiting','done'];
+const STATUS_COL  = {open:'new', in_progress:'prog', waiting:'wait', done:'done'};
+
+// Role → which tables they receive tickets from
+const ROLE_TABLES = {
+  gf:['weekly_checkins','umsatzplanungen','one_gebote','one_kooperationen',
+      'one_expose_freigaben','one_statusaenderungen','one_abschluesse',
+      'socialmedia_anfragen','finanzierung_anfragen'],
+  bo:['one_unterlagen_bestellungen','one_qaa_bestellungen','socialmedia_anfragen'],
+  ib:['weekly_checkins','umsatzplanungen','one_gebote','one_kooperationen',
+      'one_expose_freigaben','one_statusaenderungen','one_abschluesse',
+      'one_unterlagen_bestellungen','one_qaa_bestellungen','socialmedia_anfragen',
+      'finanzierung_anfragen'],
+};
+const TABLE_TYPE = {
+  weekly_checkins:'weekly', umsatzplanungen:'umsatz',
+  one_gebote:'gebot', one_kooperationen:'koop',
+  one_expose_freigaben:'expose', one_statusaenderungen:'status',
+  one_abschluesse:'abschluss', one_unterlagen_bestellungen:'unterlagen',
+  one_qaa_bestellungen:'qaa', socialmedia_anfragen:'social',
+  finanzierung_anfragen:'finanz'
+};
+
 // ── STATE ─────────────────────────────────────────────────────────
 let TICKETS   = [];
 let COMMENTS  = {};
-let currentId = null;
-let filterMode = 'open';
 let myUser    = {};
-let myRole    = 'ib'; // gf | ib | bo
+let myRole    = 'ib';
+let activeFilter = 'all';
+let currentTicket = null;
 
-// Role routing: which ticket types go to which role
-const ROLE_ROUTING = {
-  // IB → GF
-  weekly:    ['gf'],
-  umsatz:    ['gf'],
-  gebot:     ['gf'],
-  koop:      ['gf'],
-  expose:    ['gf'],
-  status:    ['gf'],
-  abschluss: ['gf'],
-  // IB → BO
-  unterlagen:['bo'],
-  qaa:       ['bo'],
-  // Social → GF + BO
-  social:    ['gf','bo'],
-  // Finanzierung → GF
-  finanz:    ['gf'],
-};
-
-const TYPE_LABELS = {
-  weekly:'Weekly Check-In', umsatz:'Umsatzplanung', gebot:'Gebot',
-  koop:'Kooperation', expose:'Exposé-Freigabe', status:'Objektstatus',
-  abschluss:'Objektabschluss', unterlagen:'Unterlagen', qaa:'QAA-Bestellung',
-  social:'Social Media', finanz:'Finanzierung'
-};
-
-// ── INIT ─────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────
 (async function(){
+  // Session
   try {
     const u = JSON.parse(sessionStorage.getItem('evUser')||'{}');
-    myUser   = u;
-    myRole   = u.role || 'ib';
-    document.getElementById('myAvatar').textContent = u.initials||'EV';
+    myUser = u; myRole = u.role||'ib';
+    document.getElementById('hUserName').textContent = u.fullName||'';
+    document.getElementById('hUserEmail').textContent = u.email||'';
+    document.getElementById('hAvatar').textContent = u.initials||'EV';
     const pill = document.getElementById('rolePill');
-    pill.textContent = myRole==='gf'?'Geschäftsführung':myRole==='bo'?'Back-Office':'Immobilienberater';
-    pill.className = 'hrole-pill '+myRole;
+    const roleMap = {gf:'Geschäftsführung',ib:'Immobilienberater',bo:'Back-Office'};
+    pill.textContent = roleMap[myRole]||myRole;
+    pill.className = 'hrole role-'+myRole;
   } catch(_){}
-  await loadTickets();
+
+  await loadAll();
 })();
 
-// ── LOAD ─────────────────────────────────────────────────────────
-async function loadTickets(){
-  document.getElementById('ticketList').innerHTML = '<div class="loading">Laden …</div>';
+async function loadAll(){
+  renderLoading();
   try {
     const jwt = EvDB.jwt();
-    if(!jwt){ renderDemoTickets(); return; }
+    if(!jwt){ renderDemo(); return; }
 
-    // Load from all relevant Supabase tables and normalize to tickets
-    const tables = getTablesForRole();
-    const results = await Promise.allSettled(
-      tables.map(t => fetch(
-        `https://pwkoxtyficedetiymgcj.supabase.co/rest/v1/${t}?select=*&order=created_at.desc&limit=100`,
-        {headers:{'apikey':'sb_publishable_fQvTH65W8d6NTxX_KEp3SQ_SVU4YvGV','Authorization':'Bearer '+jwt}}
-      ).then(r=>r.json()).then(rows=>(rows||[]).map(row=>normalizeRow(t,row))))
-    );
-
+    const tables = ROLE_TABLES[myRole]||ROLE_TABLES.ib;
+    const results = await Promise.allSettled(tables.map(t=>
+      fetch(`${SB_URL}/rest/v1/${t}?select=*&order=created_at.desc&limit=200`,
+        {headers:{apikey:SB_KEY, Authorization:'Bearer '+jwt}})
+      .then(r=>r.json())
+      .then(rows=>(rows||[]).map(row=>normalise(t,row)))
+    ));
     TICKETS = results.flatMap(r=>r.status==='fulfilled'?r.value:[])
       .sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
 
     // Load comments
-    try {
-      const cr = await fetch(
-        `https://pwkoxtyficedetiymgcj.supabase.co/rest/v1/inbox_comments?select=*&order=created_at.asc`,
-        {headers:{'apikey':'sb_publishable_fQvTH65W8d6NTxX_KEp3SQ_SVU4YvGV','Authorization':'Bearer '+jwt}}
-      );
-      const cRows = await cr.json();
-      (cRows||[]).forEach(c=>{
-        if(!COMMENTS[c.ticket_ref]) COMMENTS[c.ticket_ref]= [];
-        COMMENTS[c.ticket_ref].push(c);
-      });
-    } catch(_){}
+    const cr = await fetch(`${SB_URL}/rest/v1/inbox_comments?select=*&order=created_at.asc&limit=500`,
+      {headers:{apikey:SB_KEY, Authorization:'Bearer '+jwt}});
+    const crows = await cr.json();
+    (crows||[]).forEach(c=>{ if(!COMMENTS[c.ticket_ref]) COMMENTS[c.ticket_ref]=[]; COMMENTS[c.ticket_ref].push(c); });
 
-    if(TICKETS.length===0) renderDemoTickets();
-    else renderList();
-  } catch(e){
-    console.warn('[Inbox]',e);
-    renderDemoTickets();
-  }
+    if(TICKETS.length===0) renderDemo();
+    else renderBoard();
+  } catch(e){ console.warn('[Inbox]',e); renderDemo(); }
 }
 
-function getTablesForRole(){
-  // GF sees all, BO sees BO-tables, IB sees their own submissions
-  if(myRole==='gf') return ['weekly_checkins','umsatzplanungen','one_gebote','one_kooperationen','one_expose_freigaben','one_statusaenderungen','one_abschluesse','socialmedia_anfragen','finanzierung_anfragen','one_unterlagen_bestellungen','one_qaa_bestellungen'];
-  if(myRole==='bo') return ['one_unterlagen_bestellungen','one_qaa_bestellungen','socialmedia_anfragen'];
-  // IB: own submissions
-  return ['weekly_checkins','umsatzplanungen','one_gebote','one_kooperationen','one_expose_freigaben','one_statusaenderungen','one_abschluesse','one_unterlagen_bestellungen','one_qaa_bestellungen','socialmedia_anfragen','finanzierung_anfragen'];
-}
-
-function normalizeRow(table, row){
-  const typeMap = {
-    weekly_checkins:'weekly', umsatzplanungen:'umsatz',
-    one_gebote:'gebot', one_kooperationen:'koop',
-    one_expose_freigaben:'expose', one_statusaenderungen:'status',
-    one_abschluesse:'abschluss', one_unterlagen_bestellungen:'unterlagen',
-    one_qaa_bestellungen:'qaa', socialmedia_anfragen:'social',
-    finanzierung_anfragen:'finanz'
-  };
-  const type = typeMap[table]||'other';
+// ── NORMALISE ROW → TICKET ────────────────────────────────────────
+function normalise(table, row){
+  const type = TABLE_TYPE[table]||'other';
   const ref  = table+'_'+row.id;
+  let title='–', sub='', from='', due=null;
+  from = row.user_name||row.sender_name||row.berater_name||row.user_email||'–';
 
-  // Build title and summary from row data
-  let title = '–', summary = '', from = '';
-  from = row.user_name||row.sender_name||row.berater_name||row.user_email||'Unbekannt';
+  if(type==='weekly')    { title=`Weekly KW ${row.kw||'?'}/${row.jahr||''}`;sub=`${row.rolle||''} · Score: ${row.score_pct||0} %`; }
+  if(type==='umsatz')    { title=`Umsatzplanung ${row.jahr||''}`;sub=`${row.modell||''} · ${fc(row.jahresumsatz)}`; }
+  if(type==='gebot')     { title=`Gebot: ${row.gebot_objekt||'–'}`;sub=`Käufer: ${row.gebot_kaeufer||'–'} · ${fc(row.gebot_betrag)}`; due=row.gebot_datum; }
+  if(type==='koop')      { title=`Kooperation: ${row.koop_name||'–'}`;sub=row.koop_branche||''; }
+  if(type==='expose')    { title=`Exposé: ${row.exp_adresse||'–'}`;sub=`${row.exp_art||''} · ${fc(row.exp_preis)}`; }
+  if(type==='status')    { title=`Status: ${row.status_adresse||'–'}`;sub=row['sel_status_typ']||''; }
+  if(type==='abschluss') { title=`Abschluss: ${row.abs_adresse||'–'}`;sub=`${row['sel_abs_art']||''} · ${fc(row.abs_preis)}`; due=row.abs_datum; }
+  if(type==='unterlagen'){ title=`Unterlagen: ${row.unt_adresse||'–'}`;sub=row['sel_unt_dring']||''; }
+  if(type==='qaa')       { title=`QAA: ${row.qaa_adresse||'–'}`;sub=`${row.qaa_art||''} · ${row.qaa_eg1||''}`; due=row.qaa_start; }
+  if(type==='social')    { title=`Social: ${row.beitragsart||'–'}`;sub=(row.plattformen||[]).join(', '); due=row.dringlichkeit==='Sehr dringend'?new Date(Date.now()+86400000).toISOString().split('T')[0]:null; }
+  if(type==='finanz')    { title=`Finanzierung: ${row.obj_adresse||row.kn1_name||'–'}`;sub=`${row.kn1_name||''} · ${fc(row.fin_darlehen)}`; }
 
-  if(type==='weekly')   { title=`Weekly KW ${row.kw}/${row.jahr} — ${row.rolle||''}`; summary=`Score: ${row.score_pct||0} % (${row.score_note||''})${(row.offene_punkte||[]).length?' · '+row.offene_punkte.length+' offene Punkte':''}`; }
-  if(type==='umsatz')   { title=`Umsatzplanung ${row.jahr||''} — ${row.modell||''}`; summary=`Jahresumsatz: ${fe(row.jahresumsatz)} · Provision: ${fe(row.provision)}`; }
-  if(type==='gebot')    { title=`Gebot: ${row.gebot_objekt||'–'}`; summary=`Käufer: ${row.gebot_kaeufer||'–'} · Gebot: ${fe(row.gebot_betrag)}`; }
-  if(type==='koop')     { title=`Kooperationsvorschlag: ${row.koop_name||'–'}`; summary=`Art: ${row['sel_koop_art']||'–'} · ${row.koop_branche||''}`; }
-  if(type==='expose')   { title=`Exposé-Freigabe: ${row.exp_adresse||'–'}`; summary=`${row.exp_art||'–'} · ${fe(row.exp_preis)}`; }
-  if(type==='status')   { title=`Objektstatus: ${row.status_adresse||'–'}`; summary=`${row['sel_status_typ']||'–'} · ${row.status_art||''}`; }
-  if(type==='abschluss'){ title=`Abschluss: ${row.abs_adresse||'–'}`; summary=`${row['sel_abs_art']||'–'} · ${fe(row.abs_preis)} · ${row.abs_datum||''}`; }
-  if(type==='unterlagen'){ title=`Unterlagen: ${row.unt_adresse||'–'}`; summary=`Dringlichkeit: ${row['sel_unt_dring']||'–'}`; }
-  if(type==='qaa')      { title=`QAA: ${row.qaa_adresse||'–'}`; summary=`${row.qaa_art||'–'} · ${row.qaa_eg1||''}`; }
-  if(type==='social')   { title=`Social: ${row.beitragsart||'–'}`; summary=`${(row.plattformen||[]).join(', ')||'–'} · ${row.dringlichkeit||''}`; }
-  if(type==='finanz')   { title=`Finanzierung: ${row.obj_adresse||'–'}`; summary=`${row.kn1_name||'–'} · ${fe(row.fin_darlehen)}`; }
+  // Priority heuristic
+  let prio = 'low';
+  if(type==='gebot'||type==='abschluss') prio='high';
+  else if(type==='expose'||type==='status'||type==='finanz') prio='med';
 
-  return {
-    id: row.id, ref, type, table, title, summary, from,
-    created_at: row.created_at,
-    status: row.inbox_status||'open',
-    raw: row
-  };
+  return {id:row.id, ref, type, table, title, sub, from, due,
+    status: row.inbox_status||'open', prio, created_at:row.created_at, raw:row};
 }
 
-// ── DEMO DATA (no DB entries yet) ────────────────────────────────
-function renderDemoTickets(){
-  TICKETS = [
-    {id:1,ref:'demo_1',type:'weekly',title:'Weekly KW 20/2026 — Immobilienberater/in',summary:'Score: 87 % (Sehr gut)',from:'Julia Steinberg',created_at:new Date(Date.now()-3600000).toISOString(),status:'open',raw:{}},
-    {id:2,ref:'demo_2',type:'gebot',title:'Gebot: Kemnader Str. 12, Bochum',summary:'Käufer: Max Mustermann · Gebot: 395.000 €',from:'Markus Becker',created_at:new Date(Date.now()-7200000).toISOString(),status:'open',raw:{}},
-    {id:3,ref:'demo_3',type:'unterlagen',title:'Unterlagen: Hattingen Stadtmitte',summary:'Grundbuch, Energieausweis, Baulast · Dringend',from:'Petra Winkler',created_at:new Date(Date.now()-86400000).toISOString(),status:'open',raw:{}},
-    {id:4,ref:'demo_4',type:'expose',title:'Exposé-Freigabe: Altenhöfener Str. 7',summary:'ETW · 290.000 € · Flowfact',from:'Lars Schneider',created_at:new Date(Date.now()-172800000).toISOString(),status:'open',raw:{}},
-    {id:5,ref:'demo_5',type:'qaa',title:'QAA: Springorumstr. 44, Bochum',summary:'EFH · Eigentümer: Schmidt, Thomas · 6 Monate',from:'Andreas Müller',created_at:new Date(Date.now()-259200000).toISOString(),status:'open',raw:{}},
-    {id:6,ref:'demo_6',type:'social',title:'Social: Immobilienportrait Instagram',summary:'Instagram, Facebook · Dringend',from:'Nicole Fischer',created_at:new Date(Date.now()-345600000).toISOString(),status:'done',raw:{}},
-    {id:7,ref:'demo_7',type:'koop',title:'Kooperationsvorschlag: Muster Finanzberatung',summary:'Unternehmen · Finanzberater',from:'Stefan Brandt',created_at:new Date(Date.now()-432000000).toISOString(),status:'done',raw:{}},
-    {id:8,ref:'demo_8',type:'finanz',title:'Finanzierung: Querenburg, Bochum',summary:'Max Mustermann · 312.000 € Darlehen',from:'Markus Becker',created_at:new Date(Date.now()-518400000).toISOString(),status:'open',raw:{}},
-  ];
-  renderList();
+// ── RENDER BOARD ──────────────────────────────────────────────────
+function setFilter(f, btn){
+  activeFilter = f;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBoard();
 }
 
-// ── RENDER LIST ──────────────────────────────────────────────────
-function renderList(){
-  const search = document.getElementById('searchField').value.toLowerCase();
+function renderBoard(){
+  const search = document.getElementById('searchInput').value.toLowerCase();
   const filtered = TICKETS.filter(t=>{
-    if(filterMode==='open' && t.status!=='open')   return false;
-    if(filterMode==='done' && t.status!=='done')   return false;
+    if(activeFilter!=='all' && t.type!==activeFilter) return false;
     if(search && !t.title.toLowerCase().includes(search) && !t.from.toLowerCase().includes(search)) return false;
     return true;
   });
 
-  const open = TICKETS.filter(t=>t.status==='open').length;
-  document.getElementById('unreadCount').textContent = open ? `(${open} offen)` : '';
+  const cols = {new:[],prog:[],wait:[],done:[]};
+  filtered.forEach(t=>{
+    const col = STATUS_COL[t.status]||'new';
+    cols[col].push(t);
+  });
 
-  if(!filtered.length){
-    document.getElementById('ticketList').innerHTML = '<div class="sidebar-empty">Keine Einträge gefunden.</div>';
-    return;
-  }
+  ['new','prog','wait','done'].forEach(col=>{
+    const el = document.getElementById('col-'+col);
+    const cnt = document.getElementById('cnt-'+col);
+    cnt.textContent = cols[col].length;
+    if(!cols[col].length){
+      el.innerHTML = '<div class="col-empty">Keine Aufgaben</div>'; return;
+    }
+    el.innerHTML = cols[col].map(t=>cardHTML(t)).join('');
+  });
 
-  document.getElementById('ticketList').innerHTML = filtered.map(t=>`
-    <div class="ticket-item${t.status==='done'?' done':''}${t.ref===currentId?' active':''}" onclick="openTicket('${t.ref}')">
-      <div class="ti-accent dot-${t.type}"></div>
-      <div class="ti-body">
-        <div class="ti-header">
-          <span class="ti-type type-${t.type}">${TYPE_LABELS[t.type]||t.type}</span>
-          <span class="ti-time">${timeAgo(t.created_at)}</span>
-        </div>
-        <div class="ti-title">${t.title}</div>
-        <div class="ti-from">von ${t.from}</div>
-        <div class="ti-badges">
-          ${t.status==='open'?'<span class="badge bdg-open">Offen</span>':'<span class="badge bdg-done">Erledigt</span>'}
-          ${COMMENTS[t.ref]?.length?`<span class="badge bdg-new">💬 ${COMMENTS[t.ref].length}</span>`:''}
-        </div>
-      </div>
+  document.getElementById('fcount').textContent = filtered.length+' Aufgaben';
+}
+
+function cardHTML(t){
+  const cfg = TYPE_CFG[t.type]||{label:t.type,icon:'📌',color:'#888'};
+  const dueInfo = duePill(t.due);
+  const overdue = dueInfo.cls==='due-late';
+  const soon    = dueInfo.cls==='due-soon-pill';
+  const nextStatus = nextStatusLabel(t.status);
+
+  return `<div class="ticket prio-${t.prio}${overdue?' overdue':soon?' due-soon':''}" onclick="openTicket('${t.ref}')">
+    <div class="t-type tc-${t.type}">
+      <span class="t-icon">${cfg.icon}</span>${cfg.label}
+      ${overdue?'<span style="color:var(--red);margin-left:auto;font-size:.5rem;">⚠ ÜBERFÄLLIG</span>':''}
+      ${soon&&!overdue?'<span style="color:var(--col-prog);margin-left:auto;font-size:.5rem;">⏰ BALD FÄLLIG</span>':''}
     </div>
-  `).join('');
+    <div class="t-title">${t.title}</div>
+    ${t.sub?`<div class="t-sub">${t.sub}</div>`:''}
+    <div class="t-footer">
+      <div class="t-from">
+        <div class="t-from-dot bc-${t.type}">${initials(t.from)}</div>
+        ${t.from}
+      </div>
+      ${dueInfo.label?`<span class="t-due ${dueInfo.cls}">${dueInfo.label}</span>`:''}
+    </div>
+    ${COMMENTS[t.ref]?.length?`<div style="font-size:.55rem;color:#bbb;margin-top:5px;padding-top:5px;border-top:1px solid #f5f5f5;">💬 ${COMMENTS[t.ref].length} Kommentar${COMMENTS[t.ref].length>1?'e':''}</div>`:''}
+    <div class="t-actions">
+      <div class="t-act" onclick="event.stopPropagation();openTicket('${t.ref}')">Details</div>
+      ${nextStatus?`<div class="t-act advance" onclick="event.stopPropagation();quickAdvance('${t.ref}')">${nextStatus} →</div>`:''}
+    </div>
+  </div>`;
 }
 
-function setFilter(f, el){
-  filterMode = f;
-  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  renderList();
+function renderLoading(){
+  ['new','prog','wait','done'].forEach(c=>{
+    document.getElementById('col-'+c).innerHTML = '<div class="col-empty" style="font-style:normal;">Laden …</div>';
+  });
 }
 
-// ── OPEN TICKET ──────────────────────────────────────────────────
+// ── DEMO DATA ─────────────────────────────────────────────────────
+function renderDemo(){
+  const today = new Date();
+  const d = (offset)=>new Date(today.getTime()+offset*86400000).toISOString().split('T')[0];
+  TICKETS = [
+    {id:1,ref:'demo_1',type:'gebot',    title:'Gebot: Kemnader Str. 12, Bochum', sub:'Käufer: Max Mustermann · 395.000 €',from:'Markus Becker',   due:d(2),  status:'open',       prio:'high',created_at:new Date(Date.now()-2*3600000).toISOString(),raw:{}},
+    {id:2,ref:'demo_2',type:'expose',   title:'Exposé-Freigabe: Altenhöfener Str. 7',sub:'ETW · 290.000 €',from:'Lars Schneider',  due:d(-1), status:'open',       prio:'med', created_at:new Date(Date.now()-5*3600000).toISOString(),raw:{}},
+    {id:3,ref:'demo_3',type:'unterlagen',title:'Unterlagen: Hattingen Stadtmitte',sub:'Grundbuch · Baulast · Dringend',from:'Petra Winkler',  due:d(1),  status:'open',       prio:'med', created_at:new Date(Date.now()-86400000).toISOString(),raw:{}},
+    {id:4,ref:'demo_4',type:'weekly',   title:'Weekly KW 20/2026',sub:'Immobilienberater · Score: 87 %',from:'Julia Steinberg',due:null, status:'open',       prio:'low', created_at:new Date(Date.now()-2*86400000).toISOString(),raw:{}},
+    {id:5,ref:'demo_5',type:'qaa',      title:'QAA: Springorumstr. 44, Bochum',sub:'EFH · Schmidt, Thomas · 6 Monate',from:'Andreas Müller', due:d(5),  status:'in_progress',prio:'med', created_at:new Date(Date.now()-3*86400000).toISOString(),raw:{}},
+    {id:6,ref:'demo_6',type:'finanz',   title:'Finanzierung: Querenburg, Bochum',sub:'M. Mustermann · 312.000 €',from:'Markus Becker',   due:null, status:'in_progress',prio:'med', created_at:new Date(Date.now()-4*86400000).toISOString(),raw:{}},
+    {id:7,ref:'demo_7',type:'social',   title:'Social: Immobilienportrait Instagram',sub:'Instagram · Facebook · Dringend',from:'Nicole Fischer',  due:d(-2), status:'waiting',    prio:'low', created_at:new Date(Date.now()-5*86400000).toISOString(),raw:{}},
+    {id:8,ref:'demo_8',type:'koop',     title:'Kooperation: Muster Finanzberatung GmbH',sub:'Unternehmen · Finanzberater',from:'Stefan Brandt',   due:null, status:'waiting',    prio:'low', created_at:new Date(Date.now()-6*86400000).toISOString(),raw:{}},
+    {id:9,ref:'demo_9',type:'abschluss',title:'Abschluss: Stiepeler Str. 88, Bochum',sub:'Verkauf · 420.000 € · 15.06.',from:'Sabine Hoffmann',  due:d(3),  status:'done',       prio:'high',created_at:new Date(Date.now()-7*86400000).toISOString(),raw:{}},
+    {id:10,ref:'demo_10',type:'umsatz', title:'Umsatzplanung 2026',sub:'Fast Track · 480.000 € Jahresumsatz',from:'Clara Kretzmann',  due:null, status:'done',       prio:'low', created_at:new Date(Date.now()-8*86400000).toISOString(),raw:{}},
+  ];
+  renderBoard();
+}
+
+// ── TICKET DETAIL ─────────────────────────────────────────────────
 function openTicket(ref){
-  currentId = ref;
-  const t = TICKETS.find(x=>x.ref===ref);
-  if(!t) return;
-  renderList(); // refresh active state
+  currentTicket = TICKETS.find(t=>t.ref===ref);
+  if(!currentTicket) return;
+  const t = currentTicket;
+  const cfg = TYPE_CFG[t.type]||{label:t.type,icon:'📌',color:'#888'};
+  document.getElementById('mhEy').innerHTML = `<span style="color:${cfg.color}">${cfg.icon} ${cfg.label}</span>`;
+  document.getElementById('mhTitle').textContent = t.title;
+  document.getElementById('mhMeta').textContent = `Von: ${t.from} · ${relDate(t.created_at)}${t.due?' · Fällig: '+fmt(t.due):''}`;
 
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('ticketDetail').style.display = 'flex';
-  document.getElementById('ticketActions').style.display = 'flex';
-
-  // Build field table from raw data
+  // Fields from raw data
   const raw = t.raw||{};
-  const skip = ['id','created_at','modal_id','inbox_status','user_email'];
-  const fieldRows = Object.entries(raw)
-    .filter(([k,v])=>!skip.includes(k)&&v!==null&&v!==''&&v!==false)
-    .map(([k,v])=>`<div class="td-field-row"><span class="td-field-key">${k.replace(/_/g,' ')}</span><span class="td-field-val">${typeof v==='object'?JSON.stringify(v):v}</span></div>`)
+  const skip = new Set(['id','created_at','modal_id','inbox_status','user_email','user_name','sender_name','berater_name']);
+  const rows = Object.entries(raw)
+    .filter(([k,v])=>!skip.has(k)&&v!==null&&v!==''&&v!==false&&v!==0)
+    .slice(0,12)
+    .map(([k,v])=>`<div class="fg-k">${k.replace(/_/g,' ')}</div><div class="fg-v">${typeof v==='object'?JSON.stringify(v):v}</div>`)
     .join('');
+  document.getElementById('mhFields').innerHTML = rows||'<div class="fg-k">Demo-Ticket</div><div class="fg-v">Echte Felder erscheinen nach Datenbankanbindung</div>';
 
-  document.getElementById('detailContent').innerHTML = `
-    <div class="td-header">
-      <div class="td-eyebrow">
-        <span class="type-${t.type}" style="font-weight:700;">${TYPE_LABELS[t.type]||t.type}</span>
-        <span class="badge ${t.status==='open'?'bdg-open':'bdg-done'}">${t.status==='open'?'Offen':'Erledigt'}</span>
-      </div>
-      <div class="td-title">${t.title}</div>
-      <div class="td-meta">
-        <span>👤 ${t.from}</span>
-        <span>🕐 ${new Date(t.created_at).toLocaleString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'})}</span>
-        <span>📋 ${t.ref}</span>
-      </div>
-    </div>
-    <div class="td-body">${t.summary||'–'}</div>
-    ${fieldRows?`<div class="td-fields"><div class="td-field-title">Alle Felder</div>${fieldRows}</div>`:''}
-  `;
-
-  // Render comments
+  // Comments
   const cs = COMMENTS[ref]||[];
-  document.getElementById('commentsSection').innerHTML = `
-    <div class="cs-title">Kommentare (${cs.length})</div>
-    ${cs.map(c=>`<div class="comment-item">
-      <div class="ci-avatar">${(c.author_name||'?').split(' ').map(p=>p[0]||'').join('').substring(0,2).toUpperCase()}</div>
+  document.getElementById('commentList').innerHTML = cs.map(c=>`
+    <div class="ci">
+      <div class="ci-av">${initials(c.author_name||'?')}</div>
       <div class="ci-bubble">
-        <div class="ci-header"><span class="ci-name">${c.author_name||'–'}</span><span class="ci-time">${timeAgo(c.created_at)}</span></div>
-        <div class="ci-text">${c.body||''}</div>
+        <div class="ci-hd"><span class="ci-name">${c.author_name||'–'}</span><span class="ci-time">${relDate(c.created_at)}</span></div>
+        <div class="ci-text">${c.body}</div>
       </div>
-    </div>`).join('')}
-  `;
+    </div>`).join('');
 
-  // Update action bar
-  document.getElementById('taLabel').textContent = `Eingegangen: ${new Date(t.created_at).toLocaleString('de-DE')}`;
-  document.getElementById('doneBtn').style.display = t.status==='done'?'none':'flex';
-  document.querySelector('[onclick="markOpen()"]').style.display = t.status==='done'?'flex':'none';
+  document.getElementById('commentInput').value = '';
+  document.getElementById('statusBar').style.display = 'none';
+
+  // Buttons
+  const next = nextStatusLabel(t.status);
+  const advBtn = document.getElementById('advanceBtn');
+  const doneBtn = document.getElementById('doneBtn');
+  advBtn.style.display = next && t.status!=='done' ? 'inline-flex' : 'none';
+  advBtn.textContent   = next ? '→ '+next : '';
+  doneBtn.style.display = t.status!=='done' ? 'inline-flex' : 'none';
+  doneBtn.textContent  = t.status==='done' ? '✓ Erledigt' : '✓ Abschließen';
+
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-// ── ACTIONS ──────────────────────────────────────────────────────
-async function markDone(){
-  const t = TICKETS.find(x=>x.ref===currentId);
-  if(!t) return;
-  t.status = 'done';
-  await saveInboxStatus(t, 'done');
-  renderList();
-  openTicket(currentId);
+function closeModal(){
+  document.getElementById('detailModal').classList.remove('open');
+  document.body.style.overflow = '';
 }
+document.getElementById('detailModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-async function markOpen(){
-  const t = TICKETS.find(x=>x.ref===currentId);
-  if(!t) return;
-  t.status = 'open';
-  await saveInboxStatus(t, 'open');
-  renderList();
-  openTicket(currentId);
-}
-
+// ── ACTIONS ───────────────────────────────────────────────────────
 async function addComment(){
   const body = document.getElementById('commentInput').value.trim();
   if(!body) return;
   const comment = {
-    ticket_ref:  currentId,
+    ticket_ref: currentTicket.ref,
     author_name: myUser.fullName||'Unbekannt',
-    author_email:myUser.email||'',
-    body,
-    created_at:  new Date().toISOString()
+    author_email: myUser.email||'',
+    body, created_at: new Date().toISOString()
   };
-  if(!COMMENTS[currentId]) COMMENTS[currentId]=[];
-  COMMENTS[currentId].push(comment);
-  document.getElementById('commentInput').value = '';
+  if(!COMMENTS[currentTicket.ref]) COMMENTS[currentTicket.ref]=[];
+  COMMENTS[currentTicket.ref].push(comment);
 
-  // Save to Supabase
   try {
     const jwt = EvDB.jwt();
-    if(jwt){
-      await fetch('https://pwkoxtyficedetiymgcj.supabase.co/rest/v1/inbox_comments',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':'sb_publishable_fQvTH65W8d6NTxX_KEp3SQ_SVU4YvGV','Authorization':'Bearer '+jwt,'Prefer':'return=minimal'},
-        body: JSON.stringify(comment)
-      });
-    }
-  } catch(e){ console.warn('[Inbox comment]',e); }
-
-  openTicket(currentId);
-}
-
-async function saveInboxStatus(ticket, status){
-  try {
-    const jwt = EvDB.jwt();
-    if(!jwt) return;
-    // Update in the original table
-    await fetch(`https://pwkoxtyficedetiymgcj.supabase.co/rest/v1/${ticket.table}?id=eq.${ticket.id}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':'sb_publishable_fQvTH65W8d6NTxX_KEp3SQ_SVU4YvGV','Authorization':'Bearer '+jwt,'Prefer':'return=minimal'},
-      body: JSON.stringify({inbox_status: status})
+    if(jwt) await fetch(`${SB_URL}/rest/v1/inbox_comments`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json',apikey:SB_KEY,'Authorization':'Bearer '+jwt,'Prefer':'return=minimal'},
+      body:JSON.stringify(comment)
     });
-  } catch(e){ console.warn('[Inbox status]',e); }
+  } catch(_){}
+
+  showStatus('Kommentar gespeichert','ok');
+  openTicket(currentTicket.ref);
+  renderBoard();
 }
 
-// ── HELPERS ──────────────────────────────────────────────────────
-function timeAgo(d){
-  if(!d) return '–';
-  const diff = (Date.now()-new Date(d).getTime())/1000;
-  if(diff<60)   return 'Gerade eben';
-  if(diff<3600) return Math.round(diff/60)+' Min.';
-  if(diff<86400)return Math.round(diff/3600)+' Std.';
-  if(diff<604800)return Math.round(diff/86400)+' Tage';
-  return new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+async function advanceTicket(){
+  if(!currentTicket) return;
+  const cur = STATUS_FLOW.indexOf(currentTicket.status);
+  const next = STATUS_FLOW[Math.min(cur+1, STATUS_FLOW.length-2)]; // not done
+  await setStatus(currentTicket, next);
 }
-function fe(v){ return v?(parseFloat(v)||0).toLocaleString('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}):'–'; }
+
+async function completeTicket(){
+  if(!currentTicket) return;
+  await setStatus(currentTicket, 'done');
+}
+
+async function quickAdvance(ref){
+  const t = TICKETS.find(x=>x.ref===ref);
+  if(!t) return;
+  const cur = STATUS_FLOW.indexOf(t.status);
+  const next = STATUS_FLOW[Math.min(cur+1, STATUS_FLOW.length-2)];
+  await setStatus(t, next);
+  renderBoard();
+}
+
+async function setStatus(ticket, newStatus){
+  ticket.status = newStatus;
+  try {
+    const jwt = EvDB.jwt();
+    if(jwt && !ticket.ref.startsWith('demo_'))
+      await fetch(`${SB_URL}/rest/v1/${ticket.table}?id=eq.${ticket.id}`,{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json',apikey:SB_KEY,'Authorization':'Bearer '+jwt,'Prefer':'return=minimal'},
+        body:JSON.stringify({inbox_status:newStatus})
+      });
+  } catch(_){}
+  showStatus('Status aktualisiert: '+statusLabel(newStatus),'ok');
+  renderBoard();
+  if(currentTicket?.ref===ticket.ref) openTicket(ticket.ref);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────
+function nextStatusLabel(s){
+  const map={open:'In Bearbeitung',in_progress:'Wartend',waiting:'Abschließen'};
+  return map[s]||null;
+}
+function statusLabel(s){
+  const map={open:'Eingang',in_progress:'In Bearbeitung',waiting:'Wartend',done:'Abgeschlossen'};
+  return map[s]||s;
+}
+function duePill(due){
+  if(!due) return {label:null,cls:''};
+  const diff = (new Date(due).getTime()-Date.now())/86400000;
+  if(diff<0)   return {label:'Überfällig '+fmt(due),cls:'due-late'};
+  if(diff<3)   return {label:'Fällig '+fmt(due),cls:'due-soon-pill'};
+  return {label:fmt(due),cls:'due-ok'};
+}
+function fmt(d){ return d?new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}):''; }
+function relDate(d){
+  if(!d) return '–';
+  const diff=(Date.now()-new Date(d).getTime())/1000;
+  if(diff<60)    return 'Gerade eben';
+  if(diff<3600)  return Math.round(diff/60)+' Min.';
+  if(diff<86400) return Math.round(diff/3600)+' Std.';
+  return Math.round(diff/86400)+' Tage';
+}
+function fc(v){ return v?(+v).toLocaleString('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}):''; }
+function initials(n){ return (n||'?').split(' ').map(p=>p[0]||'').join('').substring(0,2).toUpperCase(); }
+function showStatus(msg,type){
+  const el=document.getElementById('statusBar');
+  el.textContent=msg; el.className='status-bar status-'+type; el.style.display='block';
+  setTimeout(()=>el.style.display='none',3000);
+}
 </script>
 </body>
 </html>
