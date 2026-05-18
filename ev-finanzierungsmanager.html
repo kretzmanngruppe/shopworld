@@ -960,8 +960,8 @@ async function saveToDb(){
   try{
     const bank=bankInfo();
     await EvDB.saveFinanzierung({
-      beraterName:v('beraterName')||null,
-      beraterEmail:v('beraterEmail')||null,
+      berater_name:v('beraterName')||null,
+      berater_email:v('beraterEmail')||null,
       kn1_name:`${v('kn1_anrede')} ${v('kn1_vorname')} ${v('kn1_nachname')}`.trim()||null,
       kn1_gebdat:v('kn1_gebdat')||null,
       kn1_adresse:v('kn1_adresse')||null,
