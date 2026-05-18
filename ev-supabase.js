@@ -222,3 +222,68 @@ function _buildUser(u, email) {
 }
 
 console.info('%c[E&V] Supabase verbunden ✓ — ' + SUPABASE_URL, 'color:#2d7a4f;font-weight:bold');
+
+window.EV_SUPABASE_URL      = "https://pwkoxtyficedetiymgcj.supabase.co";
+window.EV_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3a294dHlmaWNlZGV0aXltZ2NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NDk0NjcsImV4cCI6MjA5NDQyNTQ2N30.IpVLujVUsJgrSm9xKEwZuuO8PlrgugBBUbFs_z0-Lx8";
+
+/* ============================================================
+ *  ev-supabase.js — Ergänzung: EvDB.saveFinanzierung
+ * ------------------------------------------------------------
+ *  Diese Funktion in dein bestehendes ev-supabase.js einfügen
+ *  (in dasselbe EvDB-Objekt, in dem auch saveSocialMedia liegt).
+ *
+ *  Voraussetzung: window.EV_SUPABASE_URL und
+ *  window.EV_SUPABASE_ANON_KEY sind gesetzt (siehe SETUP.md),
+ *  und der Supabase-Client ist als window.evSupabase verfügbar
+ *  ODER es wird direkt per REST geschrieben (Variante unten).
+ * ============================================================ */
+
+/* --- Variante A: wenn ihr bereits einen Supabase-JS-Client habt ---
+ * (z. B. window.evSupabase = supabase.createClient(url, anonKey))
+ */
+async function saveFinanzierung_clientVariante(data) {
+  const { error } = await window.evSupabase
+    .from('finanzierungsanfragen')
+    .insert([data]);
+  if (error) throw new Error(error.message);
+  return true;
+}
+
+/* --- Variante B: ohne Client, direkt über die REST-API ---
+ * Funktioniert mit nur URL + Anon-Key, kein zusätzliches SDK nötig.
+ * Diese Variante wird unten in EvDB verdrahtet.
+ */
+async function saveFinanzierung_restVariante(data) {
+  const url  = (window.EV_SUPABASE_URL || '').replace(/\/$/, '');
+  const key  = window.EV_SUPABASE_ANON_KEY || '';
+  if (!url || !key) throw new Error('Supabase URL/Anon-Key nicht konfiguriert');
+
+  const res = await fetch(url + '/rest/v1/finanzierungsanfragen', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': key,
+      'Authorization': 'Bearer ' + key,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify([data])
+  });
+
+  if (!res.ok) {
+    let msg = 'HTTP ' + res.status;
+    try { const j = await res.json(); if (j && j.message) msg = j.message; } catch (_) {}
+    throw new Error(msg);
+  }
+  return true;
+}
+
+/* --- In EvDB einhängen ---
+ * Falls EvDB schon existiert, nur die Methode ergänzen:
+ */
+window.EvDB = window.EvDB || {};
+window.EvDB.saveFinanzierung = async function (data) {
+  // Variante B (REST) als Default — robust, ohne SDK-Abhängigkeit.
+  // Wenn ihr lieber den Client nutzt: Zeile unten austauschen gegen
+  // return saveFinanzierung_clientVariante(data);
+  return saveFinanzierung_restVariante(data);
+};
