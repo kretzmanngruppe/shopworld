@@ -460,21 +460,29 @@ if(window.self !== window.top){
   <div class="step" id="step3">
     <div class="card">
       <h2>Schritt 3 von 4 — Finanzierungswunsch &amp; Besonderheiten</h2>
-      <p class="card-sub">Kaufpreis, Courtage, gewünschter Eigenkapital-Einsatz, Darlehenswunsch, Tilgung, Förderprogramme und Sonderwünsche.</p>
+      <p class="card-sub">Finanzierungsvolumen, Courtage, gewünschter Eigenkapital-Einsatz, Darlehenswunsch, Tilgung, Förderprogramme und Sonderwünsche.</p>
 
       <div class="sec">
-        <div class="sec-label"><div class="sec-num">A</div>Kaufpreis, Courtage &amp; Eigenkapital</div>
-        <div class="info-box"><strong>Hinweis zu den Nebenkosten</strong>Grunderwerbsteuer sowie Notar- &amp; Grundbuchkosten werden von der Bank ermittelt und müssen hier nicht erfasst werden. Bitte nur Kaufpreis, Maklercourtage und den gewünschten Eigenkapital-Einsatz angeben.</div>
+        <div class="sec-label"><div class="sec-num">A</div>Finanzierungsvolumen, Courtage &amp; Eigenkapital</div>
+        <div class="info-box"><strong>Hinweis zu den Nebenkosten</strong>Grunderwerbsteuer sowie Notar- &amp; Grundbuchkosten werden von der Bank ermittelt und müssen hier nicht erfasst werden. Bitte nur Finanzierungsvolumen, Maklercourtage und den gewünschten Eigenkapital-Einsatz angeben.</div>
         <div class="row">
-          <div class="fg half"><label class="lbl">Kaufpreis (€)</label><input type="number" id="f3_kp" placeholder="320000" min="0"/></div>
+          <div class="fg half"><label class="lbl">Finanzierungsvolumen (€)</label><input type="number" id="f3_kp" placeholder="320000" min="0" oninput="updateProvision()"/></div>
           <div class="fg half"><label class="lbl">Maklercourtage</label>
             <select id="f3_makler_pct">
               <option value="3">3 % zzgl. USt.</option>
               <option value="4">4 % zzgl. USt.</option>
               <option value="5">5 % zzgl. USt.</option>
             </select>
-            <span class="hint">Prozentsatz vom Kaufpreis, jeweils zzgl. gesetzlicher USt.</span>
+            <span class="hint">Prozentsatz vom Finanzierungsvolumen, jeweils zzgl. gesetzlicher USt.</span>
           </div>
+        </div>
+        <div class="info-box ok" id="provBox">
+          <strong>Voraussichtliche Vermittlungsprovision</strong>
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:1.5rem;font-weight:700;color:#2d7a4f;" id="provValue">–</span>
+            <span style="font-size:.72rem;color:#1a4a2e;">bei einem Finanzierungsvolumen von <strong id="provBase">–</strong> · Beteiligung 0,20&nbsp;%</span>
+          </div>
+          <span style="display:block;margin-top:6px;font-size:.68rem;color:#3a6a4e;">Unverbindliche interne Vorschau — vorbehaltlich vertraglicher Änderungen. Wird nicht an die Bank übermittelt.</span>
         </div>
         <div class="row">
           <div class="fg half"><label class="lbl">Gewünschter Eigenkapital-Einsatz (€)</label><input type="number" id="f3_ek" placeholder="60000" min="0"/><span class="hint">Betrag, den der/die Kreditnehmer aus Eigenmitteln einbringen möchte.</span></div>
@@ -666,6 +674,7 @@ let uploadedFiles=[];
   }
   document.getElementById('anfrageDate').value=new Date().toISOString().split('T')[0];
   buildDocGrids();
+  updateProvision();
 })();
 
 // ── DOC STATUS GRIDS ───────────────────────────────
@@ -775,6 +784,24 @@ function bankInfo(){
   return {name:bankNames[selBankKey],email:bankEmails[selBankKey]};
 }
 
+// ── LIVE-PROVISION (intern, nicht an Bank) ─────────
+const PROVISION_RATE = 0.0020; // 0,20 % Beteiligung an der Finanzierungssumme
+function updateProvision(){
+  const box   = document.getElementById('provBox');
+  const valEl = document.getElementById('provValue');
+  const baseEl= document.getElementById('provBase');
+  if(!box||!valEl||!baseEl) return;
+  const base = parseFloat(document.getElementById('f3_kp')?.value);
+  const fmt  = n => n.toLocaleString('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+  if(isNaN(base)||base<=0){
+    valEl.textContent  = '–';
+    baseEl.textContent = '–';
+    return;
+  }
+  valEl.textContent  = fmt(base * PROVISION_RATE);
+  baseEl.textContent = fmt(base);
+}
+
 // ── SUMMARY ────────────────────────────────────────
 function buildSummary(){
   const kn1=`${v('kn1_anrede')} ${v('kn1_vorname')} ${v('kn1_nachname')}`.trim()||'–';
@@ -835,8 +862,8 @@ function buildSummary(){
     ${v('obj_beschr')?`<div class="summary-row"><span class="summary-key">Besonderheiten</span><span class="summary-val">${v('obj_beschr')}</span></div>`:''}
   </div>
 
-  <div class="summary-section"><div class="summary-title">Kaufpreis, Courtage &amp; Eigenkapital</div>
-    <div class="summary-row"><span class="summary-key">Kaufpreis</span><span class="summary-val hl">${eur('f3_kp')}</span></div>
+  <div class="summary-section"><div class="summary-title">Finanzierungsvolumen, Courtage &amp; Eigenkapital</div>
+    <div class="summary-row"><span class="summary-key">Finanzierungsvolumen</span><span class="summary-val hl">${eur('f3_kp')}</span></div>
     <div class="summary-row"><span class="summary-key">Maklercourtage</span><span class="summary-val">${document.getElementById('f3_makler_pct').value} % zzgl. USt.</span></div>
     <div class="summary-row"><span class="summary-key">Gewünschter EK-Einsatz</span><span class="summary-val hl">${eur('f3_ek')}</span></div>
     <div class="summary-row"><span class="summary-key">EK-Herkunft</span><span class="summary-val">${pillVal('f3_ekHerk')}</span></div>
@@ -923,8 +950,8 @@ Energie: Ausweis ${document.getElementById('obj_enweis').value} · ${document.ge
 ${(selObjType==='nb'||selObjType==='gs')?`Neubau/Grundst.: Grundst. ${v('obj_gspreis')||'0'} € · Baukosten ${v('obj_baukosten')||'0'} € · Baugen. ${document.getElementById('obj_baugeh').value||'–'} · Bauträger ${v('obj_bautr')||'–'}\n`:''}Erbbaurecht: ${document.getElementById('obj_erbbau').value==='ja'?'Ja':'Nein'}
 Besonderheiten: ${v('obj_beschr')||'–'}
 
-── KAUFPREIS, COURTAGE & EIGENKAPITAL ──
-Kaufpreis: ${v('f3_kp')||'0'} €
+── FINANZIERUNGSVOLUMEN, COURTAGE & EIGENKAPITAL ──
+Finanzierungsvolumen: ${v('f3_kp')||'0'} €
 Maklercourtage: ${document.getElementById('f3_makler_pct').value} % zzgl. USt.
 Gewünschter EK-Einsatz: ${v('f3_ek')||'0'} € · Herkunft: ${pillVal('f3_ekHerk')}
 Nebenkosten: Grunderwerbsteuer / Notar & Grundbuch werden von der Bank ermittelt
