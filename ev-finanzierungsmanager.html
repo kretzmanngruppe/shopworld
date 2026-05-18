@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Finanzierungsmanager | Engel & Völkers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --red:#C41E3A;--dark:#1a1a1a;--mid:#e0e0e0;--light:#f7f6f4;--white:#fff;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Raleway','Segoe UI',Arial,sans-serif;
+  --gold:#b8860b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--light);color:var(--dark);min-height:100vh;}
+
+/* HEADER */
+header{
+  background:var(--white);border-bottom:1px solid #e8e8e8;
+  padding:0 48px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.hlogo{display:flex;align-items:center;gap:16px;}
+.hlogo-ev{
+  width:36px;height:36px;background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-family:var(--serif);font-weight:700;font-size:.85rem;letter-spacing:-.5px;flex-shrink:0;
+}
+.hlogo-name{font-family:var(--serif);font-size:1.05rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--dark);}
+.hlogo-sub{font-size:.6rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:#bbb;margin-top:2px;}
+.hright{display:flex;align-items:center;gap:20px;}
+.hback{font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);text-decoration:none;}
+.hback:hover{text-decoration:underline;}
+.huser-info{text-align:right;}
+.huser-name{font-size:.78rem;font-weight:600;color:var(--dark);}
+.huser-email{font-size:.6rem;color:#bbb;letter-spacing:.3px;}
+
+/* WRAP */
+.wrap{max-width:860px;margin:40px auto;padding:0 20px;display:flex;flex-direction:column;gap:20px;}
+
+/* PAGE TITLE */
+.page-header{border-left:2px solid var(--red);padding-left:20px;margin-bottom:8px;}
+.page-eyebrow{font-size:.6rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.page-title{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);letter-spacing:-.5px;}
+
+/* PROGRESS BAR */
+.progress-bar{background:var(--white);border-top:2px solid #eaeaea;padding:20px 28px;}
+.prog-steps{display:flex;align-items:center;gap:0;}
+.prog-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+.prog-dot{width:32px;height:32px;border:1.5px solid var(--mid);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#bbb;transition:all .3s;font-family:var(--serif);}
+.prog-step.done .prog-dot{background:var(--red);border-color:var(--red);color:#fff;}
+.prog-step.active .prog-dot{border-color:var(--red);color:var(--red);}
+.prog-label{font-size:.6rem;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:.5px;text-align:center;}
+.prog-step.active .prog-label{color:var(--red);}
+.prog-step.done .prog-label{color:#555;}
+.prog-line{flex:1;height:1.5px;background:var(--mid);margin-bottom:22px;transition:background .3s;}
+.prog-line.done{background:var(--red);}
+
+/* CARD */
+.card{background:var(--white);padding:36px 40px;border-top:2px solid #eaeaea;}
+.card h2{
+  font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+  color:var(--red);border-bottom:1px solid #f0f0f0;padding-bottom:12px;
+  margin-bottom:24px;display:flex;align-items:center;gap:8px;
+}
+.card-sub{font-size:.8rem;color:#888;margin-bottom:20px;line-height:1.6;}
+
+/* SECTION */
+.sec{margin-bottom:30px;}
+.sec-label{font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dark);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;}
+.sec-num{width:22px;height:22px;background:var(--dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;}
+.sec-opt{font-size:.6rem;font-weight:400;color:#bbb;text-transform:none;letter-spacing:0;}
+
+/* FORM */
+label.lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#999;display:block;margin-bottom:8px;}
+.req{color:var(--red);}
+input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],textarea,select{
+  border:none;border-bottom:1.5px solid #ddd;
+  padding:10px 0;font-size:.88rem;color:var(--dark);
+  background:transparent;transition:border-color .2s;
+  width:100%;font-family:var(--sans);
+}
+input:focus,textarea:focus,select:focus{outline:none;border-bottom-color:var(--red);}
+select{-webkit-appearance:none;cursor:pointer;}
+input[readonly]{color:#aaa;cursor:not-allowed;}
+textarea{resize:vertical;min-height:72px;border:1.5px solid #ddd;padding:10px 12px;border-radius:0;background:#fafafa;}
+textarea:focus{background:var(--white);}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
+.fg.half{flex:1;min-width:200px;}
+.fg.third{flex:1;min-width:150px;}
+.row{display:flex;gap:20px;flex-wrap:wrap;}
+.hint{font-size:.68rem;color:#aaa;margin-top:4px;line-height:1.5;}
+
+/* INFO BOX */
+.info-box{background:#f0f4ff;border-left:3px solid #1565c0;padding:14px 16px;margin-bottom:18px;font-size:.75rem;color:#1a3a6e;line-height:1.7;}
+.info-box strong{display:block;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;color:#1565c0;}
+.info-box.warn{background:#fffbf0;border-left-color:#c17b00;color:#5a3800;}
+.info-box.warn strong{color:#c17b00;}
+.info-box.ok{background:#f0faf5;border-left-color:#2d7a4f;color:#1a4a2e;}
+.info-box.ok strong{color:#2d7a4f;}
+
+/* TYPE GRID (Objektart) */
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:#eee;margin-bottom:20px;}
+.type-card{border:none;background:var(--white);padding:16px 14px;text-align:center;cursor:pointer;transition:all .2s;}
+.type-card:hover{background:#fafafa;}
+.type-card.selected{background:#fdf0f2;outline:2px solid var(--red);}
+.type-icon{font-size:1.5rem;margin-bottom:6px;}
+.type-label{font-size:.72rem;font-weight:700;color:#444;letter-spacing:.3px;}
+
+/* PILLS / RADIO */
+.pill-group{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.pill{border:1.5px solid var(--mid);padding:7px 16px;font-size:.72rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;background:var(--white);color:#888;text-transform:uppercase;}
+.pill:hover{border-color:var(--red);color:var(--red);}
+.pill.selected{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* UPLOAD */
+.upload-zone{border:1.5px dashed var(--mid);padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;margin-bottom:18px;}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--red);background:#fdf5f5;}
+.upload-icon{font-size:1.8rem;margin-bottom:8px;}
+.upload-text{font-size:.8rem;color:#888;line-height:1.6;}
+#fileInput{display:none;}
+.file-list{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.file-item{display:flex;align-items:center;gap:10px;background:#f5f5f5;padding:8px 12px;font-size:.78rem;}
+.file-item .fi-name{flex:1;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-item .fi-size{color:#aaa;font-size:.68rem;}
+.file-item .fi-del{color:#bbb;cursor:pointer;padding:2px 4px;}
+.file-item .fi-del:hover{color:var(--red);}
+
+/* DOC STATUS GRID */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px;margin-bottom:18px;}
+.doc-chip{border:1.5px solid var(--mid);background:var(--white);padding:10px 12px;font-size:.72rem;font-weight:600;color:#777;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.doc-chip:hover{border-color:var(--red);}
+.doc-chip .dc-box{width:14px;height:14px;border:1.5px solid var(--mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;}
+.doc-chip.on{border-color:var(--red);color:var(--red);background:#fdf0f2;}
+.doc-chip.on .dc-box{background:var(--red);border-color:var(--red);}
+.doc-cat{font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-bottom:8px;}
+
+/* BANK LIST */
+.bank-list{display:flex;flex-direction:column;gap:1px;background:#eee;margin-bottom:16px;}
+.bank-item{background:var(--white);padding:13px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s;}
+.bank-item:hover{background:#fafafa;}
+.bank-item.selected{background:#fdf0f2;}
+.bank-dot{width:16px;height:16px;border:1.5px solid var(--mid);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;}
+.bank-item.selected .bank-dot{background:var(--red);border-color:var(--red);}
+.bank-name{font-size:.82rem;font-weight:700;color:var(--dark);}
+.bank-email{font-size:.65rem;color:#aaa;}
+
+/* CHECKBOX */
+.check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;}
+.check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--red);flex-shrink:0;margin-top:3px;}
+.check-row label{font-size:.82rem;color:#555;line-height:1.5;cursor:pointer;}
+
+/* TOGGLE */
+.toggle-section{border:1px solid #eee;margin-bottom:14px;}
+.toggle-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;background:#fafafa;transition:background .2s;}
+.toggle-header:hover{background:#f0f0f0;}
+.toggle-title{font-size:.72rem;font-weight:700;color:#555;display:flex;align-items:center;gap:8px;letter-spacing:.3px;}
+.toggle-arrow{font-size:.7rem;color:#aaa;transition:transform .2s;}
+.toggle-body{padding:16px;border-top:1px solid #eee;display:none;}
+.toggle-body.open{display:block;}
+
+/* NAV BTNS */
+.nav-row{display:flex;gap:12px;justify-content:space-between;margin-top:16px;flex-wrap:wrap;}
+.btn{padding:12px 28px;border:none;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.btn-primary{background:var(--red);color:#fff;}
+.btn-primary:hover{background:#a01830;}
+.btn-secondary{background:#f0f0f0;color:#666;}
+.btn-secondary:hover{background:#e0e0e0;}
+.btn-outline{background:var(--white);border:1.5px solid var(--red);color:var(--red);}
+.btn-outline:hover{background:#fdf0f2;}
+.btn-dark{background:var(--dark);color:#fff;}
+.btn-dark:hover{background:#333;}
+
+/* SUMMARY */
+.summary-highlight{background:var(--dark);padding:16px 20px;color:#fff;margin-bottom:20px;}
+.summary-highlight .sh-title{font-size:.6rem;text-transform:uppercase;letter-spacing:2px;color:#aaa;margin-bottom:6px;}
+.summary-highlight .sh-val{font-family:var(--serif);font-size:1.2rem;font-weight:400;}
+.summary-section{margin-bottom:20px;}
+.summary-title{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#bbb;margin-bottom:12px;border-bottom:1px solid #f5f5f5;padding-bottom:6px;}
+.summary-row{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:.82rem;}
+.summary-key{color:#aaa;min-width:180px;font-weight:600;font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;}
+.summary-val{color:#333;flex:1;}
+.summary-val.hl{color:var(--red);font-weight:700;}
+.action-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+
+/* STEP VISIBILITY */
+.step{display:none;}
+.step.active{display:block;}
+
+/* SUCCESS */
+.success-screen{text-align:center;padding:52px 20px;}
+.success-icon{font-size:2.8rem;margin-bottom:16px;}
+.success-kicker{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:10px;font-weight:700;}
+.success-title{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--dark);margin-bottom:10px;}
+.success-sub{font-size:.8rem;color:#888;line-height:1.7;margin-bottom:32px;}
+#smStatus{display:none;margin-top:12px;padding:10px 16px;font-size:.72rem;background:#f0faf5;border-left:3px solid #2d7a4f;color:#2d7a4f;}
+
+footer{text-align:center;color:#bbb;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:24px;margin-top:8px;border-top:1px solid #eee;background:var(--white);}
+
+@media(max-width:600px){
+  .card{padding:24px 18px;}
+  header{padding:12px 20px;}
+  .type-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-row{flex-direction:column;}
+  .btn{justify-content:center;}
+}
+
+@media print{
+  header,.progress-bar,.nav-row,.action-row,footer,.toggle-header{display:none!important;}
+  body{background:#fff!important;}
+  .wrap{margin:0!important;padding:0!important;max-width:100%!important;}
+  .card{box-shadow:none!important;}
+  .step{display:block!important;}
+  #step1,#step2,#step3,#step4{display:none!important;}
+  .toggle-body{display:block!important;}
+}
+</style>
+
+<script>
+// Hide standalone back-links when running inside portal overlay iframe
+if(window.self !== window.top){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.hback,a[href="ev-portal.html"]').forEach(function(el){
+      el.style.display='none';
+    });
+  });
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="hlogo">
+    <div class="hlogo-ev">E&amp;V</div>
+    <div>
+      <div class="hlogo-name">Engel &amp; Völkers</div>
+      <div class="hlogo-sub">Finanzierungsmanager</div>
+    </div>
+  </div>
+  <div class="hright">
+    <a class="hback" href="ev-portal.html">← Portal</a>
+    <div class="huser-info">
+      <div class="huser-name" id="hUserName"></div>
+      <div class="huser-email" id="hUserEmail"></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Mittleres Ruhrgebiet · Finanzierungsvermittlung</div>
+    <div class="page-title">Finanzierungsanfrage</div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="prog-steps">
+      <div class="prog-step active" id="ps1"><div class="prog-dot">1</div><div class="prog-label">Kreditnehmer</div></div>
+      <div class="prog-line" id="pl1"></div>
+      <div class="prog-step" id="ps2"><div class="prog-dot">2</div><div class="prog-label">Objekt</div></div>
+      <div class="prog-line" id="pl2"></div>
+      <div class="prog-step" id="ps3"><div class="prog-dot">3</div><div class="prog-label">Finanzierung</div></div>
+      <div class="prog-line" id="pl3"></div>
+      <div class="prog-step" id="ps4"><div class="prog-dot">4</div><div class="prog-label">Versand</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 1 — KREDITNEHMER -->
+  <div class="step active" id="step1">
+    <div class="card">
+      <h2>Schritt 1 von 4 — Angaben zum Kreditnehmer</h2>
+      <p class="card-sub">Alle für die Bank relevanten Stamm- und Einkommensdaten. Bitte so viele Angaben wie möglich machen — keine Felder sind zwingend erforderlich.</p>
+
+      <input type="hidden" id="beraterName"/>
+      <input type="hidden" id="beraterEmail"/>
+      <input type="hidden" id="anfrageDate"/>
+      <input type="hidden" id="referenz"/>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">A</div>Kreditnehmer 1</div>
+        <div class="row">
+          <div class="fg third"><label class="lbl">Anrede</label><select id="kn1_anrede"><option value="">–</option><option>Herr</option><option>Frau</option><option>Dr.</option><option>Prof.</option></select></div>
+          <div class="fg half"><label class="lbl">Vorname</label><input type="text" id="kn1_vorname" placeholder="Max"/></div>
+          <div class="fg half"><label class="lbl">Nachname</label><input type="text" id="kn1_nachname" placeholder="Mustermann"/></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Geburtsdatum</label><input type="date" id="kn1_gebdat"/></div>
+          <div class="fg half"><label class="lbl">Geburtsort</label><input type="text" id="kn1_gebort" placeholder="Bochum"/></div>
+          <div class="fg half"><label class="lbl">Staatsangehörigkeit</label><input type="text" id="kn1_staat" placeholder="Deutsch"/></div>
+        </div>
+        <div class="fg">
+          <label class="lbl">Aktuelle Anschrift</label><input type="text" id="kn1_adresse" placeholder="Musterstraße 12, 44787 Bochum"/>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Telefon</label><input type="tel" id="kn1_tel" placeholder="+49 234 …"/></div>
+          <div class="fg half"><label class="lbl">E-Mail</label><input type="email" id="kn1_email" placeholder="max@beispiel.de"/></div>
+          <div class="fg half"><label class="lbl">Familienstand</label><select id="kn1_famstand"><option value="">–</option><option>Ledig</option><option>Verheiratet</option><option>Geschieden</option><option>Verwitwet</option><option>Eingetr. Lebenspartnerschaft</option></select></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Unterhaltspflichtige Kinder</label><input type="number" id="kn1_kinder" min="0" max="20" placeholder="0"/></div>
+          <div class="fg half"><label class="lbl">Wohnsituation aktuell</label><select id="kn1_wohnsit"><option value="">–</option><option>Mieter</option><option>Eigentümer (kreditfrei)</option><option>Eigentümer (mit Kredit)</option><option>Bei Familie / Eltern</option></select></div>
+          <div class="fg half"><label class="lbl">Kaltmiete aktuell (€/Mon.)</label><input type="number" id="kn1_miete" placeholder="0" min="0"/><span class="hint">Entfällt bei Eigentümer</span></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Beschäftigungsart</label>
+            <select id="kn1_beschaeft">
+              <option value="ang">Angestellt</option>
+              <option value="sel">Selbstständig</option>
+              <option value="bmt">Beamter/in</option>
+              <option value="ren">Rentner/in</option>
+            </select>
+          </div>
+          <div class="fg half"><label class="lbl">Monatliches Nettoeinkommen (€)</label><input type="number" id="kn1_netto" placeholder="3200" min="0"/><span class="hint">Nach Steuern und Abzügen</span></div>
+        </div>
+        <div class="fg">
+          <label class="lbl">Anmerkungen zur Einkommenssituation</label>
+          <textarea id="kn1_einkommenNote" placeholder="z. B. Befristeter Vertrag bis 12/2027, Selbstständig seit 5 Jahren, Zusatzeinnahmen aus Vermietung ..." rows="3"></textarea>
+        </div>
+        <div class="info-box"><strong>Laufende Verbindlichkeiten</strong>Bestehende Kredite, Leasing- oder Unterhaltsverpflichtungen müssen hier nicht erfasst werden. Bitte die relevanten Nachweise (z. B. Kreditverträge, Leasingübersichten) in <strong>Schritt 4</strong> unter „Dokumente &amp; Unterlagen" hochladen.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">B</div>Kreditnehmer 2 — Mitantragsteller <span class="sec-opt">(optional)</span></div>
+        <div class="pill-group">
+          <div class="pill selected" id="kn2Nein" onclick="toggleKN2(false)">Kein 2. Kreditnehmer</div>
+          <div class="pill" id="kn2Ja" onclick="toggleKN2(true)">Mitantragsteller hinzufügen</div>
+        </div>
+        <div id="kn2Fields" style="display:none;">
+          <div class="row">
+            <div class="fg third"><label class="lbl">Anrede</label><select id="kn2_anrede"><option value="">–</option><option>Herr</option><option>Frau</option><option>Dr.</option><option>Prof.</option></select></div>
+            <div class="fg half"><label class="lbl">Vorname</label><input type="text" id="kn2_vorname" placeholder="Maria"/></div>
+            <div class="fg half"><label class="lbl">Nachname</label><input type="text" id="kn2_nachname" placeholder="Mustermann"/></div>
+          </div>
+          <div class="row">
+            <div class="fg half"><label class="lbl">Geburtsdatum</label><input type="date" id="kn2_gebdat"/></div>
+            <div class="fg half"><label class="lbl">Verhältnis zu KN 1</label><select id="kn2_rel"><option>Ehepartner/in</option><option>Lebenspartner/in</option><option>Geschwister</option><option>Elternteil</option><option>Sonstiges</option></select></div>
+          </div>
+          <div class="row">
+            <div class="fg half"><label class="lbl">Beschäftigungsart</label>
+              <select id="kn2_beschaeft">
+                <option value="ang">Angestellt</option>
+                <option value="sel">Selbstständig</option>
+                <option value="bmt">Beamter/in</option>
+                <option value="ren">Rentner/in</option>
+              </select>
+            </div>
+            <div class="fg half"><label class="lbl">Monatliches Nettoeinkommen (€)</label><input type="number" id="kn2_netto" placeholder="2400" min="0"/></div>
+          </div>
+          <div class="fg">
+            <label class="lbl">Anmerkungen</label>
+            <textarea id="kn2_einkommenNote" placeholder="z. B. Teilzeit, Elternzeit ..." rows="2"></textarea>
+          </div>
+          <div class="fg half"><label class="lbl">Lfd. Verbindlichkeiten KN 2 (€/Mon.)</label><input type="number" id="kn2_verbindl" placeholder="0" min="0"/></div>
+        </div>
+      </div>
+
+      <div class="nav-row"><div></div><button class="btn btn-primary" onclick="goStep(2)">Weiter: Objekt →</button></div>
+    </div>
+  </div>
+
+  <!-- STEP 2 — OBJEKT -->
+  <div class="step" id="step2">
+    <div class="card">
+      <h2>Schritt 2 von 4 — Angaben zum Finanzierungsobjekt</h2>
+      <p class="card-sub">Alle Objektdaten für die Beleihungsprüfung und Wertermittlung der Bank.</p>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">A</div>Objektart</div>
+        <div class="type-grid" id="objGrid">
+          <div class="type-card selected" data-obj="etw" onclick="selObj(this)"><div class="type-icon">🏢</div><div class="type-label">Eigentumswohnung</div></div>
+          <div class="type-card" data-obj="efh" onclick="selObj(this)"><div class="type-icon">🏠</div><div class="type-label">Einfamilienhaus</div></div>
+          <div class="type-card" data-obj="dh" onclick="selObj(this)"><div class="type-icon">🏘️</div><div class="type-label">Doppelhaushälfte</div></div>
+          <div class="type-card" data-obj="rh" onclick="selObj(this)"><div class="type-icon">🏚️</div><div class="type-label">Reihenhaus</div></div>
+          <div class="type-card" data-obj="mfh" onclick="selObj(this)"><div class="type-icon">🏦</div><div class="type-label">Mehrfamilienhaus</div></div>
+          <div class="type-card" data-obj="gs" onclick="selObj(this)"><div class="type-icon">📐</div><div class="type-label">Grundstück</div></div>
+          <div class="type-card" data-obj="nb" onclick="selObj(this)"><div class="type-icon">🏗️</div><div class="type-label">Kauf + Neubau</div></div>
+          <div class="type-card" data-obj="sn" onclick="selObj(this)"><div class="type-icon">📋</div><div class="type-label">Sonstige</div></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">B</div>Adresse &amp; Lage</div>
+        <div class="fg"><label class="lbl">Straße, Hausnummer</label><input type="text" id="obj_str" placeholder="Musterstraße 12"/></div>
+        <div class="row">
+          <div class="fg third"><label class="lbl">PLZ</label><input type="text" id="obj_plz" placeholder="44787" maxlength="5"/></div>
+          <div class="fg half"><label class="lbl">Ort</label><input type="text" id="obj_ort" placeholder="Bochum"/></div>
+          <div class="fg half"><label class="lbl">Stadtteil / Lage</label><input type="text" id="obj_stadtteil" placeholder="z. B. Weitmar"/></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Nutzungsart</label>
+            <div class="pill-group" id="obj_nutz">
+              <div class="pill selected" onclick="selPill(this,'obj_nutz')">Eigennutzung</div>
+              <div class="pill" onclick="selPill(this,'obj_nutz')">Kapitalanlage</div>
+              <div class="pill" onclick="selPill(this,'obj_nutz')">Teils Eigennutzung</div>
+            </div>
+          </div>
+          <div class="fg half"><label class="lbl">Mieteinnahmen kalt (€/Mon.)</label><input type="number" id="obj_miet" placeholder="0" min="0"/><span class="hint">Bei Kapitalanlage — wird angerechnet</span></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">C</div>Objektdaten &amp; Wertermittlung</div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Kaufpreis (€)</label><input type="number" id="obj_kp" placeholder="320000" min="0"/></div>
+          <div class="fg half"><label class="lbl">Baujahr</label><input type="number" id="obj_bj" placeholder="1998" min="1800" max="2030"/></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Wohnfläche (m²)</label><input type="number" id="obj_wfl" placeholder="120" min="0"/></div>
+          <div class="fg half"><label class="lbl">Grundstücksfläche (m²)</label><input type="number" id="obj_gfl" placeholder="450" min="0"/></div>
+          <div class="fg half"><label class="lbl">Zimmer</label><input type="number" id="obj_zimmer" placeholder="4" min="0" step="0.5"/></div>
+        </div>
+        <div class="row" id="obj_etwRow">
+          <div class="fg half"><label class="lbl">Etage</label><input type="text" id="obj_etage" placeholder="z. B. 3. OG"/></div>
+          <div class="fg half"><label class="lbl">Hausgeld (€/Mon.)</label><input type="number" id="obj_hausgeld" placeholder="250" min="0"/><span class="hint">Wird als Verpflichtung berücksichtigt</span></div>
+          <div class="fg half"><label class="lbl">Instandhaltungsrücklage</label><select id="obj_rueckl"><option value="">– Unbekannt –</option><option value="ja">Ausreichend</option><option value="nein">Gering / fehlend</option></select></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Objektzustand</label><select id="obj_zustand"><option value="">–</option><option>Neubau / Erstbezug</option><option>Sehr gut (kernsaniert)</option><option>Gut (modernisiert)</option><option>Mittel (Renovierungsbedarf)</option><option>Sanierungsbedürftig</option></select></div>
+          <div class="fg half"><label class="lbl">Letzte Modernisierung</label><input type="text" id="obj_modern" placeholder="z. B. Bad 2019, Heizung 2022"/></div>
+          <div class="fg half"><label class="lbl">Garage / Stellplatz</label><select id="obj_garage"><option value="">–</option><option>Keine</option><option>Tiefgarage inkl.</option><option>Einzelgarage inkl.</option><option>Außenstellplatz inkl.</option><option>Separat zukaufbar</option></select></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Energieausweis</label><select id="obj_enweis"><option value="ja">Vorhanden</option><option value="nein">Nicht vorhanden / in Erstellung</option></select></div>
+          <div class="fg half"><label class="lbl">Ausweis-Typ</label><select id="obj_entyp"><option value="">–</option><option>Bedarfsausweis</option><option>Verbrauchsausweis</option></select></div>
+          <div class="fg half"><label class="lbl">Energieeffizienzklasse</label><select id="obj_enkl"><option value="">– Unbekannt –</option><option>A+</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        </div>
+        <div class="info-box"><strong>KfW-Relevanz Energieklasse</strong>Objekte mit Effizienzklasse F–H können über KfW BEG gefördert werden. Objekte A+/A oft mit Vorzugskonditionen finanzierbar. Ab 2024 gilt Energieausweispflicht bei Besichtigung.</div>
+      </div>
+
+      <div class="sec" id="obj_nbSec" style="display:none;">
+        <div class="sec-label"><div class="sec-num">D</div>Neubau / Grundstück — Zusatzangaben</div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Grundstückspreis (€)</label><input type="number" id="obj_gspreis" placeholder="120000" min="0"/></div>
+          <div class="fg half"><label class="lbl">Geschätzte Baukosten (€)</label><input type="number" id="obj_baukosten" placeholder="280000" min="0"/></div>
+          <div class="fg half"><label class="lbl">Baugenehmigung</label><select id="obj_baugeh"><option value="">–</option><option value="ja">Erteilt</option><option value="beantr">Beantragt</option><option value="nein">Noch nicht</option></select></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Bauträger / Architekt</label><input type="text" id="obj_bautr" placeholder="Muster Bauträger GmbH"/></div>
+          <div class="fg half"><label class="lbl">Fertigstellung (geschätzt)</label><input type="date" id="obj_fertig"/></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num" id="obj_lastNum">D</div>Freitext &amp; Besonderheiten</div>
+        <div class="fg"><label class="lbl">Besonderheiten für die Bank</label><textarea id="obj_beschr" rows="3" placeholder="z. B. Denkmalschutz, Erbbaurecht, lfd. Mietverhältnis, geplante Sanierung, Besonderheiten der Lage ..."></textarea></div>
+        <div class="fg"><label class="lbl">Erbbaurecht</label><select id="obj_erbbau"><option value="nein">Nein</option><option value="ja">Ja — Vertrag vorhanden</option></select><span class="hint">Erbbaurecht kann Beleihbarkeit einschränken. Bitte Vertrag anhängen.</span></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-secondary" onclick="goStep(1)">← Kreditnehmer</button>
+        <button class="btn btn-primary" onclick="goStep(3)">Weiter: Finanzierung →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 — FINANZIERUNG -->
+  <div class="step" id="step3">
+    <div class="card">
+      <h2>Schritt 3 von 4 — Finanzierungswunsch &amp; Besonderheiten</h2>
+      <p class="card-sub">Kaufpreis, Courtage, gewünschter Eigenkapital-Einsatz, Darlehenswunsch, Tilgung, Förderprogramme und Sonderwünsche.</p>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">A</div>Kaufpreis, Courtage &amp; Eigenkapital</div>
+        <div class="info-box"><strong>Hinweis zu den Nebenkosten</strong>Grunderwerbsteuer sowie Notar- &amp; Grundbuchkosten werden von der Bank ermittelt und müssen hier nicht erfasst werden. Bitte nur Kaufpreis, Maklercourtage und den gewünschten Eigenkapital-Einsatz angeben.</div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Kaufpreis (€)</label><input type="number" id="f3_kp" placeholder="320000" min="0"/></div>
+          <div class="fg half"><label class="lbl">Maklercourtage</label>
+            <select id="f3_makler_pct">
+              <option value="3">3 % zzgl. USt.</option>
+              <option value="4">4 % zzgl. USt.</option>
+              <option value="5">5 % zzgl. USt.</option>
+            </select>
+            <span class="hint">Prozentsatz vom Kaufpreis, jeweils zzgl. gesetzlicher USt.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Gewünschter Eigenkapital-Einsatz (€)</label><input type="number" id="f3_ek" placeholder="60000" min="0"/><span class="hint">Betrag, den der/die Kreditnehmer aus Eigenmitteln einbringen möchte.</span></div>
+          <div class="fg half"><label class="lbl">EK-Herkunft</label>
+            <div class="pill-group" id="f3_ekHerk">
+              <div class="pill selected" onclick="selPill(this,'f3_ekHerk')">Bankguthaben / Erspartes</div>
+              <div class="pill" onclick="selPill(this,'f3_ekHerk')">Verkauf Immobilie</div>
+              <div class="pill" onclick="selPill(this,'f3_ekHerk')">Schenkung / Erbschaft</div>
+              <div class="pill" onclick="selPill(this,'f3_ekHerk')">Bausparvertrag</div>
+              <div class="pill" onclick="selPill(this,'f3_ekHerk')">Wertpapierdepot</div>
+              <div class="pill" onclick="selPill(this,'f3_ekHerk')">Mischung / Sonstiges</div>
+            </div>
+            <span class="hint">Banken benötigen Nachweise über EK-Herkunft (Geldwäscheprävention AMLA/GwG)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">B</div>Finanzierungskonditionen</div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Gewünschter Darlehensbetrag (€)</label><input type="number" id="f3_darlehenW" placeholder="260000" min="0"/><span class="hint">Kann vom Bedarf abweichen (z. B. KfW-Anteil separat)</span></div>
+          <div class="fg half"><label class="lbl">Zinsbindung (Jahre)</label><select id="f3_zinsb"><option value="5">5 Jahre</option><option value="10" selected>10 Jahre (Standard)</option><option value="15">15 Jahre</option><option value="20">20 Jahre</option><option value="25">25 Jahre</option><option value="30">30 Jahre (Volltilger)</option></select><span class="hint">Länger = mehr Sicherheit, meist höherer Zins</span></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Anfangstilgung (% p.a.)</label><input type="number" id="f3_tilg" placeholder="2" min="1" max="10" step="0.5" value="2"/><span class="hint">Empfehlung ≥ 2 %. Bei 1 % sehr lange Laufzeit.</span></div>
+          <div class="fg half"><label class="lbl">Monatl. Wunschrate (€)</label><input type="number" id="f3_wrate" placeholder="1200" min="0"/><span class="hint">Optional — für Rückrechnung der Bank</span></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Sondertilgung</label><select id="f3_sonder"><option value="nein">Nein</option><option value="5">Ja — bis 5 % p.a.</option><option value="10">Ja — bis 10 % p.a.</option><option value="frei">Freie Sondertilgung</option></select></div>
+          <div class="fg half"><label class="lbl">Darlehensmodell</label><select id="f3_modell"><option value="ann">Annuitätendarlehen (Standard)</option><option value="bsv">Tilgungsaussetzung + Bausparvertrag</option><option value="tilglv">Tilgungsaussetzung + Tilgungs-LV</option></select></div>
+          <div class="fg half"><label class="lbl">Bereitstellungszinsen ab</label><select id="f3_bereit"><option value="3">3 Monate</option><option value="6" selected>6 Monate</option><option value="12">12 Monate</option></select><span class="hint">Relevant bei Neubau / verzögertem Abruf</span></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">C</div>Förderprogramme</div>
+        <div class="info-box"><strong>KfW &amp; NRW.BANK — Übersicht</strong>KfW 261 (Neubau Effizienzhaus) · KfW 124 (Bestandskauf) · KfW 297/298 (Klimafreundlicher Neubau) · KfW 300 (Familien, einkommensabhängig) · NRW.BANK Wohnraumförderung · BEG Sanierung · Wohn-Riester. Wichtig: Beantragung immer VOR Vertragsschluss bei der Hausbank!</div>
+        <div class="check-row"><input type="checkbox" id="f_261"/><label for="f_261">KfW 261 — Wohngebäude-Kredit (Neubau Effizienzhaus, max. 150.000 €)</label></div>
+        <div class="check-row"><input type="checkbox" id="f_124"/><label for="f_124">KfW 124 — Wohneigentum für Bestandskauf</label></div>
+        <div class="check-row"><input type="checkbox" id="f_297"/><label for="f_297">KfW 297/298 — Klimafreundlicher Neubau</label></div>
+        <div class="check-row"><input type="checkbox" id="f_300"/><label for="f_300">KfW 300 — Wohneigentum für Familien (bis 270.000 € bei 3+ Kindern)</label></div>
+        <div class="check-row"><input type="checkbox" id="f_nrw"/><label for="f_nrw">NRW.BANK — Wohnraumförderung NRW</label></div>
+        <div class="check-row"><input type="checkbox" id="f_beg"/><label for="f_beg">BEG — Bundesförderung Energetische Sanierung</label></div>
+        <div class="check-row"><input type="checkbox" id="f_riester"/><label for="f_riester">Wohn-Riester (Eigenheimrente)</label></div>
+        <div class="check-row"><input type="checkbox" id="f_unk"/><label for="f_unk">Förderprogramm unbekannt — bitte prüfen</label></div>
+        <div class="fg" style="margin-top:8px;"><label class="lbl">KfW-Fördervolumen (€, falls bekannt)</label><input type="number" id="f3_kfwvol" placeholder="0" min="0"/></div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">D</div>Besicherung &amp; Sonderwünsche</div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Besicherung</label><select id="f3_besich"><option>Grundschuld auf Finanzierungsobjekt</option><option>Grundschuld + Zusatzsicherheit</option><option>Grundschuld auf anderes Objekt (Cross)</option></select></div>
+          <div class="fg half"><label class="lbl">Restschuldversicherung</label><select id="f3_rsv"><option value="nein">Nein</option><option value="rlv">Ja — Risikolebensversicherung (empfohlen)</option><option value="rsv">Ja — Restschuldversicherung</option><option value="pruef">Bitte beraten / prüfen</option></select><span class="hint">Schützt Familie im Todesfall</span></div>
+        </div>
+        <div class="row">
+          <div class="fg half"><label class="lbl">Hausbank des Kunden</label><input type="text" id="f3_hausbank" placeholder="z. B. Sparkasse Bochum"/></div>
+          <div class="fg half"><label class="lbl">Konto bei Zielbank</label><select id="f3_ktkunde"><option value="nein">Nein</option><option value="ja">Ja — bereits Kunde</option><option value="bereit">Ja — bereit Konto zu eröffnen</option></select></div>
+        </div>
+        <div class="fg"><label class="lbl">Besondere Wünsche &amp; Anmerkungen</label><textarea id="f3_anm" rows="3" placeholder="z. B. Auszahlung in Tranchen, Wunsch nach persönlichem Gespräch, besonderes Tilgungsmodell ..."></textarea></div>
+        <div class="fg"><label class="lbl">Interne Notizen Berater (nicht an Bank)</label><textarea id="f3_intern" rows="2" placeholder="z. B. Kunde sehr preissensitiv, Entscheidung bis Ende des Monats ..."></textarea></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-secondary" onclick="goStep(2)">← Objekt</button>
+        <button class="btn btn-primary" onclick="goStep(4)">Weiter: Dokumente &amp; Versand →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 — DOKUMENTE & VERSAND -->
+  <div class="step" id="step4">
+    <div class="card">
+      <h2>Schritt 4 von 4 — Dokumente, Bankauswahl &amp; Versand</h2>
+      <p class="card-sub">Unterlagen hochladen, Zielbank wählen und die vollständige Anfrage per E-Mail versenden.</p>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">A</div>Dokumente &amp; Unterlagen</div>
+        <div class="info-box"><strong>Typisch benötigte Bankunterlagen</strong>Letzte 3 Gehaltsabrechnungen · Letzter Steuerbescheid · Personalausweis · Selbstauskunft · Grundbuchauszug · Exposé / Grundriss · Energieausweis · Flurkarte · Bei Selbstständigen: BWA + Jahresabschlüsse · Bei Kapitalanlage: Mietvertrag · Bei Neubau: Baupläne, Baugenehmigung</div>
+
+        <div class="doc-cat">Einkommensnachweise — Status markieren</div>
+        <div class="doc-grid" id="incGrid"></div>
+        <div class="doc-cat">Objektunterlagen</div>
+        <div class="doc-grid" id="objDocGrid"></div>
+        <div class="doc-cat">Persönliche Dokumente</div>
+        <div class="doc-grid" id="persDocGrid"></div>
+
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
+          <div class="upload-icon">📎</div>
+          <div class="upload-text"><strong>Weitere Dateien hochladen</strong><br/>PDF, JPG, PNG, DOCX, XLSX — max. 25 MB · Drag &amp; Drop oder klicken</div>
+        </div>
+        <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" onchange="addFiles(this.files)"/>
+        <div class="file-list" id="fileList"></div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">B</div>Zielbank</div>
+        <div class="bank-list" id="bankList">
+          <div class="bank-item selected" data-bank="spkdo" onclick="selBank(this)"><div class="bank-dot">✓</div><div><div class="bank-name">Sparkasse Dortmund</div><div class="bank-email">christian.kretzmann@gmail.com</div></div></div>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="selfCopy"/>
+          <label for="selfCopy">Kopie dieser Anfrage an meine eigene E-Mail-Adresse senden</label>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-label"><div class="sec-num">C</div>Datenschutz &amp; Freigabe</div>
+        <div class="info-box warn"><strong>DSGVO-Hinweis</strong>Die Weitergabe personenbezogener Kundendaten ohne ausdrückliche Einwilligung ist rechtswidrig. Bitte sicherstellen, dass die Einwilligung schriftlich vorliegt.</div>
+        <div class="check-row"><input type="checkbox" id="chkDsgvo"/><label for="chkDsgvo"><strong>Einwilligung liegt vor:</strong> Der/die Kreditnehmer hat/haben der Weitergabe personenbezogener Daten zum Zweck der Finanzierungsvermittlung ausdrücklich zugestimmt.</label></div>
+        <div class="check-row"><input type="checkbox" id="chkVollst"/><label for="chkVollst">Ich bestätige, dass alle Angaben nach bestem Wissen vollständig und korrekt sind.</label></div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-secondary" onclick="goStep(3)">← Finanzierung</button>
+        <button class="btn btn-outline" onclick="goStep(5)">👁 Vorschau</button>
+        <button class="btn btn-secondary" onclick="printRequest()">🖨 PDF / Drucken</button>
+        <button class="btn btn-primary" onclick="submitForm()">📤 Daten übermitteln</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 — VORSCHAU -->
+  <div class="step" id="step5">
+    <div class="card">
+      <h2>Vorschau — Finanzierungsanfrage</h2>
+      <p class="card-sub">Bitte alles kurz prüfen, dann auf „Daten übermitteln" klicken.</p>
+      <div id="summaryContent"></div>
+      <div class="action-row">
+        <button class="btn btn-outline" onclick="goStep(4)">← Bearbeiten</button>
+        <button class="btn btn-secondary" onclick="printRequest()">🖨 PDF / Drucken</button>
+        <button class="btn btn-primary" onclick="submitForm()">📤 Daten übermitteln</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 — SUCCESS -->
+  <div class="step" id="step6">
+    <div class="card">
+      <div class="success-screen">
+        <div class="success-icon">✅</div>
+        <div class="success-kicker">Anfrage übermittelt</div>
+        <div class="success-title">Finanzierungsanfrage erfolgreich vorbereitet</div>
+        <div class="success-sub">Die Anfrage wurde gespeichert und automatisch per E-Mail an die Zielbank versendet.<br/>Eine Kopie ging an die Geschäftsführung; Rückfragen der Bank erreichen direkt den zuständigen Berater.<br/><br/>Die Zusammenfassung steht als PDF-Druck zur Verfügung.</div>
+        <div class="action-row" style="justify-content:center;">
+          <button class="btn btn-dark" onclick="printRequest()">🖨 Als PDF drucken</button>
+          <button class="btn btn-secondary" onclick="resetForm()">+ Neue Anfrage</button>
+        </div>
+        <div id="smStatus"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Engel &amp; Völkers · Mittleres Ruhrgebiet · Finanzierungsmanager · Vertraulich · Nur für autorisierte Mitarbeiter</footer>
+
+<script src="ev-supabase.js"></script>
+<script>
+// ── CONSTANTS ──────────────────────────────────────
+const bankEmails={spkdo:'christian.kretzmann@gmail.com'};
+const bankNames={spkdo:'Sparkasse Dortmund'};
+const objLabels={etw:'Eigentumswohnung',efh:'Einfamilienhaus',dh:'Doppelhaushälfte',rh:'Reihenhaus',mfh:'Mehrfamilienhaus',gs:'Grundstück',nb:'Kauf + Neubau',sn:'Sonstige'};
+const empLabels={ang:'Angestellt',sel:'Selbstständig',bmt:'Beamter/in',ren:'Rentner/in'};
+const docDefs={
+  inc:[{id:'d_geh',l:'Gehaltsabrechnungen (3 Mon.)'},{id:'d_steu',l:'Letzter Steuerbescheid'},{id:'d_bwa',l:'BWA aktuell (Selbstständige)'},{id:'d_eur',l:'Einnahmen-Überschuss-Rech.'}],
+  obj:[{id:'d_exp',l:'Exposé / Objektbeschreibung'},{id:'d_grun',l:'Grundriss'},{id:'d_grub',l:'Grundbuchauszug'},{id:'d_en',l:'Energieausweis'},{id:'d_flur',l:'Flurkarte / Lageplan'},{id:'d_mietv',l:'Mietvertrag (Kapitalanlage)'},{id:'d_bplan',l:'Baugenehmigung / Baupläne'},{id:'d_altl',l:'Altlastenauskunft'},{id:'d_baul',l:'Baulastenverzeichnis'},{id:'d_wfl',l:'Wohnflächenberechnung'},{id:'d_grundr',l:'Grundrisse'},{id:'d_ansicht',l:'Gebäudeansichten / Schnitte'}],
+  pers:[{id:'d_aus',l:'Personalausweis'},{id:'d_self',l:'Selbstauskunft Bank'},{id:'d_schu',l:'SCHUFA-Auskunft'},{id:'d_ekn',l:'Eigenkapitalnachweis'}]
+};
+const docStat={};
+
+// ── STATE ──────────────────────────────────────────
+let currentStep=1;
+let selObjType='etw';
+let selBankKey='spkdo';
+let kn2On=false;
+let uploadedFiles=[];
+
+// ── INIT ───────────────────────────────────────────
+(function init(){
+  const u=sessionStorage.getItem('evUser');
+  if(u){
+    try{
+      const d=JSON.parse(u);
+      document.getElementById('hUserName').textContent=d.fullName||'';
+      document.getElementById('hUserEmail').textContent=d.email||'Engel & Völkers';
+      if(d.fullName) document.getElementById('beraterName').value=d.fullName;
+      if(d.email) document.getElementById('beraterEmail').value=d.email;
+    }catch(e){}
+  }
+  document.getElementById('anfrageDate').value=new Date().toISOString().split('T')[0];
+  buildDocGrids();
+})();
+
+// ── DOC STATUS GRIDS ───────────────────────────────
+function buildDocGrids(){
+  const map={inc:'incGrid',obj:'objDocGrid',pers:'persDocGrid'};
+  Object.keys(map).forEach(cat=>{
+    const host=document.getElementById(map[cat]);
+    host.innerHTML='';
+    docDefs[cat].forEach(d=>{
+      docStat[d.id]=false;
+      const chip=document.createElement('div');
+      chip.className='doc-chip';
+      chip.id='chip_'+d.id;
+      chip.innerHTML=`<span class="dc-box"></span><span>${d.l}</span>`;
+      chip.onclick=()=>{
+        docStat[d.id]=!docStat[d.id];
+        chip.classList.toggle('on',docStat[d.id]);
+        chip.querySelector('.dc-box').textContent=docStat[d.id]?'✓':'';
+      };
+      host.appendChild(chip);
+    });
+  });
+}
+
+// ── SELECTION HELPERS ──────────────────────────────
+function selObj(el){
+  document.querySelectorAll('#objGrid .type-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selObjType=el.dataset.obj;
+  document.getElementById('obj_etwRow').style.display=selObjType==='etw'?'flex':'none';
+  const nb=selObjType==='nb'||selObjType==='gs';
+  document.getElementById('obj_nbSec').style.display=nb?'block':'none';
+  document.getElementById('obj_lastNum').textContent=nb?'E':'D';
+}
+function selPill(el,gid){
+  document.querySelectorAll('#'+gid+' .pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selBank(el){
+  document.querySelectorAll('#bankList .bank-item').forEach(b=>{b.classList.remove('selected');b.querySelector('.bank-dot').textContent='';});
+  el.classList.add('selected');
+  el.querySelector('.bank-dot').textContent='✓';
+  selBankKey=el.dataset.bank;
+}
+function toggleKN2(on){
+  kn2On=on;
+  document.getElementById('kn2Ja').classList.toggle('selected',on);
+  document.getElementById('kn2Nein').classList.toggle('selected',!on);
+  document.getElementById('kn2Fields').style.display=on?'block':'none';
+}
+
+// ── FILE UPLOAD ────────────────────────────────────
+function addFiles(files){for(let f of files){if(!uploadedFiles.find(x=>x.name===f.name))uploadedFiles.push(f);}renderFileList();}
+function dragOver(e){e.preventDefault();document.getElementById('uploadZone').classList.add('dragover');}
+function dragLeave(e){document.getElementById('uploadZone').classList.remove('dragover');}
+function dropFiles(e){e.preventDefault();document.getElementById('uploadZone').classList.remove('dragover');addFiles(e.dataTransfer.files);}
+function removeFile(name){uploadedFiles=uploadedFiles.filter(f=>f.name!==name);renderFileList();}
+function renderFileList(){
+  const list=document.getElementById('fileList');list.innerHTML='';
+  uploadedFiles.forEach(f=>{
+    const icon=f.type.startsWith('image')?'🖼️':f.name.match(/\.(xls|xlsx)$/i)?'📊':f.name.match(/\.(doc|docx)$/i)?'📝':'📄';
+    const size=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':(f.size/1024).toFixed(0)+' KB';
+    const row=document.createElement('div');
+    row.className='file-item';
+    row.innerHTML=`<span>${icon}</span><span class="fi-name">${f.name}</span><span class="fi-size">${size}</span><span class="fi-del">✕</span>`;
+    row.querySelector('.fi-del').onclick=()=>removeFile(f.name);
+    list.appendChild(row);
+  });
+}
+
+// ── STEP NAV ───────────────────────────────────────
+function goStep(n){
+  if(n===5||n===6) buildSummary();
+  document.getElementById('step'+currentStep).classList.remove('active');
+  currentStep=n;
+  document.getElementById('step'+n).classList.add('active');
+  updateProgress(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(n){
+  const eff=Math.min(n,4);
+  for(let i=1;i<=4;i++){
+    const ps=document.getElementById('ps'+i);
+    ps.classList.remove('active','done');
+    if(i<eff)ps.classList.add('done');
+    else if(i===eff)ps.classList.add('active');
+  }
+  for(let i=1;i<=3;i++){
+    const pl=document.getElementById('pl'+i);
+    if(pl)pl.classList.toggle('done',i<eff);
+  }
+}
+
+// ── HELPERS ────────────────────────────────────────
+function v(id){return(document.getElementById(id)?.value||'').trim();}
+function pillVal(gid){return document.querySelector('#'+gid+' .pill.selected')?.textContent.trim()||'–';}
+function eur(id){const n=parseFloat(document.getElementById(id)?.value);return isNaN(n)?'–':n.toLocaleString('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0});}
+function selectedFoerd(){
+  const m={f_261:'KfW 261',f_124:'KfW 124',f_297:'KfW 297/298',f_300:'KfW 300',f_nrw:'NRW.BANK',f_beg:'BEG',f_riester:'Wohn-Riester',f_unk:'Unbekannt — bitte prüfen'};
+  return Object.keys(m).filter(id=>document.getElementById(id)?.checked).map(id=>m[id]);
+}
+function selectedDocs(){
+  const all=[...docDefs.inc,...docDefs.obj,...docDefs.pers];
+  return all.filter(d=>docStat[d.id]).map(d=>d.l);
+}
+function bankInfo(){
+  return {name:bankNames[selBankKey],email:bankEmails[selBankKey]};
+}
+
+// ── SUMMARY ────────────────────────────────────────
+function buildSummary(){
+  const kn1=`${v('kn1_anrede')} ${v('kn1_vorname')} ${v('kn1_nachname')}`.trim()||'–';
+  const kn2=kn2On?`${v('kn2_anrede')} ${v('kn2_vorname')} ${v('kn2_nachname')}`.trim():'';
+  const bank=bankInfo();
+  const foerd=selectedFoerd();
+  const docs=selectedDocs();
+  const sonderMap={nein:'Keine',5:'Bis 5 % p.a.',10:'Bis 10 % p.a.',frei:'Freie Sondertilgung'};
+  const sonderV=document.getElementById('f3_sonder').value;
+  const modellSel=document.getElementById('f3_modell');
+  const rsvSel=document.getElementById('f3_rsv');
+
+  let html=`<div class="summary-highlight"><div class="sh-title">Finanzierungsobjekt</div><div class="sh-val">${objLabels[selObjType]||selObjType}</div></div>
+
+  <div class="summary-section"><div class="summary-title">Bearbeiter &amp; Referenz</div>
+    <div class="summary-row"><span class="summary-key">Berater/in</span><span class="summary-val">${v('beraterName')||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">E-Mail</span><span class="summary-val">${v('beraterEmail')||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Datum</span><span class="summary-val">${v('anfrageDate')||'–'}</span></div>
+  </div>
+
+  <div class="summary-section"><div class="summary-title">Kreditnehmer 1</div>
+    <div class="summary-row"><span class="summary-key">Name</span><span class="summary-val">${kn1}</span></div>
+    <div class="summary-row"><span class="summary-key">Geburtsdatum / -ort</span><span class="summary-val">${v('kn1_gebdat')||'–'} · ${v('kn1_gebort')||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Anschrift</span><span class="summary-val">${v('kn1_adresse')||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Kontakt</span><span class="summary-val">${v('kn1_tel')||'–'} · ${v('kn1_email')||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Familienstand / Kinder</span><span class="summary-val">${v('kn1_famstand')||'–'} · ${v('kn1_kinder')||'0'} Kind(er)</span></div>
+    <div class="summary-row"><span class="summary-key">Beschäftigung</span><span class="summary-val">${empLabels[document.getElementById('kn1_beschaeft').value]||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Nettoeinkommen</span><span class="summary-val">${eur('kn1_netto')} / Mon.</span></div>
+    <div class="summary-row"><span class="summary-key">Wohnsituation</span><span class="summary-val">${v('kn1_wohnsit')||'–'}${v('kn1_miete')?' · Miete '+eur('kn1_miete'):''}</span></div>
+    <div class="summary-row"><span class="summary-key">Lfd. Verpflichtungen</span><span class="summary-val">Nachweise als Anlage (siehe Dokumente)</span></div>
+    ${v('kn1_einkommenNote')?`<div class="summary-row"><span class="summary-key">Anmerkungen</span><span class="summary-val">${v('kn1_einkommenNote')}</span></div>`:''}
+  </div>`;
+
+  if(kn2On){
+    html+=`<div class="summary-section"><div class="summary-title">Kreditnehmer 2 (Mitantragsteller)</div>
+      <div class="summary-row"><span class="summary-key">Name</span><span class="summary-val">${kn2||'–'}</span></div>
+      <div class="summary-row"><span class="summary-key">Geburtsdatum</span><span class="summary-val">${v('kn2_gebdat')||'–'}</span></div>
+      <div class="summary-row"><span class="summary-key">Verhältnis zu KN 1</span><span class="summary-val">${document.getElementById('kn2_rel').value||'–'}</span></div>
+      <div class="summary-row"><span class="summary-key">Beschäftigung</span><span class="summary-val">${empLabels[document.getElementById('kn2_beschaeft').value]||'–'}</span></div>
+      <div class="summary-row"><span class="summary-key">Nettoeinkommen</span><span class="summary-val">${eur('kn2_netto')} / Mon.</span></div>
+      <div class="summary-row"><span class="summary-key">Lfd. Verbindlichkeiten</span><span class="summary-val">${eur('kn2_verbindl')} / Mon.</span></div>
+      ${v('kn2_einkommenNote')?`<div class="summary-row"><span class="summary-key">Anmerkungen</span><span class="summary-val">${v('kn2_einkommenNote')}</span></div>`:''}
+    </div>`;
+  }
+
+  html+=`<div class="summary-section"><div class="summary-title">Finanzierungsobjekt</div>
+    <div class="summary-row"><span class="summary-key">Objektart</span><span class="summary-val">${objLabels[selObjType]||selObjType}</span></div>
+    <div class="summary-row"><span class="summary-key">Adresse</span><span class="summary-val">${v('obj_str')||'–'}, ${v('obj_plz')} ${v('obj_ort')} ${v('obj_stadtteil')?'('+v('obj_stadtteil')+')':''}</span></div>
+    <div class="summary-row"><span class="summary-key">Nutzungsart</span><span class="summary-val">${pillVal('obj_nutz')}${v('obj_miet')?' · Miete '+eur('obj_miet'):''}</span></div>
+    <div class="summary-row"><span class="summary-key">Kaufpreis</span><span class="summary-val hl">${eur('obj_kp')}</span></div>
+    <div class="summary-row"><span class="summary-key">Baujahr / Fläche</span><span class="summary-val">${v('obj_bj')||'–'} · ${v('obj_wfl')||'–'} m² Wohnfl. · ${v('obj_gfl')||'–'} m² Grundst. · ${v('obj_zimmer')||'–'} Zi.</span></div>
+    ${selObjType==='etw'?`<div class="summary-row"><span class="summary-key">ETW-Details</span><span class="summary-val">Etage ${v('obj_etage')||'–'} · Hausgeld ${eur('obj_hausgeld')} · Rücklage ${document.getElementById('obj_rueckl').value||'–'}</span></div>`:''}
+    <div class="summary-row"><span class="summary-key">Zustand</span><span class="summary-val">${document.getElementById('obj_zustand').value||'–'}${v('obj_modern')?' · Modernisierung: '+v('obj_modern'):''}</span></div>
+    <div class="summary-row"><span class="summary-key">Garage</span><span class="summary-val">${document.getElementById('obj_garage').value||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Energie</span><span class="summary-val">Ausweis ${document.getElementById('obj_enweis').value} · ${document.getElementById('obj_entyp').value||'–'} · Klasse ${document.getElementById('obj_enkl').value||'unbek.'}</span></div>
+    ${(selObjType==='nb'||selObjType==='gs')?`<div class="summary-row"><span class="summary-key">Neubau / Grundstück</span><span class="summary-val">Grundst. ${eur('obj_gspreis')} · Baukosten ${eur('obj_baukosten')} · Baugen. ${document.getElementById('obj_baugeh').value||'–'}${v('obj_bautr')?' · '+v('obj_bautr'):''}</span></div>`:''}
+    <div class="summary-row"><span class="summary-key">Erbbaurecht</span><span class="summary-val">${document.getElementById('obj_erbbau').value==='ja'?'Ja — Vertrag vorhanden':'Nein'}</span></div>
+    ${v('obj_beschr')?`<div class="summary-row"><span class="summary-key">Besonderheiten</span><span class="summary-val">${v('obj_beschr')}</span></div>`:''}
+  </div>
+
+  <div class="summary-section"><div class="summary-title">Kaufpreis, Courtage &amp; Eigenkapital</div>
+    <div class="summary-row"><span class="summary-key">Kaufpreis</span><span class="summary-val hl">${eur('f3_kp')}</span></div>
+    <div class="summary-row"><span class="summary-key">Maklercourtage</span><span class="summary-val">${document.getElementById('f3_makler_pct').value} % zzgl. USt.</span></div>
+    <div class="summary-row"><span class="summary-key">Gewünschter EK-Einsatz</span><span class="summary-val hl">${eur('f3_ek')}</span></div>
+    <div class="summary-row"><span class="summary-key">EK-Herkunft</span><span class="summary-val">${pillVal('f3_ekHerk')}</span></div>
+    <div class="summary-row"><span class="summary-key">Nebenkosten</span><span class="summary-val">Grunderwerbsteuer / Notar &amp; Grundbuch werden von der Bank ermittelt</span></div>
+  </div>
+
+  <div class="summary-section"><div class="summary-title">Finanzierungskonditionen</div>
+    <div class="summary-row"><span class="summary-key">Gewünschtes Darlehen</span><span class="summary-val">${eur('f3_darlehenW')}</span></div>
+    <div class="summary-row"><span class="summary-key">Zinsbindung</span><span class="summary-val">${document.getElementById('f3_zinsb').value} Jahre</span></div>
+    <div class="summary-row"><span class="summary-key">Anfangstilgung</span><span class="summary-val">${v('f3_tilg')||'–'} % p.a.</span></div>
+    <div class="summary-row"><span class="summary-key">Wunschrate</span><span class="summary-val">${eur('f3_wrate')} / Mon.</span></div>
+    <div class="summary-row"><span class="summary-key">Sondertilgung</span><span class="summary-val">${sonderMap[sonderV]||'–'}</span></div>
+    <div class="summary-row"><span class="summary-key">Darlehensmodell</span><span class="summary-val">${modellSel.options[modellSel.selectedIndex].text}</span></div>
+    <div class="summary-row"><span class="summary-key">Bereitstellungszins ab</span><span class="summary-val">${document.getElementById('f3_bereit').value} Monate</span></div>
+    <div class="summary-row"><span class="summary-key">Besicherung</span><span class="summary-val">${document.getElementById('f3_besich').value}</span></div>
+    <div class="summary-row"><span class="summary-key">Restschuldversicherung</span><span class="summary-val">${rsvSel.options[rsvSel.selectedIndex].text}</span></div>
+    <div class="summary-row"><span class="summary-key">Förderprogramme</span><span class="summary-val">${foerd.length?foerd.join(', '):'Keine'}${v('f3_kfwvol')?' · Volumen '+eur('f3_kfwvol'):''}</span></div>
+    <div class="summary-row"><span class="summary-key">Hausbank / Konto Zielbank</span><span class="summary-val">${v('f3_hausbank')||'–'} · ${document.getElementById('f3_ktkunde').value}</span></div>
+    ${v('f3_anm')?`<div class="summary-row"><span class="summary-key">Besondere Wünsche</span><span class="summary-val">${v('f3_anm')}</span></div>`:''}
+    ${v('f3_intern')?`<div class="summary-row"><span class="summary-key">Interne Notizen</span><span class="summary-val">${v('f3_intern')}</span></div>`:''}
+  </div>
+
+  <div class="summary-section"><div class="summary-title">Dokumente &amp; Versand</div>
+    <div class="summary-row"><span class="summary-key">Markierte Unterlagen</span><span class="summary-val">${docs.length?docs.join(', '):'Keine markiert'}</span></div>
+    <div class="summary-row"><span class="summary-key">Angehängte Dateien</span><span class="summary-val">${uploadedFiles.length?uploadedFiles.map(f=>f.name).join(', '):'Keine'}</span></div>
+    <div class="summary-row"><span class="summary-key">Zielbank</span><span class="summary-val hl">${bank.name}${bank.email?' · '+bank.email:''}</span></div>
+    <div class="summary-row"><span class="summary-key">Kopie an Berater</span><span class="summary-val">${document.getElementById('selfCopy').checked?'Ja':'Nein'}</span></div>
+    <div class="summary-row"><span class="summary-key">DSGVO-Einwilligung</span><span class="summary-val" style="color:${document.getElementById('chkDsgvo').checked?'#16a34a':'#C41E3A'};font-weight:700;">${document.getElementById('chkDsgvo').checked?'✅ Bestätigt':'⚠ Nicht bestätigt'}</span></div>
+    <div class="summary-row"><span class="summary-key">Angaben vollständig</span><span class="summary-val" style="color:${document.getElementById('chkVollst').checked?'#16a34a':'#C41E3A'};font-weight:700;">${document.getElementById('chkVollst').checked?'✅ Bestätigt':'⚠ Nicht bestätigt'}</span></div>
+  </div>
+
+  <div style="font-size:.65rem;color:#bbb;border-top:1px solid #eee;padding-top:12px;margin-top:6px;letter-spacing:.5px;">
+    Erstellt am ${new Date().toLocaleDateString('de-DE',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} · Engel &amp; Völkers Mittleres Ruhrgebiet · Vertraulich
+  </div>`;
+
+  document.getElementById('summaryContent').innerHTML=html;
+}
+
+// ── EMAIL BODY ─────────────────────────────────────
+function buildEmailBody(){
+  const kn1=`${v('kn1_anrede')} ${v('kn1_vorname')} ${v('kn1_nachname')}`.trim()||'–';
+  const kn2=kn2On?`${v('kn2_anrede')} ${v('kn2_vorname')} ${v('kn2_nachname')}`.trim():'';
+  const bank=bankInfo();
+  const foerd=selectedFoerd();
+  const docs=selectedDocs();
+  const sonderMap={nein:'Keine',5:'Bis 5 % p.a.',10:'Bis 10 % p.a.',frei:'Freie Sondertilgung'};
+  return `FINANZIERUNGSANFRAGE — Engel & Völkers Mittleres Ruhrgebiet
+═══════════════════════════════════════
+
+Berater/in: ${v('beraterName')||'–'} (${v('beraterEmail')||'–'})
+Datum: ${v('anfrageDate')||'–'}
+Zielbank: ${bank.name}
+
+── KREDITNEHMER 1 ──────────────────────
+Name: ${kn1}
+Geburtsdatum/-ort: ${v('kn1_gebdat')||'–'} · ${v('kn1_gebort')||'–'}
+Staatsangeh.: ${v('kn1_staat')||'–'}
+Anschrift: ${v('kn1_adresse')||'–'}
+Kontakt: ${v('kn1_tel')||'–'} · ${v('kn1_email')||'–'}
+Familienstand: ${v('kn1_famstand')||'–'} · Kinder: ${v('kn1_kinder')||'0'}
+Wohnsituation: ${v('kn1_wohnsit')||'–'} · Kaltmiete: ${v('kn1_miete')||'0'} €
+Beschäftigung: ${empLabels[document.getElementById('kn1_beschaeft').value]||'–'}
+Nettoeinkommen: ${v('kn1_netto')||'0'} € / Mon.
+Verpflichtungen: Nachweise als Anlage (siehe Dokumente)
+Anmerkungen: ${v('kn1_einkommenNote')||'–'}
+${kn2On?`
+── KREDITNEHMER 2 ──────────────────────
+Name: ${kn2||'–'}
+Geburtsdatum: ${v('kn2_gebdat')||'–'} · Verhältnis: ${document.getElementById('kn2_rel').value||'–'}
+Beschäftigung: ${empLabels[document.getElementById('kn2_beschaeft').value]||'–'}
+Nettoeinkommen: ${v('kn2_netto')||'0'} € / Mon.
+Verbindlichkeiten: ${v('kn2_verbindl')||'0'} € / Mon.
+Anmerkungen: ${v('kn2_einkommenNote')||'–'}
+`:''}
+── FINANZIERUNGSOBJEKT ─────────────────
+Objektart: ${objLabels[selObjType]||selObjType}
+Adresse: ${v('obj_str')||'–'}, ${v('obj_plz')} ${v('obj_ort')} (${v('obj_stadtteil')||'–'})
+Nutzungsart: ${pillVal('obj_nutz')} · Mieteinnahmen: ${v('obj_miet')||'0'} €
+Kaufpreis: ${v('obj_kp')||'0'} €
+Baujahr: ${v('obj_bj')||'–'} · Wohnfl.: ${v('obj_wfl')||'–'} m² · Grundst.: ${v('obj_gfl')||'–'} m² · Zimmer: ${v('obj_zimmer')||'–'}
+${selObjType==='etw'?`ETW: Etage ${v('obj_etage')||'–'} · Hausgeld ${v('obj_hausgeld')||'0'} € · Rücklage ${document.getElementById('obj_rueckl').value||'–'}\n`:''}Zustand: ${document.getElementById('obj_zustand').value||'–'} · Modernisierung: ${v('obj_modern')||'–'}
+Garage: ${document.getElementById('obj_garage').value||'–'}
+Energie: Ausweis ${document.getElementById('obj_enweis').value} · ${document.getElementById('obj_entyp').value||'–'} · Klasse ${document.getElementById('obj_enkl').value||'unbek.'}
+${(selObjType==='nb'||selObjType==='gs')?`Neubau/Grundst.: Grundst. ${v('obj_gspreis')||'0'} € · Baukosten ${v('obj_baukosten')||'0'} € · Baugen. ${document.getElementById('obj_baugeh').value||'–'} · Bauträger ${v('obj_bautr')||'–'}\n`:''}Erbbaurecht: ${document.getElementById('obj_erbbau').value==='ja'?'Ja':'Nein'}
+Besonderheiten: ${v('obj_beschr')||'–'}
+
+── KAUFPREIS, COURTAGE & EIGENKAPITAL ──
+Kaufpreis: ${v('f3_kp')||'0'} €
+Maklercourtage: ${document.getElementById('f3_makler_pct').value} % zzgl. USt.
+Gewünschter EK-Einsatz: ${v('f3_ek')||'0'} € · Herkunft: ${pillVal('f3_ekHerk')}
+Nebenkosten: Grunderwerbsteuer / Notar & Grundbuch werden von der Bank ermittelt
+
+── KONDITIONEN ─────────────────────────
+Gewünschtes Darlehen: ${v('f3_darlehenW')||'0'} €
+Zinsbindung: ${document.getElementById('f3_zinsb').value} Jahre
+Anfangstilgung: ${v('f3_tilg')||'–'} % p.a. · Wunschrate: ${v('f3_wrate')||'0'} €
+Sondertilgung: ${sonderMap[document.getElementById('f3_sonder').value]||'–'}
+Darlehensmodell: ${document.getElementById('f3_modell').options[document.getElementById('f3_modell').selectedIndex].text}
+Bereitstellungszins ab: ${document.getElementById('f3_bereit').value} Monate
+Besicherung: ${document.getElementById('f3_besich').value}
+Restschuldversicherung: ${document.getElementById('f3_rsv').options[document.getElementById('f3_rsv').selectedIndex].text}
+Förderprogramme: ${foerd.length?foerd.join(', '):'Keine'} · KfW-Volumen: ${v('f3_kfwvol')||'0'} €
+Hausbank Kunde: ${v('f3_hausbank')||'–'} · Konto Zielbank: ${document.getElementById('f3_ktkunde').value}
+Besondere Wünsche: ${v('f3_anm')||'–'}
+Interne Notizen: ${v('f3_intern')||'–'}
+
+── DOKUMENTE ───────────────────────────
+Markierte Unterlagen: ${docs.length?docs.join(', '):'Keine'}
+Angehängte Dateien: ${uploadedFiles.length?uploadedFiles.map(f=>f.name).join(', '):'Keine — bitte manuell anhängen'}
+
+── DATENSCHUTZ ─────────────────────────
+DSGVO-Einwilligung: ${document.getElementById('chkDsgvo').checked?'✅ Bestätigt':'⚠ NICHT bestätigt'}
+Angaben vollständig: ${document.getElementById('chkVollst').checked?'✅ Bestätigt':'⚠ NICHT bestätigt'}
+
+═══════════════════════════════════════
+Erstellt: ${new Date().toLocaleDateString('de-DE')} · Engel & Völkers Mittleres Ruhrgebiet · Vertraulich`;
+}
+
+// ── SUPABASE SAVE ──────────────────────────────────
+async function saveToDb(){
+  try{
+    const bank=bankInfo();
+    await EvDB.saveFinanzierung({
+      beraterName:v('beraterName')||null,
+      beraterEmail:v('beraterEmail')||null,
+      kn1_name:`${v('kn1_anrede')} ${v('kn1_vorname')} ${v('kn1_nachname')}`.trim()||null,
+      kn1_gebdat:v('kn1_gebdat')||null,
+      kn1_adresse:v('kn1_adresse')||null,
+      kn1_kontakt:`${v('kn1_tel')} ${v('kn1_email')}`.trim()||null,
+      kn1_beschaeftigung:empLabels[document.getElementById('kn1_beschaeft').value]||null,
+      kn1_netto:String(v('kn1_netto')||0),
+      kn2_aktiv:kn2On,
+      kn2_name:kn2On?`${v('kn2_anrede')} ${v('kn2_vorname')} ${v('kn2_nachname')}`.trim():null,
+      kn2_netto:kn2On?String(v('kn2_netto')||0):null,
+      obj_art:objLabels[selObjType]||null,
+      obj_adresse:`${v('obj_str')}, ${v('obj_plz')} ${v('obj_ort')}`.trim(),
+      obj_nutzung:pillVal('obj_nutz'),
+      obj_kaufpreis:String(v('obj_kp')||0),
+      obj_baujahr:v('obj_bj')||null,
+      obj_wohnflaeche:String(v('obj_wfl')||0),
+      obj_energieklasse:document.getElementById('obj_enkl').value||null,
+      fin_kaufpreis:String(v('f3_kp')||0),
+      fin_courtage_pct:document.getElementById('f3_makler_pct').value,
+      fin_ek_einsatz:String(v('f3_ek')||0),
+      fin_ek_herkunft:pillVal('f3_ekHerk'),
+      fin_darlehenswunsch:String(v('f3_darlehenW')||0),
+      fin_zinsbindung:document.getElementById('f3_zinsb').value,
+      fin_tilgung:String(v('f3_tilg')||0),
+      fin_sondertilgung:document.getElementById('f3_sonder').value,
+      fin_modell:document.getElementById('f3_modell').value,
+      foerderungen:selectedFoerd().join(', ')||null,
+      dokumente:selectedDocs().join(', ')||null,
+      anhaenge_anz:uploadedFiles.length,
+      zielbank:bank.name,
+      zielbank_email:bank.email||null,
+      dsgvo_ok:document.getElementById('chkDsgvo').checked,
+      vollstaendig_ok:document.getElementById('chkVollst').checked
+    });
+    console.info('[E&V Finanzierung] ✓ In Supabase gespeichert');
+    return true;
+  }catch(e){
+    console.error('[E&V Finanzierung] DB-Fehler:',e.message);
+    return false;
+  }
+}
+
+// ── E-MAIL VERSAND (Resend via Supabase Edge Function) ──
+// Die Edge Function "send-finanzierung" nimmt die Anfrage entgegen,
+// und verschickt sie serverseitig über Resend. Der RESEND_API_KEY
+// liegt als geschütztes Secret in Supabase – NIE im Frontend.
+const EDGE_FUNCTION_URL = (window.EV_SUPABASE_URL || '') + '/functions/v1/send-finanzierung';
+
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      const res=String(r.result||'');
+      const b64=res.includes(',')?res.split(',')[1]:res;
+      resolve({name:file.name,type:file.type||'application/octet-stream',content:b64});
+    };
+    r.onerror=()=>reject(new Error('Datei "'+file.name+'" konnte nicht gelesen werden'));
+    r.readAsDataURL(file);
+  });
+}
+
+async function sendViaResend(){
+  const bank=bankInfo();
+  const beraterMail=v('beraterEmail');
+
+  // Hochgeladene Dateien als Base64 einlesen
+  let anhaenge=[];
+  if(uploadedFiles.length>0){
+    anhaenge=await Promise.all(uploadedFiles.map(fileToBase64));
+  }
+
+  const payload={
+    betreff:'Finanzierungsanfrage: '+(objLabels[selObjType]||'')+' — '+`${v('kn1_vorname')} ${v('kn1_nachname')}`.trim(),
+    empfaenger:bank.email||'',
+    empfaenger_name:bank.name,
+    cc:['gf@engelvoelkers.ruhr'],
+    reply_to:beraterMail||null,
+    selfCopy:document.getElementById('selfCopy').checked,
+    berater_email:beraterMail||null,
+    berater_name:v('beraterName')||null,
+    text:buildEmailBody(),
+    anhaenge:anhaenge
+  };
+  const headers={'Content-Type':'application/json'};
+  if(window.EV_SUPABASE_ANON_KEY){
+    headers['Authorization']='Bearer '+window.EV_SUPABASE_ANON_KEY;
+    headers['apikey']=window.EV_SUPABASE_ANON_KEY;
+  }
+  const res=await fetch(EDGE_FUNCTION_URL,{method:'POST',headers,body:JSON.stringify(payload)});
+  if(!res.ok){
+    let msg='HTTP '+res.status;
+    try{const j=await res.json();if(j&&j.error)msg=j.error;}catch(_){}
+    throw new Error(msg);
+  }
+  return await res.json().catch(()=>({}));
+}
+
+// ── SUBMIT / PRINT / RESET ─────────────────────────
+async function submitForm(){
+  if(!document.getElementById('chkDsgvo').checked){
+    alert('Bitte die DSGVO-Einwilligung bestätigen, bevor die Anfrage übermittelt wird.');
+    goStep(4);return;
+  }
+  const dbOk=await saveToDb();
+
+  let mailOk=false, mailErr='';
+  try{
+    await sendViaResend();
+    mailOk=true;
+  }catch(e){
+    mailErr=e.message||'Unbekannter Fehler';
+    console.error('[E&V Finanzierung] Mail-Fehler:',mailErr);
+  }
+
+  goStep(6);
+  const st=document.getElementById('smStatus');
+  if(st){
+    st.style.display='block';
+    const t=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+    if(mailOk){
+      st.textContent=(dbOk?'✓ In Supabase gespeichert & ':'⚠ DB-Speicherung fehlgeschlagen — ')+'E-Mail an '+bankInfo().name+' versendet · '+t+' Uhr';
+      if(!dbOk){st.style.background='#fff8f0';st.style.borderLeftColor='#c17b00';st.style.color='#5a3800';}
+    }else{
+      st.textContent='⚠ E-Mail-Versand fehlgeschlagen ('+mailErr+'). '+(dbOk?'Anfrage wurde in Supabase gespeichert.':'Auch DB-Speicherung fehlgeschlagen.')+' Bitte IT informieren · '+t+' Uhr';
+      st.style.background='#fdf0f2';st.style.borderLeftColor='#C41E3A';st.style.color='#7a1020';
+    }
+  }
+}
+
+async function printRequest(){
+  await saveToDb();
+  buildSummary();
+  window.print();
+}
+
+function resetForm(){location.reload();}
+</script>
+</body>
+</html>
