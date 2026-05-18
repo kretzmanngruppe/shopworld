@@ -48,10 +48,10 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
 .greeting-meta{font-size:.7rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:#bbb;}
 .section-label{font-size:.58rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#bbb;margin-bottom:16px;margin-top:48px;display:flex;align-items:center;gap:14px;}
 .section-label::after{content:'';flex:1;height:1px;background:#eaeaea;}
-.ql-link{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--white);border:1px solid #eee;border-top:3px solid #555;padding:12px 10px;text-decoration:none;color:var(--dark);transition:all .2s;flex-direction:column;text-align:center;}
-.ql-link:hover{border-top-color:var(--red);box-shadow:0 2px 12px rgba(0,0,0,.08);transform:translateY(-2px);background:#fafafa;}
-.ql-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6rem;font-weight:900;font-family:var(--sans);background:#555;filter:grayscale(100%);}
-.ql-link:hover .ql-icon{background:#333;filter:grayscale(60%);}
+.ql-link{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--white);border:1px solid #eee;border-top:3px solid var(--red);padding:12px 10px;text-decoration:none;color:var(--dark);transition:all .2s;flex-direction:column;text-align:center;}
+.ql-link:hover{border-top-color:var(--red);box-shadow:0 4px 16px rgba(196,30,58,.16);transform:translateY(-2px);background:#fffafb;}
+.ql-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6rem;font-weight:900;font-family:var(--sans);background:var(--red);filter:none;transition:all .2s;}
+.ql-link:hover .ql-icon{background:#a01830;filter:none;transform:scale(1.06);}
 .ql-name{font-size:.62rem;font-weight:600;color:var(--dark);white-space:nowrap;margin-top:4px;}
 .app-solo{background:var(--white);border:1px solid #eaeaea;display:grid;grid-template-columns:280px 1fr;min-height:160px;}
 .app-solo-left{background:var(--dark);padding:28px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
@@ -156,9 +156,9 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
     <div class="app-solo-right">
       <div>
         <div style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:#111;margin-bottom:10px;letter-spacing:-.3px;">Finanzierungsanfragen strukturiert übermitteln</div>
-        <div class="app-solo-desc">Erfasse alle relevanten Daten zu Kaufinteressenten und Objekten in einem geführten 4-Schritt-Prozess und übermittle die Anfrage direkt an unsere Partnerbanken — Sparkasse Bochum, Volksbank, Deutsche Bank, Commerzbank, ING-DiBa und DSL Bank. Inklusive NRW-Nebenkostenberechnung und KfW-Förderprogrammen.</div>
+        <div class="app-solo-desc">Erfasse alle relevanten Daten zu Kaufinteressenten und Objekten in einem geführten 4-Schritt-Prozess und übermittle die Anfrage direkt an unseren Finanzierungspartner, die Sparkasse Dortmund. Inklusive NRW-Nebenkostenberechnung und KfW-Förderprogrammen.</div>
       </div>
-      <button class="app-solo-cta" onclick="openApp('finanzierung','Finanzierungsmanager','ev-finanzierung.html')">Finanzierungsmanager öffnen →</button>
+      <button class="app-solo-cta" onclick="openApp('finanzierung','Finanzierungsmanager','ev-finanzierungsmanager.html')">Finanzierungsmanager öffnen →</button>
     </div>
   </div>
 </main>
@@ -169,14 +169,7 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
   </div>
   <div style="text-align:center;padding:28px 48px 24px;border-top:1px solid #e8e8e8;">
     <div style="font-size:.8rem;color:#555;line-height:2.4;">EV Mittleres Ruhrgebiet GmbH | Lizenzpartner der Engel &amp; Völkers Residential GmbH | Lessingstraße 16 | 44791 Bochum | Geschäftsführung: Dr. Christian Kretzmann, LL.M. | Clara Kretzmann | Wissenschaftlicher Beirat: Prof. Dr. Marco Schwenke</div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:20px;">
-      <a href="https://www.facebook.com/engelvoelkers" target="_blank" title="Facebook" style="width:38px;height:38px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;transition:all .2s;color:#888;text-decoration:none;" onmouseover="this.style.borderColor='#C41E3A';this.style.color='#C41E3A'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-      <a href="https://www.instagram.com/engelvoelkers" target="_blank" title="Instagram" style="width:38px;height:38px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;transition:all .2s;color:#888;text-decoration:none;" onmouseover="this.style.borderColor='#C41E3A';this.style.color='#C41E3A'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-      <a href="https://www.linkedin.com/company/engel-voelkers" target="_blank" title="LinkedIn" style="width:38px;height:38px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;transition:all .2s;color:#888;text-decoration:none;" onmouseover="this.style.borderColor='#C41E3A';this.style.color='#C41E3A'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
-      <a href="https://wa.me/492346029062" target="_blank" title="WhatsApp" style="width:38px;height:38px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;transition:all .2s;color:#888;text-decoration:none;" onmouseover="this.style.borderColor='#C41E3A';this.style.color='#C41E3A'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></a>
-      <a href="https://www.youtube.com/engelvoelkers" target="_blank" title="YouTube" style="width:38px;height:38px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;transition:all .2s;color:#888;text-decoration:none;" onmouseover="this.style.borderColor='#C41E3A';this.style.color='#C41E3A'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#f7f6f4"/></svg></a>
     </div>
-  </div>
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:#e8e8e8;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8;"><div style="background:#fff;padding:20px 18px 18px;">
       <div style="font-size:.56rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C41E3A;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">Bochum</div>
       <div style="font-size:.71rem;color:#555;line-height:2;">Kurt-Schumacher-Platz 7<br/>44787 Bochum<br/><span style="color:#aaa;">T</span> 0234 · 60290620<br/><a href="mailto:bochum@engelvoelkers.com" style="color:#888;text-decoration:none;">bochum@engelvoelkers.com</a><br/><a href="https://www.engelvoelkers.com/bochum" target="_blank" style="color:#bbb;text-decoration:none;font-size:.64rem;">engelvoelkers.com/bochum</a></div>
