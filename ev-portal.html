@@ -10,6 +10,8 @@
 :root{
   --red:#C41E3A;--dark:#1a1a1a;--mid:#e0e0e0;
   --light:#f7f6f4;--white:#ffffff;
+  /* Dezente graue Panel-Hintergründe statt Schwarz */
+  --panel:#54585f;--panel-hover:#474b51;
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Raleway','Segoe UI',Arial,sans-serif;
 }
@@ -106,15 +108,25 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
 
 /* ═══ OBJEKTLISTE ═══ */
 .objektliste{background:var(--white);border:1px solid #eaeaea;margin-bottom:2px;}
+.objektliste.app-section{margin-top:0;}
+.ol-header.collapsible-head{cursor:pointer;user-select:none;}
+.ol-header-right{display:flex;align-items:center;gap:16px;position:relative;z-index:2;}
+.ol-toggle{
+  color:rgba(255,255,255,.6);font-size:.85rem;line-height:1;
+  transition:transform .25s,color .2s;display:inline-flex;width:14px;justify-content:center;
+}
+.ol-header.collapsible-head:hover .ol-toggle{color:#fff;}
+.objektliste.collapsed .ol-toggle{transform:rotate(-90deg);}
+.objektliste.collapsed{margin-bottom:2px;}
 .ol-header{
-  background:var(--dark);padding:16px 22px;
+  background:var(--panel);padding:16px 22px;
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   position:relative;overflow:hidden;flex-wrap:wrap;
 }
 .ol-header::before{
   content:'OBJEKTE';position:absolute;right:-6px;bottom:-14px;
   font-family:var(--serif);font-size:3.6rem;font-weight:300;
-  color:rgba(255,255,255,.04);letter-spacing:-2px;pointer-events:none;line-height:1;
+  color:rgba(255,255,255,.07);letter-spacing:-2px;pointer-events:none;line-height:1;
 }
 .ol-title-wrap{display:flex;flex-direction:column;gap:3px;position:relative;z-index:2;}
 .ol-eyebrow{font-size:.52rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);}
@@ -197,7 +209,7 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
   transition:all .15s;display:flex;align-items:center;justify-content:center;
 }
 .ol-pg-btn:hover:not(:disabled):not(.active){border-color:var(--red);color:var(--red);}
-.ol-pg-btn.active{background:var(--dark);border-color:var(--dark);color:#fff;cursor:default;}
+.ol-pg-btn.active{background:var(--panel);border-color:var(--panel);color:#fff;cursor:default;}
 .ol-pg-btn:disabled{opacity:.35;cursor:not-allowed;}
 .ol-pg-ellipsis{padding:0 6px;color:#ccc;font-size:.7rem;}
 
@@ -208,24 +220,60 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
   .ol-table td,.ol-table thead th{padding-left:14px;padding-right:14px;}
 }
 
+/* ═══ OBJEKTKARTE ═══ */
+.objektkarte{background:var(--white);border:1px solid #eaeaea;margin-bottom:2px;}
+.objektkarte.app-section{margin-top:0;}
+.ok-header.collapsible-head{cursor:pointer;user-select:none;}
+.ok-header-right{display:flex;align-items:center;gap:16px;position:relative;z-index:2;}
+.ok-toggle{
+  color:rgba(255,255,255,.6);font-size:.85rem;line-height:1;
+  transition:transform .25s,color .2s;display:inline-flex;width:14px;justify-content:center;
+}
+.ok-header.collapsible-head:hover .ok-toggle{color:#fff;}
+.objektkarte.collapsed .ok-toggle{transform:rotate(-90deg);}
+.objektkarte.collapsed{margin-bottom:2px;}
+.ok-header{
+  background:var(--panel);padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  position:relative;overflow:hidden;flex-wrap:wrap;
+}
+.ok-header::before{
+  content:'KARTE';position:absolute;right:-6px;bottom:-14px;
+  font-family:var(--serif);font-size:3.6rem;font-weight:300;
+  color:rgba(255,255,255,.07);letter-spacing:-2px;pointer-events:none;line-height:1;
+}
+.ok-title-wrap{display:flex;flex-direction:column;gap:3px;position:relative;z-index:2;}
+.ok-eyebrow{font-size:.52rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);}
+.ok-title{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:#fff;letter-spacing:-.3px;line-height:1;}
+.ok-link{
+  font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#777;text-decoration:none;position:relative;z-index:2;white-space:nowrap;transition:color .2s;
+}
+.ok-link:hover{color:#fff;}
+.ok-map-wrap{position:relative;width:100%;height:0;padding-bottom:52%;background:#f0eeeb;}
+.ok-map-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
+@media(max-width:760px){
+  .ok-map-wrap{padding-bottom:80%;}
+}
+
 /* ONE HERO */
 .one-hero{
-  background:var(--dark);padding:26px 28px;
+  background:var(--panel);padding:26px 28px;
   cursor:pointer;transition:background .2s;position:relative;overflow:hidden;
   display:flex;flex-direction:column;justify-content:space-between;min-height:200px;
 }
 .one-hero::before{
   content:'ONE';position:absolute;right:-8px;bottom:-12px;
   font-family:var(--serif);font-size:6rem;font-weight:300;
-  color:rgba(255,255,255,.04);letter-spacing:-3px;pointer-events:none;line-height:1;
+  color:rgba(255,255,255,.07);letter-spacing:-3px;pointer-events:none;line-height:1;
 }
-.one-hero:hover{background:#111;}
+.one-hero:hover{background:var(--panel-hover);}
 .one-hero-badge{font-size:.5rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .one-hero-badge::before{content:'';width:5px;height:5px;background:var(--red);border-radius:50%;}
 .one-hero-title{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:#fff;letter-spacing:-.5px;margin-bottom:6px;}
-.one-hero-sub{font-size:.65rem;color:#555;line-height:1.65;}
+.one-hero-sub{font-size:.65rem;color:rgba(255,255,255,.55);line-height:1.65;}
 .one-hero-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px;}
-.one-tag{font-size:.5rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;background:rgba(255,255,255,.06);color:#666;}
+.one-tag{font-size:.5rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);}
 .one-hero-arrow{font-size:.65rem;color:var(--red);margin-top:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 
 /* INBOX PREVIEW */
@@ -524,12 +572,12 @@ footer{margin-top:0;}
     </div>
 
     <!-- Meine letzte Umsatzplanung -->
-    <div style="background:var(--dark);padding:18px 20px;position:relative;overflow:hidden;">
-      <div style="position:absolute;right:-4px;bottom:-8px;font-family:var(--serif);font-size:4rem;font-weight:300;color:rgba(255,255,255,.04);line-height:1;pointer-events:none;">€</div>
-      <div style="font-size:.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:6px;">Meine Umsatzplanung</div>
+    <div style="background:var(--panel);padding:18px 20px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-4px;bottom:-8px;font-family:var(--serif);font-size:4rem;font-weight:300;color:rgba(255,255,255,.07);line-height:1;pointer-events:none;">€</div>
+      <div style="font-size:.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px;">Meine Umsatzplanung</div>
       <div id="kpiUmsatzPlan" style="font-family:var(--serif);font-size:1.7rem;font-weight:300;color:#fff;letter-spacing:-.5px;line-height:1;margin-bottom:4px;">–</div>
-      <div id="kpiUmsatzMeta" style="font-size:.68rem;color:#444;">Wird geladen …</div>
-      <div id="kpiUmsatzDate" style="font-size:.6rem;color:#333;margin-top:4px;"></div>
+      <div id="kpiUmsatzMeta" style="font-size:.68rem;color:rgba(255,255,255,.5);">Wird geladen …</div>
+      <div id="kpiUmsatzDate" style="font-size:.6rem;color:rgba(255,255,255,.38);margin-top:4px;"></div>
     </div>
 
   </div>
@@ -586,16 +634,20 @@ footer{margin-top:0;}
 
   </div>
 
-  <!-- ═══ OBJEKTLISTE ═══ -->
-  <div class="objektliste">
-    <div class="ol-header">
+  <!-- ═══ OBJEKTLISTE (einklappbar) ═══ -->
+  <div class="objektliste app-section" id="appsec-objektliste">
+    <div class="ol-header collapsible-head" onclick="toggleAppSection('appsec-objektliste')">
       <div class="ol-title-wrap">
         <div class="ol-eyebrow">Aktueller Bestand</div>
         <div class="ol-title">Objektliste</div>
       </div>
-      <div class="ol-count" id="olCount">–</div>
+      <div class="ol-header-right">
+        <div class="ol-count" id="olCount">–</div>
+        <span class="ol-toggle">▾</span>
+      </div>
     </div>
 
+    <div class="app-section-body">
     <div class="ol-filters">
       <div class="ol-filter has-select">
         <label>Standort</label>
@@ -642,6 +694,26 @@ footer{margin-top:0;}
     <div class="ol-foot">
       <div class="ol-foot-info" id="olFootInfo"></div>
       <div class="ol-pager" id="olPager"></div>
+    </div>
+    </div><!-- /app-section-body -->
+  </div>
+
+  <!-- ═══ RUBRIK: LIZENZKARTE (standardmäßig zugeklappt) ═══ -->
+  <div class="objektkarte app-section collapsed" id="appsec-lizenzkarte" style="margin-top:0;">
+    <div class="ok-header collapsible-head" onclick="toggleAppSection('appsec-lizenzkarte')">
+      <div class="ok-title-wrap">
+        <div class="ok-eyebrow">Standorte im Überblick</div>
+        <div class="ok-title">Lizenzkarte</div>
+      </div>
+      <div class="ok-header-right">
+        <a class="ok-link" href="https://www.google.com/maps/d/u/0/edit?mid=1w0mCTgQwoG11cWyQ6-GQVjEufRsZayU&amp;usp=sharing" target="_blank" rel="noopener" onclick="event.stopPropagation();">In Google Maps öffnen →</a>
+        <span class="ok-toggle">▾</span>
+      </div>
+    </div>
+    <div class="app-section-body">
+      <div class="ok-map-wrap">
+        <iframe src="https://www.google.com/maps/d/embed?mid=1w0mCTgQwoG11cWyQ6-GQVjEufRsZayU" loading="lazy" allowfullscreen title="Lizenzkarte Mittleres Ruhrgebiet"></iframe>
+      </div>
     </div>
   </div>
 
@@ -840,36 +912,36 @@ footer{margin-top:0;}
     <div style="display:grid;grid-template-columns:1fr 2fr;gap:2px;margin-bottom:0;">
 
     <!-- GEBURTSTAGE (1/3) — wie ONE -->
-    <div style="background:var(--dark);padding:26px 28px;display:flex;flex-direction:column;justify-content:space-between;min-height:190px;position:relative;overflow:hidden;">
+    <div style="background:var(--panel);padding:26px 28px;display:flex;flex-direction:column;justify-content:space-between;min-height:190px;position:relative;overflow:hidden;">
       <!-- Hintergrund-Deko -->
       <div style="position:absolute;right:-10px;bottom:-10px;font-size:6rem;opacity:.05;line-height:1;pointer-events:none;">🎂</div>
       <div>
         <div style="font-size:.52rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Nächste Geburtstage</div>
         <div style="font-family:var(--serif);font-size:1.5rem;font-weight:300;color:#fff;letter-spacing:-.3px;margin-bottom:16px;">Im Team</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid #2a2a2a;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.14);">
             <div>
               <div style="font-size:.8rem;font-weight:600;color:#fff;">Julia Steinberg</div>
-              <div style="font-size:.62rem;color:#555;margin-top:2px;">Immobilienberaterin · Bochum</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.55);margin-top:2px;">Immobilienberaterin · Bochum</div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:.82rem;font-weight:700;color:var(--red);">22. Mai</div>
-              <div style="font-size:.58rem;color:#555;margin-top:1px;">in 6 Tagen 🎉</div>
+              <div style="font-size:.82rem;font-weight:700;color:#ff5470;">22. Mai</div>
+              <div style="font-size:.58rem;color:rgba(255,255,255,.55);margin-top:1px;">in 6 Tagen 🎉</div>
             </div>
           </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid #222;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.1);">
             <div>
-              <div style="font-size:.78rem;font-weight:500;color:#888;">Lars Schneider</div>
-              <div style="font-size:.62rem;color:#444;margin-top:2px;">Immobilienberater · Bochum</div>
+              <div style="font-size:.78rem;font-weight:500;color:rgba(255,255,255,.85);">Lars Schneider</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.45);margin-top:2px;">Immobilienberater · Bochum</div>
             </div>
-            <div style="font-size:.78rem;color:#555;font-weight:600;">08. Jun</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.6);font-weight:600;">08. Jun</div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <div>
-              <div style="font-size:.78rem;font-weight:500;color:#888;">Petra Winkler</div>
-              <div style="font-size:.62rem;color:#444;margin-top:2px;">Immobilienberaterin · Hattingen</div>
+              <div style="font-size:.78rem;font-weight:500;color:rgba(255,255,255,.85);">Petra Winkler</div>
+              <div style="font-size:.62rem;color:rgba(255,255,255,.45);margin-top:2px;">Immobilienberaterin · Hattingen</div>
             </div>
-            <div style="font-size:.78rem;color:#555;font-weight:600;">14. Jun</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.6);font-weight:600;">14. Jun</div>
           </div>
         </div>
       </div>
