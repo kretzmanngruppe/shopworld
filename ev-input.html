@@ -53,18 +53,18 @@ body{font-family:var(--sans);background:#0f0f0f;color:#e0e0e0;min-height:100vh;}
 .in-intro-text{font-size:.74rem;color:#999;line-height:1.7;}
 .in-intro-text strong{color:#ccc;font-weight:600;}
 
-/* CARD GRID */
-.in-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
+/* CARD GRID — feste Spaltenbreite & gleiche Zeilenhöhe für absolut einheitliche Kacheln */
+.in-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;align-items:stretch;}
 
-/* GENERIC CARD */
-.in-card{background:#161616;border:1px solid #222;padding:22px 24px;display:flex;flex-direction:column;transition:border-color .2s;}
+/* GENERIC CARD — alle Kacheln exakt gleich hoch */
+.in-card{background:#161616;border:1px solid #222;padding:22px 24px;display:flex;flex-direction:column;transition:border-color .2s;height:490px;overflow:hidden;}
 .in-card:hover{border-color:#2e2e2e;}
-.in-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.in-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-shrink:0;}
 .in-card-icon{width:38px;height:38px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;background:#1e1e1e;border:1px solid #2a2a2a;}
 .in-card-titles{flex:1;min-width:0;}
 .in-card-title{font-family:var(--serif);font-size:1.12rem;font-weight:600;color:#f0f0f0;letter-spacing:-.2px;line-height:1.2;}
 .in-card-sub{font-size:.62rem;color:#555;margin-top:2px;letter-spacing:.3px;}
-.in-card-body{font-size:.72rem;color:#888;line-height:1.65;margin-bottom:16px;flex:1;}
+.in-card-body{font-size:.72rem;color:#888;line-height:1.65;margin-bottom:16px;flex:0 0 auto;overflow:hidden;}
 
 /* STATUS PILL (wie Admin) */
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
@@ -131,7 +131,7 @@ select.in-input{cursor:pointer;}
 .connect-logo{width:30px;height:30px;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0;}
 
 /* LAST SYNC LINE */
-.in-card-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #1c1c1c;margin-top:14px;padding-top:11px;font-size:.58rem;color:#444;}
+.in-card-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #1c1c1c;margin-top:auto;padding-top:11px;font-size:.58rem;color:#444;flex-shrink:0;}
 .in-card-foot .dotline{display:flex;align-items:center;gap:6px;}
 
 @media(max-width:900px){.in-grid{grid-template-columns:1fr;}}
@@ -276,7 +276,6 @@ select.in-input{cursor:pointer;}
               <div class="in-list-label"><span>Zuletzt abgelegt</span><span style="color:#444;">18 Dateien</span></div>
               <div class="in-list-item"><div class="ili-avatar" style="background:var(--red);color:#fff;">EV</div><div class="ili-main"><div class="ili-name">Logo_EV_Ruhr_weiss.svg</div><div class="ili-meta">Logo · 48 KB</div></div><span class="ili-del" onclick="demoToast('Datei entfernt (Demo)')">×</span></div>
               <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">🏞</div><div class="ili-main"><div class="ili-name">Hintergrund_Bergbaumuseum.jpg</div><div class="ili-meta">Hintergrund · 2,4 MB</div></div><span class="ili-del" onclick="demoToast('Datei entfernt (Demo)')">×</span></div>
-              <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">📄</div><div class="ili-main"><div class="ili-name">Briefbogen_CI_2026.pdf</div><div class="ili-meta">Vorlage · 312 KB</div></div><span class="ili-del" onclick="demoToast('Datei entfernt (Demo)')">×</span></div>
             </div>
           </div>
 
@@ -289,7 +288,7 @@ select.in-input{cursor:pointer;}
                 <div class="in-card-sub">Filialen &amp; Lizenzgebiete</div>
               </div>
             </div>
-            <div class="in-card-body">Filialen und Lizenzgebiete mit Koordinaten und Gebietszuschnitt erfassen – Städte, Stadtteile und Landkreise. Grundlage für Karten, Gebietszuordnung und Standortauswertung.</div>
+            <div class="in-card-body">Filialen und Lizenzgebiete mit Gebietszuschnitt erfassen – Grundlage für Karten, Gebietszuordnung und Standortauswertung.</div>
             <div class="in-form">
               <div class="in-form-row">
                 <input class="in-input" placeholder="Standort / Filiale"/>
@@ -299,22 +298,14 @@ select.in-input{cursor:pointer;}
                   <option>Lizenzgebiet</option>
                 </select>
               </div>
-              <div class="in-form-row">
-                <input class="in-input" placeholder="Breitengrad (lat)"/>
-                <input class="in-input" placeholder="Längengrad (lng)"/>
-              </div>
               <input class="in-input" placeholder="Stadt"/>
-              <input class="in-input" placeholder="Stadtteile (kommasepariert)"/>
-              <input class="in-input" placeholder="Landkreis"/>
             </div>
             <button class="in-btn in-btn-primary" onclick="demoToast('Standort gespeichert (Demo)')">+ Standort hinzufügen</button>
             <div class="in-list">
               <div class="in-list-label"><span>Erfasste Standorte</span><span style="color:#444;">4 Filialen · 1 geplant</span></div>
-              <div class="in-list-item"><div class="ili-avatar" style="background:var(--red);color:#fff;">BO</div><div class="ili-main"><div class="ili-name">Bochum <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.4818, 7.2162 · Bochum (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
-              <div class="in-list-item"><div class="ili-avatar" style="background:#4d9ef7;color:#fff;">HA</div><div class="ili-main"><div class="ili-name">Hattingen <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.3990, 7.1858 · Ennepe-Ruhr-Kreis</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
-              <div class="in-list-item"><div class="ili-avatar" style="background:#4ade80;color:#111;">MH</div><div class="ili-main"><div class="ili-name">Mülheim a. d. Ruhr <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.4275, 6.8826 · Mülheim (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
-              <div class="in-list-item"><div class="ili-avatar" style="background:#fbbf24;color:#111;">DU</div><div class="ili-main"><div class="ili-name">Duisburg <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.4344, 6.7623 · Duisburg (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
-              <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">BT</div><div class="ili-main"><div class="ili-name">Bottrop <span class="pill pill-amber" style="margin-left:4px;">Geplant</span></div><div class="ili-meta">51.5235, 6.9226 · Bottrop (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:var(--red);color:#fff;">BO</div><div class="ili-main"><div class="ili-name">Bochum</div><div class="ili-meta">Filiale · Bochum (Stadtkreis)</div></div><span class="pill pill-green">Shop</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#4d9ef7;color:#fff;">HA</div><div class="ili-main"><div class="ili-name">Hattingen</div><div class="ili-meta">Filiale · Ennepe-Ruhr-Kreis</div></div><span class="pill pill-green">Shop</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">BT</div><div class="ili-main"><div class="ili-name">Bottrop</div><div class="ili-meta">Filiale · Bottrop (Stadtkreis)</div></div><span class="pill pill-amber">Geplant</span></div>
             </div>
           </div>
 
