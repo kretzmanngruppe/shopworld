@@ -41,7 +41,8 @@ body{font-family:var(--sans);background:#0f0f0f;color:#e0e0e0;min-height:100vh;}
 .adm-lname{font-family:var(--serif);font-size:.85rem;font-weight:600;color:#fff;letter-spacing:.3px;text-transform:uppercase;}
 .adm-lsub{font-size:.52rem;color:#444;letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
 .adm-nav{display:flex;flex-direction:column;gap:2px;flex:1;}
-.adm-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;color:#666;font-size:.72rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none;background:none;text-align:left;width:100%;}
+.adm-nav-label{font-size:.5rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#333;padding:0 12px;margin:16px 0 6px;}
+.adm-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;color:#666;font-size:.72rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none;background:none;text-align:left;width:100%;text-decoration:none;}
 .adm-nav-item:hover{color:#fff;background:rgba(255,255,255,.04);}
 .adm-nav-item.active{color:var(--red);background:rgba(196,30,58,.1);}
 .adm-nav-item .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
@@ -200,12 +201,17 @@ tr:hover td{background:#161616;}
       <div><div class="adm-lname">Admin</div><div class="adm-lsub">Mittleres Ruhrgebiet</div></div>
     </div>
     <nav class="adm-nav">
+      <div class="adm-nav-label">Auswertung</div>
       <button class="adm-nav-item active" onclick="showView('overview')" id="nav_overview"><span class="dot"></span>Übersicht</button>
       <button class="adm-nav-item" onclick="showView('orders')" id="nav_orders"><span class="dot"></span>Brand-Shop</button>
       <button class="adm-nav-item" onclick="showView('finanz')" id="nav_finanz"><span class="dot"></span>Finanzierung</button>
       <button class="adm-nav-item" onclick="showView('weekly')" id="nav_weekly"><span class="dot"></span>Weekly Check-In</button>
       <button class="adm-nav-item" onclick="showView('social')" id="nav_social"><span class="dot"></span>Social Media</button>
       <button class="adm-nav-item" onclick="showView('one')" id="nav_one"><span class="dot"></span>ONE</button>
+      <div class="adm-nav-label">Kommunikation</div>
+      <a class="adm-nav-item" href="ev-inbox.html"><span class="dot"></span>Inbox / Ticketsystem</a>
+      <div class="adm-nav-label">Datenpflege</div>
+      <a class="adm-nav-item" href="ev-input.html"><span class="dot"></span>Daten-Input</a>
     </nav>
     <div class="adm-meta">
       <div class="adm-user" id="admUserLabel"></div>

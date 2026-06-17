@@ -188,6 +188,8 @@ select.in-input{cursor:pointer;}
     <nav class="adm-nav">
       <div class="adm-nav-label">Auswertung</div>
       <a class="adm-nav-item" href="ev-admin.html"><span class="dot"></span>Admin-Dashboard</a>
+      <div class="adm-nav-label">Kommunikation</div>
+      <a class="adm-nav-item" href="ev-inbox.html"><span class="dot"></span>Inbox / Ticketsystem</a>
       <div class="adm-nav-label">Datenpflege</div>
       <button class="adm-nav-item active"><span class="dot"></span>Daten-Input</button>
     </nav>
@@ -289,6 +291,68 @@ select.in-input{cursor:pointer;}
               <div class="in-list-item"><div class="ili-avatar" style="background:#1A2B5C;color:#fff;">PH</div><div class="ili-main"><div class="ili-name">PriceHubble</div><div class="ili-meta">pricehubble.com</div></div><span class="ili-del" onclick="demoToast('Link entfernt (Demo)')">×</span></div>
               <div class="in-list-item"><div class="ili-avatar" style="background:#E8172B;color:#fff;">IS</div><div class="ili-main"><div class="ili-name">ImmoScout24</div><div class="ili-meta">immobilienscout24.de</div></div><span class="ili-del" onclick="demoToast('Link entfernt (Demo)')">×</span></div>
               <div class="in-list-item"><div class="ili-avatar" style="background:#006633;color:#fff;">BO</div><div class="ili-main"><div class="ili-name">BORIS NRW</div><div class="ili-meta">boris.nrw.de</div></div><span class="ili-del" onclick="demoToast('Link entfernt (Demo)')">×</span></div>
+            </div>
+          </div>
+
+          <!-- Dokumente & Grafiken -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🖼️</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Dokumente &amp; Grafiken</div>
+                <div class="in-card-sub">Logos · Hintergründe · Vorlagen</div>
+              </div>
+            </div>
+            <div class="in-card-body">Häufig verwendete Dateien zentral ablegen – Logos, Hintergrundbilder, Brief- und Exposé-Vorlagen. Stehen anschließend in den Apps und Generatoren zur Verfügung.</div>
+            <div class="dropzone" onclick="demoToast('Datei-Auswahl (Demo)')" ondragover="dz(event,1)" ondragleave="dz(event,0)" ondrop="dz(event,0,1)">
+              <div class="dropzone-icon">🖼️</div>
+              <div class="dropzone-text"><strong>Datei hier ablegen</strong> oder klicken</div>
+              <div class="dropzone-hint">PNG · JPG · SVG · PDF · max. 25 MB</div>
+            </div>
+            <button class="in-btn in-btn-primary" onclick="demoToast('Datei hochgeladen (Demo)')">+ Datei hochladen</button>
+            <div class="in-list">
+              <div class="in-list-label"><span>Zuletzt abgelegt</span><span style="color:#444;">18 Dateien</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:var(--red);color:#fff;">EV</div><div class="ili-main"><div class="ili-name">Logo_EV_Ruhr_weiss.svg</div><div class="ili-meta">Logo · 48 KB</div></div><span class="ili-del" onclick="demoToast('Datei entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">🏞</div><div class="ili-main"><div class="ili-name">Hintergrund_Bergbaumuseum.jpg</div><div class="ili-meta">Hintergrund · 2,4 MB</div></div><span class="ili-del" onclick="demoToast('Datei entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">📄</div><div class="ili-main"><div class="ili-name">Briefbogen_CI_2026.pdf</div><div class="ili-meta">Vorlage · 312 KB</div></div><span class="ili-del" onclick="demoToast('Datei entfernt (Demo)')">×</span></div>
+            </div>
+          </div>
+
+          <!-- Standortdaten pflegen -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">📍</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Standortdaten pflegen</div>
+                <div class="in-card-sub">Filialen &amp; Lizenzgebiete</div>
+              </div>
+            </div>
+            <div class="in-card-body">Filialen und Lizenzgebiete mit Koordinaten und Gebietszuschnitt erfassen – Städte, Stadtteile und Landkreise. Grundlage für Karten, Gebietszuordnung und Standortauswertung.</div>
+            <div class="in-form">
+              <div class="in-form-row">
+                <input class="in-input" placeholder="Standort / Filiale"/>
+                <select class="in-input">
+                  <option>Typ …</option>
+                  <option>Filiale (Shop)</option>
+                  <option>Lizenzgebiet</option>
+                </select>
+              </div>
+              <div class="in-form-row">
+                <input class="in-input" placeholder="Breitengrad (lat)"/>
+                <input class="in-input" placeholder="Längengrad (lng)"/>
+              </div>
+              <input class="in-input" placeholder="Stadt"/>
+              <input class="in-input" placeholder="Stadtteile (kommasepariert)"/>
+              <input class="in-input" placeholder="Landkreis"/>
+            </div>
+            <button class="in-btn in-btn-primary" onclick="demoToast('Standort gespeichert (Demo)')">+ Standort hinzufügen</button>
+            <div class="in-list">
+              <div class="in-list-label"><span>Erfasste Standorte</span><span style="color:#444;">4 Filialen · 1 geplant</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:var(--red);color:#fff;">BO</div><div class="ili-main"><div class="ili-name">Bochum <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.4818, 7.2162 · Bochum (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#4d9ef7;color:#fff;">HA</div><div class="ili-main"><div class="ili-name">Hattingen <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.3990, 7.1858 · Ennepe-Ruhr-Kreis</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#4ade80;color:#111;">MH</div><div class="ili-main"><div class="ili-name">Mülheim a. d. Ruhr <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.4275, 6.8826 · Mülheim (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#fbbf24;color:#111;">DU</div><div class="ili-main"><div class="ili-name">Duisburg <span class="pill pill-green" style="margin-left:4px;">Shop</span></div><div class="ili-meta">51.4344, 6.7623 · Duisburg (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#2a2a2a;color:#888;">BT</div><div class="ili-main"><div class="ili-name">Bottrop <span class="pill pill-amber" style="margin-left:4px;">Geplant</span></div><div class="ili-meta">51.5235, 6.9226 · Bottrop (Stadtkreis)</div></div><span class="ili-del" onclick="demoToast('Standort entfernt (Demo)')">×</span></div>
             </div>
           </div>
 
@@ -438,6 +502,31 @@ select.in-input{cursor:pointer;}
         </div>
         <div class="in-grid">
 
+          <!-- Mailaccount -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">✉️</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Mailaccount anbinden</div>
+                <div class="in-card-sub">Versand &amp; Posteingang</div>
+              </div>
+            </div>
+            <div class="in-card-body">Zentrales Postfach verbinden, damit Apps wie Finanzierungsmanager und Social-Media-Manager Anfragen direkt versenden und Eingänge zugeordnet werden können.</div>
+            <div class="connect-status">
+              <div class="connect-logo" style="color:#C41E3A;">@</div>
+              <span class="pill pill-green">Verbunden</span>
+              <span style="font-size:.6rem;color:#555;">gf@engelvoelkers.ruhr · IMAP/SMTP</span>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Verbindung getestet (Demo)')">Test</button>
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Verbindung getrennt (Demo)')">Trennen</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span> Versand aktiv</div>
+              <span>SPF · DKIM ok</span>
+            </div>
+          </div>
+
           <!-- Kalender -->
           <div class="in-card">
             <div class="in-card-head">
@@ -485,6 +574,43 @@ select.in-input{cursor:pointer;}
             <div class="in-card-foot">
               <div class="dotline"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;"></span> 1 Ordner ausstehend</div>
               <span>Vorlagen · Exposés</span>
+            </div>
+          </div>
+
+          <!-- Portal-Schnittstellenmanager -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🌐</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Immobilienportale</div>
+                <div class="in-card-sub">Schnittstellenmanager</div>
+              </div>
+            </div>
+            <div class="in-card-body">Verteilung der Objekte an die angebundenen Immobilienportale steuern. Status je Portal überwachen und Veröffentlichungen zentral auslösen.</div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 11px;background:#131313;border:1px solid #1e1e1e;border-radius:4px;">
+                <div class="connect-logo" style="width:26px;height:26px;background:#E8172B;color:#fff;font-size:.62rem;">IS</div>
+                <span style="flex:1;font-size:.7rem;color:#bbb;">ImmoScout24</span>
+                <span class="pill pill-green">Aktiv</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 11px;background:#131313;border:1px solid #1e1e1e;border-radius:4px;">
+                <div class="connect-logo" style="width:26px;height:26px;background:#F6A800;color:#111;font-size:.62rem;">IW</div>
+                <span style="flex:1;font-size:.7rem;color:#bbb;">Immowelt</span>
+                <span class="pill pill-green">Aktiv</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 11px;background:#131313;border:1px solid #1e1e1e;border-radius:4px;">
+                <div class="connect-logo" style="width:26px;height:26px;background:#2D2D2D;color:#7ED957;font-size:.62rem;">KA</div>
+                <span style="flex:1;font-size:.7rem;color:#bbb;">Kleinanzeigen</span>
+                <span class="pill pill-amber">Token erneuern</span>
+              </div>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Status aktualisiert (Demo)')">↻ Status</button>
+              <button class="in-btn in-btn-primary" onclick="demoToast('Veröffentlichung ausgelöst (Demo)')">Veröffentlichen</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span> 2 von 3 aktiv</div>
+              <span>312 Objekte synchron</span>
             </div>
           </div>
 

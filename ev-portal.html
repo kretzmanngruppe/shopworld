@@ -53,6 +53,7 @@ header{
 .hlogo-text{display:flex;flex-direction:column;}
 .hlogo-loc{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;}
 .hlogo-shopworld{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--dark);letter-spacing:.3px;}
+.htestenv{font-family:var(--sans);font-size:.5rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#b0b0b0;border:1px solid #e0e0e0;border-radius:3px;padding:1px 6px;margin-left:8px;vertical-align:middle;white-space:nowrap;}
 .hright{display:flex;align-items:center;gap:16px;}
 .hdate{font-size:.62rem;font-weight:500;letter-spacing:.8px;color:#bbb;}
 .huser{display:flex;align-items:center;gap:10px;}
@@ -345,7 +346,7 @@ footer{margin-top:0;}
     <div class="hlogo-divider"></div>
     <div class="hlogo-text">
       <div class="hlogo-loc">Mittleres Ruhrgebiet</div>
-      <div class="hlogo-shopworld">Shopworld</div>
+      <div class="hlogo-shopworld">Shopworld <span class="htestenv">Testumgebung · Demo</span></div>
     </div>
   </div>
   <div class="hright">
@@ -364,6 +365,10 @@ footer{margin-top:0;}
     <a class="hadmin" href="ev-admin.html" title="Admin-Konsole">
       <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
       Admin
+    </a>
+    <a class="hadmin" href="ev-input.html" title="Daten-Input">
+      <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12V3m0 0L8 7m4-4l4 4"/></svg>
+      Input
     </a>
     <button class="hlogout" onclick="doLogout()">Abmelden</button>
   </div>
