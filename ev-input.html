@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Daten-Input | Engel &amp; Völkers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="ev-supabase.js"></script>
+<style>
+:root{--red:#C41E3A;--dark:#1a1a1a;--mid:#e0e0e0;--light:#f7f6f4;--white:#fff;
+  --green:#2d7a4f;--amber:#c17b00;--blue:#1565c0;--purple:#6d28d9;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Raleway','Segoe UI',Arial,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:#0f0f0f;color:#e0e0e0;min-height:100vh;}
+
+/* LOGIN */
+#adminLogin{position:fixed;inset:0;background:#0f0f0f;display:flex;align-items:center;justify-content:center;z-index:200;}
+.al-panel{width:360px;padding:48px 40px;background:#1a1a1a;border-top:2px solid var(--red);}
+.al-logo{display:flex;align-items:center;gap:12px;margin-bottom:36px;}
+.al-box{width:34px;height:34px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:.85rem;}
+.al-name{font-family:var(--serif);font-size:1rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#fff;}
+.al-sub{font-size:.55rem;color:#555;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.al-title{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:#fff;margin-bottom:6px;}
+.al-hint{font-size:.68rem;color:#555;margin-bottom:28px;letter-spacing:.3px;}
+.al-field{margin-bottom:16px;}
+.al-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin-bottom:6px;}
+.al-field input{width:100%;background:transparent;border:none;border-bottom:1.5px solid #333;padding:10px 0;color:#fff;font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
+.al-field input:focus{border-bottom-color:var(--red);}
+.al-btn{width:100%;padding:13px;background:var(--red);color:#fff;border:none;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:background .2s;}
+.al-btn:hover{background:#a01830;}
+.al-err{color:#ff6b6b;font-size:.72rem;margin-top:12px;display:none;}
+.al-demo-note{font-size:.62rem;color:#444;margin-top:20px;line-height:1.6;text-align:center;border-top:1px solid #222;padding-top:16px;}
+
+/* LAYOUT */
+.admin-app{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+
+/* SIDEBAR */
+.adm-sidebar{background:#111;padding:28px 20px;display:flex;flex-direction:column;border-right:1px solid #222;}
+.adm-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #222;}
+.adm-ev{width:28px;height:28px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:.78rem;flex-shrink:0;}
+.adm-lname{font-family:var(--serif);font-size:.85rem;font-weight:600;color:#fff;letter-spacing:.3px;text-transform:uppercase;}
+.adm-lsub{font-size:.52rem;color:#444;letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.adm-nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+.adm-nav-label{font-size:.5rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#333;padding:0 12px;margin:16px 0 6px;}
+.adm-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;color:#666;font-size:.72rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none;background:none;text-align:left;width:100%;text-decoration:none;}
+.adm-nav-item:hover{color:#fff;background:rgba(255,255,255,.04);}
+.adm-nav-item.active{color:var(--red);background:rgba(196,30,58,.1);}
+.adm-nav-item .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.adm-meta{margin-top:auto;padding-top:20px;border-top:1px solid #222;}
+.adm-user{font-size:.68rem;color:#555;}
+.adm-logout{font-size:.58rem;color:#555;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:8px;background:none;border:none;padding:0;font-family:var(--sans);}
+.adm-logout:hover{color:var(--red);}
+
+/* MAIN */
+.adm-main{display:flex;flex-direction:column;overflow:auto;}
+.adm-topbar{padding:18px 32px;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between;background:#111;position:sticky;top:0;z-index:10;}
+.adm-topbar-title{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:#fff;}
+.adm-topbar-meta{font-size:.62rem;color:#444;letter-spacing:.5px;}
+.adm-content{padding:32px;flex:1;}
+
+/* SECTION HEADERS */
+.in-sec{margin-bottom:40px;}
+.in-sec-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #1e1e1e;}
+.in-sec-title{font-size:.62rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#666;display:flex;align-items:center;gap:10px;}
+.in-sec-title .accent{color:var(--red);}
+.in-sec-desc{font-size:.62rem;color:#444;margin-left:auto;}
+
+/* INTRO BANNER */
+.in-intro{background:#161616;border:1px solid #222;border-left:2px solid var(--red);padding:18px 22px;margin-bottom:36px;display:flex;align-items:flex-start;gap:14px;}
+.in-intro-icon{font-size:1.2rem;line-height:1;margin-top:2px;}
+.in-intro-text{font-size:.74rem;color:#999;line-height:1.7;}
+.in-intro-text strong{color:#ccc;font-weight:600;}
+
+/* CARD GRID */
+.in-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
+
+/* GENERIC CARD */
+.in-card{background:#161616;border:1px solid #222;padding:22px 24px;display:flex;flex-direction:column;transition:border-color .2s;}
+.in-card:hover{border-color:#2e2e2e;}
+.in-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.in-card-icon{width:38px;height:38px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;background:#1e1e1e;border:1px solid #2a2a2a;}
+.in-card-titles{flex:1;min-width:0;}
+.in-card-title{font-family:var(--serif);font-size:1.12rem;font-weight:600;color:#f0f0f0;letter-spacing:-.2px;line-height:1.2;}
+.in-card-sub{font-size:.62rem;color:#555;margin-top:2px;letter-spacing:.3px;}
+.in-card-body{font-size:.72rem;color:#888;line-height:1.65;margin-bottom:16px;flex:1;}
+
+/* STATUS PILL (wie Admin) */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;font-size:.55rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+.pill::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.pill-green{background:rgba(45,122,79,.15);color:#4ade80;}
+.pill-amber{background:rgba(193,123,0,.15);color:#fbbf24;}
+.pill-blue{background:rgba(21,101,192,.15);color:#60a5fa;}
+.pill-red{background:rgba(196,30,58,.15);color:#f87171;}
+.pill-gray{background:rgba(100,100,100,.15);color:#888;}
+
+/* CSV FORMAT BOX */
+.csv-format{background:#0d0d0d;border:1px solid #1e1e1e;border-radius:4px;padding:11px 13px;margin-bottom:14px;}
+.csv-format-label{font-size:.5rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#444;margin-bottom:6px;}
+.csv-cols{display:flex;flex-wrap:wrap;gap:4px;}
+.csv-col{font-family:monospace;font-size:.62rem;color:#7a7a7a;background:#1a1a1a;border:1px solid #262626;padding:2px 7px;border-radius:3px;white-space:nowrap;}
+
+/* DROPZONE */
+.dropzone{border:1.5px dashed #2e2e2e;border-radius:6px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;background:#131313;margin-bottom:14px;}
+.dropzone:hover{border-color:var(--red);background:#171314;}
+.dropzone.drag{border-color:var(--red);background:rgba(196,30,58,.06);}
+.dropzone-icon{font-size:1.5rem;margin-bottom:8px;opacity:.6;}
+.dropzone-text{font-size:.72rem;color:#888;margin-bottom:3px;}
+.dropzone-text strong{color:#bbb;}
+.dropzone-hint{font-size:.58rem;color:#444;letter-spacing:.3px;}
+
+/* FILE ROW (uploaded preview) */
+.file-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#131313;border:1px solid #1e1e1e;border-radius:4px;margin-bottom:6px;}
+.file-row-icon{font-size:.85rem;}
+.file-row-name{font-size:.68rem;color:#bbb;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-row-meta{font-size:.58rem;color:#555;flex-shrink:0;}
+
+/* BUTTONS */
+.in-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;font-family:var(--sans);transition:all .2s;width:100%;}
+.in-btn-primary{background:var(--red);color:#fff;}
+.in-btn-primary:hover{background:#a01830;}
+.in-btn-ghost{background:transparent;border:1px solid #333;color:#888;}
+.in-btn-ghost:hover{border-color:var(--red);color:var(--red);}
+.in-btn-row{display:flex;gap:8px;}
+.in-link{font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#555;text-decoration:none;cursor:pointer;transition:color .2s;}
+.in-link:hover{color:var(--red);}
+
+/* MINI FORM (Stammdaten) */
+.in-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.in-form-row{display:flex;gap:8px;}
+.in-input{flex:1;min-width:0;background:#0d0d0d;border:1px solid #262626;padding:9px 11px;color:#ddd;font-family:var(--sans);font-size:.72rem;outline:none;transition:border-color .2s;}
+.in-input:focus{border-color:var(--red);}
+.in-input::placeholder{color:#444;}
+select.in-input{cursor:pointer;}
+
+/* EXISTING ITEM LIST */
+.in-list{border-top:1px solid #1e1e1e;margin-top:4px;padding-top:12px;}
+.in-list-label{font-size:.5rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#444;margin-bottom:8px;display:flex;justify-content:space-between;}
+.in-list-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #161616;font-size:.7rem;}
+.in-list-item:last-child{border-bottom:none;}
+.ili-avatar{width:24px;height:24px;border-radius:50%;background:#1e1e1e;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#888;flex-shrink:0;font-family:var(--serif);}
+.ili-main{flex:1;min-width:0;overflow:hidden;}
+.ili-name{color:#ccc;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ili-meta{font-size:.58rem;color:#555;}
+.ili-del{color:#444;cursor:pointer;font-size:.8rem;line-height:1;transition:color .2s;flex-shrink:0;}
+.ili-del:hover{color:var(--red);}
+
+/* CONNECT CARD STATUS */
+.connect-status{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.connect-logo{width:30px;height:30px;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0;}
+
+/* LAST SYNC LINE */
+.in-card-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #1c1c1c;margin-top:14px;padding-top:11px;font-size:.58rem;color:#444;}
+.in-card-foot .dotline{display:flex;align-items:center;gap:6px;}
+
+@media(max-width:900px){.in-grid{grid-template-columns:1fr;}}
+@media(max-width:700px){.admin-app{grid-template-columns:1fr;}.adm-sidebar{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="adminLogin">
+  <div class="al-panel">
+    <div class="al-logo">
+      <div class="al-box">E&amp;V</div>
+      <div><div class="al-name">Engel &amp; Völkers</div><div class="al-sub">Daten-Input · Backoffice</div></div>
+    </div>
+    <div class="al-title">Daten-Input</div>
+    <div class="al-hint">Technischer Bereich · nur für Backoffice &amp; Administration</div>
+    <div class="al-field"><label>E-Mail-Adresse</label><input type="email" id="alEmail" placeholder="backoffice@engelvoelkers.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="al-field"><label>Passwort</label><input type="password" id="alPw" placeholder="Passwort" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <button class="al-btn" id="alBtn" onclick="doLogin()">Anmelden</button>
+    <div class="al-err" id="alErr"></div>
+    <div class="al-demo-note">
+      <strong style="color:#555;">Demo-Modus:</strong><br/>
+      beliebige E-Mail + Passwort <code style="color:#666;">Sommeranfang</code>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="admin-app" id="adminApp" style="display:none;">
+  <aside class="adm-sidebar">
+    <div class="adm-logo">
+      <div class="adm-ev">E&amp;V</div>
+      <div><div class="adm-lname">Konsole</div><div class="adm-lsub">Mittleres Ruhrgebiet</div></div>
+    </div>
+    <nav class="adm-nav">
+      <div class="adm-nav-label">Auswertung</div>
+      <a class="adm-nav-item" href="ev-admin.html"><span class="dot"></span>Admin-Dashboard</a>
+      <div class="adm-nav-label">Datenpflege</div>
+      <button class="adm-nav-item active"><span class="dot"></span>Daten-Input</button>
+    </nav>
+    <div class="adm-meta">
+      <div class="adm-user" id="admUserLabel"></div>
+      <button class="adm-logout" onclick="doLogout()">Abmelden</button>
+    </div>
+  </aside>
+
+  <main class="adm-main">
+    <div class="adm-topbar">
+      <div>
+        <div class="adm-topbar-title">Daten-Input</div>
+        <div class="adm-topbar-meta">Stammdatenpflege · CSV-Uploads · Integrationen — Engel &amp; Völkers Mittleres Ruhrgebiet</div>
+      </div>
+      <button class="adm-refresh" onclick="window.location.href='ev-admin.html'" style="font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#555;cursor:pointer;background:none;border:1px solid #333;padding:6px 14px;">↗ Zum Dashboard</button>
+    </div>
+
+    <div class="adm-content">
+
+      <!-- INTRO -->
+      <div class="in-intro">
+        <div class="in-intro-icon">🛈</div>
+        <div class="in-intro-text">
+          Da sich nicht alle operativen Engel-&amp;-Völkers-Systeme direkt anbinden lassen, werden Daten hier über <strong>standardisierte Uploads</strong> eingespielt. Das Backoffice-Team exportiert aus den operativen Systemen, bringt die Daten in das jeweils vorgegebene <strong>CSV-Standardformat</strong> und lädt sie in der passenden Kachel hoch. Stammdaten wie Mitarbeiter und Links werden direkt hier gepflegt.
+        </div>
+      </div>
+
+      <!-- ═══ STAMMDATEN ═══ -->
+      <div class="in-sec">
+        <div class="in-sec-head">
+          <div class="in-sec-title"><span class="accent">●</span> Stammdaten pflegen</div>
+          <div class="in-sec-desc">Direkte Eingabe · keine Datei nötig</div>
+        </div>
+        <div class="in-grid">
+
+          <!-- Mitarbeiter anlegen -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">👤</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Mitarbeiter anlegen</div>
+                <div class="in-card-sub">Berater &amp; Backoffice · Stammdaten</div>
+              </div>
+            </div>
+            <div class="in-card-body">Neue Teammitglieder mit Name, Rolle, Standort und Kontaktdaten erfassen. Diese erscheinen anschließend im Portal, im Ranking und in den Auswahllisten.</div>
+            <div class="in-form">
+              <div class="in-form-row">
+                <input class="in-input" placeholder="Vorname"/>
+                <input class="in-input" placeholder="Nachname"/>
+              </div>
+              <input class="in-input" placeholder="E-Mail-Adresse"/>
+              <div class="in-form-row">
+                <select class="in-input">
+                  <option>Rolle wählen …</option>
+                  <option>Immobilienberater</option>
+                  <option>Backoffice</option>
+                  <option>Geschäftsführung</option>
+                </select>
+                <select class="in-input">
+                  <option>Standort …</option>
+                  <option>Bochum</option>
+                  <option>Hattingen</option>
+                  <option>Duisburg</option>
+                  <option>Mülheim</option>
+                </select>
+              </div>
+            </div>
+            <button class="in-btn in-btn-primary" onclick="demoToast('Mitarbeiter angelegt (Demo)')">+ Mitarbeiter hinzufügen</button>
+            <div class="in-list">
+              <div class="in-list-label"><span>Zuletzt angelegt</span><span style="color:#444;">24 gesamt</span></div>
+              <div class="in-list-item"><div class="ili-avatar">LB</div><div class="ili-main"><div class="ili-name">Lina Backes</div><div class="ili-meta">Immobilienberater · Duisburg</div></div><span class="ili-del" onclick="demoToast('Eintrag entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar">MP</div><div class="ili-main"><div class="ili-name">Meriç Parlak</div><div class="ili-meta">Immobilienberater · Bochum</div></div><span class="ili-del" onclick="demoToast('Eintrag entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar">JL</div><div class="ili-main"><div class="ili-name">Jana Leonov</div><div class="ili-meta">Immobilienberater · Bochum</div></div><span class="ili-del" onclick="demoToast('Eintrag entfernt (Demo)')">×</span></div>
+            </div>
+          </div>
+
+          <!-- Relevante Links anlegen -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🔗</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Relevante Links anlegen</div>
+                <div class="in-card-sub">Quicklinks fürs Portal</div>
+              </div>
+            </div>
+            <div class="in-card-body">Externe Tools und Behördenportale als Quicklink hinterlegen. Diese erscheinen für die Berater in der Quicklink-Leiste der Shopworld-Startseite.</div>
+            <div class="in-form">
+              <input class="in-input" placeholder="Bezeichnung (z. B. PriceHubble)"/>
+              <input class="in-input" placeholder="URL (https://…)"/>
+              <div class="in-form-row">
+                <input class="in-input" placeholder="Kürzel (z. B. PH)"/>
+                <input class="in-input" type="text" placeholder="Farbe (#1A2B5C)" value="#1A2B5C"/>
+              </div>
+            </div>
+            <button class="in-btn in-btn-primary" onclick="demoToast('Link gespeichert (Demo)')">+ Link hinzufügen</button>
+            <div class="in-list">
+              <div class="in-list-label"><span>Aktive Quicklinks</span><span style="color:#444;">7 gesamt</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#1A2B5C;color:#fff;">PH</div><div class="ili-main"><div class="ili-name">PriceHubble</div><div class="ili-meta">pricehubble.com</div></div><span class="ili-del" onclick="demoToast('Link entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#E8172B;color:#fff;">IS</div><div class="ili-main"><div class="ili-name">ImmoScout24</div><div class="ili-meta">immobilienscout24.de</div></div><span class="ili-del" onclick="demoToast('Link entfernt (Demo)')">×</span></div>
+              <div class="in-list-item"><div class="ili-avatar" style="background:#006633;color:#fff;">BO</div><div class="ili-main"><div class="ili-name">BORIS NRW</div><div class="ili-meta">boris.nrw.de</div></div><span class="ili-del" onclick="demoToast('Link entfernt (Demo)')">×</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ CSV-UPLOADS ═══ -->
+      <div class="in-sec">
+        <div class="in-sec-head">
+          <div class="in-sec-title"><span class="accent">●</span> CSV-Uploads</div>
+          <div class="in-sec-desc">Standardformat · Export aus operativen Systemen</div>
+        </div>
+        <div class="in-grid">
+
+          <!-- Objektliste -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🏠</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Objektliste</div>
+                <div class="in-card-sub">Aktueller Bestand · alle Standorte</div>
+              </div>
+            </div>
+            <div class="in-card-body">Aktuelle Vermarktungsobjekte inkl. Status, Preis und zuständigem Berater. Speist Objektauswahl, Statuswechsel und Auswertungen.</div>
+            <div class="csv-format">
+              <div class="csv-format-label">Erwartete Spalten</div>
+              <div class="csv-cols">
+                <span class="csv-col">objekt_id</span><span class="csv-col">adresse</span><span class="csv-col">plz</span><span class="csv-col">objektart</span><span class="csv-col">kaufpreis</span><span class="csv-col">status</span><span class="csv-col">berater</span><span class="csv-col">standort</span>
+              </div>
+            </div>
+            <div class="dropzone" onclick="demoToast('Datei-Auswahl (Demo)')" ondragover="dz(event,1)" ondragleave="dz(event,0)" ondrop="dz(event,0,1)">
+              <div class="dropzone-icon">📄</div>
+              <div class="dropzone-text"><strong>CSV hier ablegen</strong> oder klicken</div>
+              <div class="dropzone-hint">objektliste_export.csv · max. 10 MB</div>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Vorlage geladen (Demo)')">↓ Vorlage</button>
+              <button class="in-btn in-btn-primary" onclick="demoToast('Import gestartet (Demo)')">Importieren</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span class="pill pill-green">Aktuell</span></div>
+              <span>Letzter Import: heute, 08:14 · 312 Objekte</span>
+            </div>
+          </div>
+
+          <!-- Brand-Shop Artikelliste -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🛍️</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Brand-Shop Artikelliste</div>
+                <div class="in-card-sub">Werbemittel-Katalog</div>
+              </div>
+            </div>
+            <div class="in-card-body">Artikelstamm des Brand-Shops mit Preisen, Kategorien und Budgetrelevanz. Bestimmt das Sortiment der Werbemittel-Bestell-App.</div>
+            <div class="csv-format">
+              <div class="csv-format-label">Erwartete Spalten</div>
+              <div class="csv-cols">
+                <span class="csv-col">artikel_id</span><span class="csv-col">bezeichnung</span><span class="csv-col">kategorie</span><span class="csv-col">einzelpreis</span><span class="csv-col">einheit</span><span class="csv-col">budgetrelevant</span><span class="csv-col">aktiv</span>
+              </div>
+            </div>
+            <div class="dropzone" onclick="demoToast('Datei-Auswahl (Demo)')" ondragover="dz(event,1)" ondragleave="dz(event,0)" ondrop="dz(event,0,1)">
+              <div class="dropzone-icon">📄</div>
+              <div class="dropzone-text"><strong>CSV hier ablegen</strong> oder klicken</div>
+              <div class="dropzone-hint">artikelliste_brandshop.csv · max. 10 MB</div>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Vorlage geladen (Demo)')">↓ Vorlage</button>
+              <button class="in-btn in-btn-primary" onclick="demoToast('Import gestartet (Demo)')">Importieren</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span class="pill pill-amber">Prüfen</span></div>
+              <span>Letzter Import: vor 6 Tagen · 110 Artikel</span>
+            </div>
+          </div>
+
+          <!-- Compliance -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🛡️</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Compliance</div>
+                <div class="in-card-sub">GwG · KYC/AML · Nachweise</div>
+              </div>
+            </div>
+            <div class="in-card-body">Prüflisten und Nachweise für Geldwäscheprävention und Legitimation. Grundlage der Compliance-Auswertungen im GF-Bereich.</div>
+            <div class="csv-format">
+              <div class="csv-format-label">Erwartete Spalten</div>
+              <div class="csv-cols">
+                <span class="csv-col">vorgang_id</span><span class="csv-col">objekt_id</span><span class="csv-col">kunde</span><span class="csv-col">pruefart</span><span class="csv-col">status</span><span class="csv-col">datum</span><span class="csv-col">bearbeiter</span>
+              </div>
+            </div>
+            <div class="dropzone" onclick="demoToast('Datei-Auswahl (Demo)')" ondragover="dz(event,1)" ondragleave="dz(event,0)" ondrop="dz(event,0,1)">
+              <div class="dropzone-icon">📄</div>
+              <div class="dropzone-text"><strong>CSV hier ablegen</strong> oder klicken</div>
+              <div class="dropzone-hint">compliance_export.csv · max. 10 MB</div>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Vorlage geladen (Demo)')">↓ Vorlage</button>
+              <button class="in-btn in-btn-primary" onclick="demoToast('Import gestartet (Demo)')">Importieren</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span class="pill pill-gray">Kein Import</span></div>
+              <span>Noch keine Datei hochgeladen</span>
+            </div>
+          </div>
+
+          <!-- Controlling -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">📊</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Controlling</div>
+                <div class="in-card-sub">Abschlüsse · Provisionen · KPIs</div>
+              </div>
+            </div>
+            <div class="in-card-body">Abschluss- und Provisionsdaten für die betriebswirtschaftliche Auswertung. Speist Umsatzkurven, Rankings und Standortvergleiche.</div>
+            <div class="csv-format">
+              <div class="csv-format-label">Erwartete Spalten</div>
+              <div class="csv-cols">
+                <span class="csv-col">abschluss_id</span><span class="csv-col">datum</span><span class="csv-col">objekt_id</span><span class="csv-col">berater</span><span class="csv-col">kaufpreis</span><span class="csv-col">provision</span><span class="csv-col">standort</span>
+              </div>
+            </div>
+            <div class="dropzone" onclick="demoToast('Datei-Auswahl (Demo)')" ondragover="dz(event,1)" ondragleave="dz(event,0)" ondrop="dz(event,0,1)">
+              <div class="dropzone-icon">📄</div>
+              <div class="dropzone-text"><strong>CSV hier ablegen</strong> oder klicken</div>
+              <div class="dropzone-hint">controlling_export.csv · max. 10 MB</div>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Vorlage geladen (Demo)')">↓ Vorlage</button>
+              <button class="in-btn in-btn-primary" onclick="demoToast('Import gestartet (Demo)')">Importieren</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span class="pill pill-green">Aktuell</span></div>
+              <span>Letzter Import: gestern, 17:42 · 38 Abschlüsse</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ INTEGRATIONEN ═══ -->
+      <div class="in-sec">
+        <div class="in-sec-head">
+          <div class="in-sec-title"><span class="accent">●</span> Verbindungen &amp; Integrationen</div>
+          <div class="in-sec-desc">Externe Dienste anbinden</div>
+        </div>
+        <div class="in-grid">
+
+          <!-- Kalender -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">📅</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Kalender anbinden</div>
+                <div class="in-card-sub">Termine &amp; Events fürs Portal</div>
+              </div>
+            </div>
+            <div class="in-card-body">Team-Kalender verbinden, damit Meetings, Events und Geburtstage automatisch in der Terminrubrik der Shopworld erscheinen.</div>
+            <div class="connect-status">
+              <div class="connect-logo" style="color:#1a73e8;">G</div>
+              <span class="pill pill-green">Verbunden</span>
+              <span style="font-size:.6rem;color:#555;">Google Kalender · Team Ruhr</span>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Synchronisierung (Demo)')">↻ Sync</button>
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Verbindung getrennt (Demo)')">Trennen</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span> Letzte Sync: vor 12 Min.</div>
+              <span>3 Termine</span>
+            </div>
+          </div>
+
+          <!-- Google Drive -->
+          <div class="in-card">
+            <div class="in-card-head">
+              <div class="in-card-icon">🗂️</div>
+              <div class="in-card-titles">
+                <div class="in-card-title">Google-Drive-Freigaben</div>
+                <div class="in-card-sub">Dokumente &amp; Vorlagen</div>
+              </div>
+            </div>
+            <div class="in-card-body">Freigegebene Drive-Ordner anbinden, damit Vorlagen, Exposé-Material und Dokumente zentral verfügbar sind.</div>
+            <div class="connect-status">
+              <div class="connect-logo" style="color:#0f9d58;">▲</div>
+              <span class="pill pill-amber">Teilweise</span>
+              <span style="font-size:.6rem;color:#555;">2 von 3 Ordnern freigegeben</span>
+            </div>
+            <div class="in-btn-row">
+              <button class="in-btn in-btn-ghost" onclick="demoToast('Ordner verwalten (Demo)')">Ordner</button>
+              <button class="in-btn in-btn-primary" onclick="demoToast('Freigabe hinzufügen (Demo)')">+ Freigabe</button>
+            </div>
+            <div class="in-card-foot">
+              <div class="dotline"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;"></span> 1 Ordner ausstehend</div>
+              <span>Vorlagen · Exposés</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;border:1px solid #2e2e2e;border-left:2px solid var(--red);color:#ddd;padding:12px 20px;font-size:.72rem;letter-spacing:.3px;opacity:0;pointer-events:none;transition:all .25s;z-index:300;">Demo</div>
+
+<script>
+// ── LOGIN ──
+async function doLogin(){
+  const email=document.getElementById('alEmail').value.trim();
+  const pw=document.getElementById('alPw').value;
+  const btn=document.getElementById('alBtn');
+  const err=document.getElementById('alErr');
+  if(!email||!pw){err.textContent='Bitte E-Mail und Passwort eingeben.';err.style.display='block';return;}
+  btn.textContent='Anmelden …';btn.disabled=true;err.style.display='none';
+  try{
+    const user=await EvDB.login(email,pw);
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('adminApp').style.display='grid';
+    document.getElementById('admUserLabel').textContent=user.fullName||user.email;
+  }catch(e){
+    err.textContent='⚠ '+(e.message||'Anmeldung fehlgeschlagen.');
+    err.style.display='block';
+  }finally{btn.textContent='Anmelden';btn.disabled=false;}
+}
+async function doLogout(){
+  if(!confirm('Abmelden?'))return;
+  try{await EvDB.logout();}catch(_){}
+  location.reload();
+}
+
+// ── DEMO-INTERAKTIONEN ──
+let toastTimer=null;
+function demoToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},1900);
+}
+// Dropzone visuelles Feedback (event, hover 1/0, isDrop)
+function dz(e,on,drop){
+  e.preventDefault();
+  if(drop){ e.currentTarget.classList.remove('drag'); demoToast('Datei erkannt (Demo) – kein echter Upload'); return; }
+  e.currentTarget.classList.toggle('drag',!!on);
+}
+
+// ── SESSION RESTORE ──
+(async function(){
+  try{
+    const user=await EvDB.getCurrentUser();
+    if(user){
+      document.getElementById('adminLogin').style.display='none';
+      document.getElementById('adminApp').style.display='grid';
+      document.getElementById('admUserLabel').textContent=user.fullName||user.email;
+    }
+  }catch(_){}
+})();
+</script>
+</body>
+</html>
