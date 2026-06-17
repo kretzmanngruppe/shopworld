@@ -13,24 +13,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:#0f0f0f;color:#e0e0e0;min-height:100vh;}
 
-/* LOGIN */
-#adminLogin{position:fixed;inset:0;background:#0f0f0f;display:flex;align-items:center;justify-content:center;z-index:200;}
-.al-panel{width:360px;padding:48px 40px;background:#1a1a1a;border-top:2px solid var(--red);}
-.al-logo{display:flex;align-items:center;gap:12px;margin-bottom:36px;}
-.al-box{width:34px;height:34px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:.85rem;}
-.al-name{font-family:var(--serif);font-size:1rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#fff;}
-.al-sub{font-size:.55rem;color:#555;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
-.al-title{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:#fff;margin-bottom:6px;}
-.al-hint{font-size:.68rem;color:#555;margin-bottom:28px;letter-spacing:.3px;}
-.al-field{margin-bottom:16px;}
-.al-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin-bottom:6px;}
-.al-field input{width:100%;background:transparent;border:none;border-bottom:1.5px solid #333;padding:10px 0;color:#fff;font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
-.al-field input:focus{border-bottom-color:var(--red);}
-.al-btn{width:100%;padding:13px;background:var(--red);color:#fff;border:none;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:background .2s;}
-.al-btn:hover{background:#a01830;}
-.al-err{color:#ff6b6b;font-size:.72rem;margin-top:12px;display:none;}
-.al-demo-note{font-size:.62rem;color:#444;margin-top:20px;line-height:1.6;text-align:center;border-top:1px solid #222;padding-top:16px;}
-
 /* LAYOUT */
 .admin-app{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
 
@@ -172,29 +154,8 @@ tr:hover td{background:#161616;}
 </head>
 <body>
 
-<!-- ADMIN LOGIN -->
-<div id="adminLogin">
-  <div class="al-panel">
-    <div class="al-logo">
-      <div class="al-box">E&amp;V</div>
-      <div><div class="al-name">Engel &amp; Völkers</div><div class="al-sub">Admin-Dashboard</div></div>
-    </div>
-    <div class="al-title">Geschäftsführung</div>
-    <div class="al-hint">Nur für autorisierte Administratoren · Mittleres Ruhrgebiet</div>
-    <div class="al-field"><label>E-Mail-Adresse</label><input type="email" id="alEmail" placeholder="admin@engelvoelkers.de" onkeydown="if(event.key==='Enter')adminLogin()"/></div>
-    <div class="al-field"><label>Passwort</label><input type="password" id="alPw" placeholder="Passwort" onkeydown="if(event.key==='Enter')adminLogin()"/></div>
-    <button class="al-btn" id="alBtn" onclick="adminLogin()">Anmelden</button>
-    <div class="al-err" id="alErr"></div>
-    <div class="al-demo-note">
-      <strong style="color:#555;">Demo-Modus:</strong><br/>
-      Solange Supabase nicht konfiguriert ist,<br/>
-      beliebige E-Mail + Passwort <code style="color:#666;">Sommeranfang</code>
-    </div>
-  </div>
-</div>
-
 <!-- ADMIN APP -->
-<div class="admin-app" id="adminApp" style="display:none;">
+<div class="admin-app" id="adminApp">
   <aside class="adm-sidebar">
     <div class="adm-logo">
       <div class="adm-ev">E&amp;V</div>
@@ -387,26 +348,6 @@ const DEMO_DATA = {
     ]
   }
 };
-
-// ── LOGIN ────────────────────────────────────────────────────────
-async function adminLogin() {
-  const email = document.getElementById('alEmail').value.trim();
-  const pw    = document.getElementById('alPw').value;
-  const btn   = document.getElementById('alBtn');
-  const err   = document.getElementById('alErr');
-  if (!email || !pw) { err.textContent='Bitte E-Mail und Passwort eingeben.'; err.style.display='block'; return; }
-  btn.textContent = 'Anmelden …'; btn.disabled = true; err.style.display='none';
-  try {
-    const user = await EvDB.login(email, pw);
-    document.getElementById('adminLogin').style.display = 'none';
-    document.getElementById('adminApp').style.display = 'grid';
-    document.getElementById('admUserLabel').textContent = user.fullName || user.email;
-    loadData();
-  } catch(e) {
-    err.textContent = '⚠ ' + (e.message || 'Anmeldung fehlgeschlagen.');
-    err.style.display = 'block';
-  } finally { btn.textContent='Anmelden'; btn.disabled=false; }
-}
 
 async function adminLogout() {
   if (!confirm('Abmelden?')) return;
@@ -987,16 +928,17 @@ function renderONE(){
 }
 
 // ── INIT ─────────────────────────────────────────────────────────
+// Passwortabfrage für die Demo entfernt – die Konsole wird direkt angezeigt.
 (async function() {
+  document.getElementById('adminApp').style.display = 'grid';
   try {
     const user = await EvDB.getCurrentUser();
-    if (user) {
-      document.getElementById('adminLogin').style.display = 'none';
-      document.getElementById('adminApp').style.display  = 'grid';
-      document.getElementById('admUserLabel').textContent = user.fullName || user.email;
-      loadData();
-    }
-  } catch(_) {}
+    document.getElementById('admUserLabel').textContent =
+      (user && (user.fullName || user.email)) || 'Geschäftsführung';
+  } catch(_) {
+    document.getElementById('admUserLabel').textContent = 'Geschäftsführung';
+  }
+  loadData();
 })();
 </script>
 </body>
