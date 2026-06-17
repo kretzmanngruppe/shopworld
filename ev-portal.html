@@ -1508,13 +1508,14 @@ function olInit(){ olInitFilters(); olRender(); }
 (async function(){
   document.getElementById('headerDate').textContent =
     new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  // Objektliste immer rendern (statische Daten, unabhängig vom Login)
+  olInit();
   try{
     const user = await EvDB.getCurrentUser();
     if(user){applyUser(user);document.getElementById('loginOverlay').style.display='none';loadInboxPreview();return;}
   }catch(_){}
   const saved = sessionStorage.getItem('evUser');
   if(saved){try{applyUser(JSON.parse(saved));document.getElementById('loginOverlay').style.display='none';loadInboxPreview();;}catch(e){}}
-  olInit();
 })();
 </script>
 </body>
