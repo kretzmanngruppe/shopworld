@@ -229,7 +229,158 @@ tr:hover td{background:#161616;}
 
 <script>
 let currentView = 'overview';
-let DATA = { orders:[], finanz:[], weekly:[], socialmedia:[] };
+let DATA = { orders:[], finanz:[], weekly:[], socialmedia:[], one:{} };
+
+// ═══════════════════════════════════════════════════════════════════
+// DEMO-DATEN — werden genutzt, wenn keine Live-Daten aus Supabase
+// vorliegen (Präsentations-/Video-Modus). Sobald echte Einträge
+// existieren, gewinnen diese automatisch (siehe loadData()).
+// ═══════════════════════════════════════════════════════════════════
+function dAgo(days, hour, min){
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  if (hour != null) d.setHours(hour, min||0, 0, 0);
+  return d.toISOString();
+}
+function isoWeek(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const yStart = new Date(Date.UTC(t.getUTCFullYear(),0,1));
+  return Math.ceil((((t - yStart) / 86400000) + 1) / 7);
+}
+const _KW = isoWeek(new Date());
+const _JAHR = new Date().getFullYear();
+
+const DEMO_DATA = {
+  // ── BRAND-SHOP BESTELLUNGEN ──────────────────────────────────────
+  orders: [
+    {created_at:dAgo(0,9,12), order_number:'BS-2026-0148', user_name:'Lina Backes', user_email:'lina.backes@engelvoelkers.com', location:'Duisburg', items:[{"name":"Visitenkarten Premium","qty":500},{"name":"Türschild Magnetfolie","qty":2}], total_eur:289, cost_center:'KST-1004', status:'pending'},
+    {created_at:dAgo(0,11,40), order_number:'BS-2026-0147', user_name:'Jamila Zuther', user_email:'jamila.zuther@engelvoelkers.com', location:'Duisburg', items:[{"name":"Exposé-Mappen DIN A4","qty":100},{"name":"Verkaufsschild groß","qty":5}], total_eur:642, cost_center:'KST-1004', status:'pending'},
+    {created_at:dAgo(1,14,5), order_number:'BS-2026-0146', user_name:'Vivien Trojan', user_email:'vivien.trojan@engelvoelkers.com', location:'Bochum', items:[{"name":"Rollup Banner 85x200","qty":1},{"name":"Flyer Standort","qty":1000}], total_eur:478, cost_center:'KST-1001', status:'approved'},
+    {created_at:dAgo(2,10,22), order_number:'BS-2026-0145', user_name:'Carola Meyer-Tüllmann', user_email:'carola.meyertuellmann@engelvoelkers.com', location:'Bochum', items:[{"name":"Visitenkarten Standard","qty":250}], total_eur:79, cost_center:'KST-1001', status:'delivered'},
+    {created_at:dAgo(3,16,8), order_number:'BS-2026-0144', user_name:'Kilian Drewicke', user_email:'kilian.drewicke@engelvoelkers.com', location:'Bochum', items:[{"name":"Poloshirt bestickt","qty":6},{"name":"Namensschild Pin","qty":6}], total_eur:354, cost_center:'KST-1001', status:'approved'},
+    {created_at:dAgo(4,9,55), order_number:'BS-2026-0143', user_name:'Lennart Tschuck', user_email:'lennart.tschuck@engelvoelkers.com', location:'Hattingen', items:[{"name":"Exposé-Mappen DIN A4","qty":200},{"name":"Briefpapier CI","qty":500}], total_eur:531, cost_center:'KST-1002', status:'delivered'},
+    {created_at:dAgo(5,13,30), order_number:'BS-2026-0142', user_name:'Claus Grünert', user_email:'claus.gruenert@engelvoelkers.com', location:'Bochum', items:[{"name":"Verkaufsschild groß","qty":8}], total_eur:392, cost_center:'KST-1001', status:'pending'},
+    {created_at:dAgo(6,11,15), order_number:'BS-2026-0141', user_name:'Daniela Schroers', user_email:'daniela.schroers@engelvoelkers.com', location:'Bochum', items:[{"name":"Geschenktüten Glückauf","qty":50},{"name":"Schlüsselanhänger Leder","qty":30}], total_eur:268, cost_center:'KST-1001', status:'delivered'},
+    {created_at:dAgo(8,15,42), order_number:'BS-2026-0140', user_name:'Sandra Horr', user_email:'sandra.horr@engelvoelkers.com', location:'Bochum', items:[{"name":"Rollup Banner 85x200","qty":2},{"name":"Messeplane 3x2m","qty":1}], total_eur:734, cost_center:'KST-1001', status:'approved'},
+    {created_at:dAgo(10,10,3), order_number:'BS-2026-0139', user_name:'Meriç Parlak', user_email:'meric.parlak@engelvoelkers.com', location:'Bochum', items:[{"name":"Visitenkarten Premium","qty":500}], total_eur:149, cost_center:'KST-1001', status:'delivered'},
+    {created_at:dAgo(12,14,28), order_number:'BS-2026-0138', user_name:'Arijan Keshawarzian', user_email:'arijan.keshawarzian@engelvoelkers.com', location:'Bochum', items:[{"name":"Notizblöcke CI","qty":200},{"name":"Kugelschreiber Metall","qty":300}], total_eur:512, cost_center:'KST-1001', status:'delivered'},
+    {created_at:dAgo(14,9,18), order_number:'BS-2026-0137', user_name:'Lennart Potthoff', user_email:'lennart.potthoff@engelvoelkers.com', location:'Hattingen', items:[{"name":"Exposé-Mappen DIN A4","qty":150}], total_eur:224, cost_center:'KST-1002', status:'delivered'},
+    {created_at:dAgo(17,16,50), order_number:'BS-2026-0136', user_name:'Julia Heinemann', user_email:'julia.heinemann@engelvoelkers.com', location:'Bochum', items:[{"name":"Verkaufsschild groß","qty":4},{"name":"Türschild Magnetfolie","qty":3}], total_eur:367, cost_center:'KST-1001', status:'delivered'},
+    {created_at:dAgo(21,11,33), order_number:'BS-2026-0135', user_name:'Daniel Wiese', user_email:'daniel.wiese1@engelvoelkers.com', location:'Mülheim', items:[{"name":"Poloshirt bestickt","qty":4}], total_eur:236, cost_center:'KST-1003', status:'delivered'},
+    {created_at:dAgo(26,13,7), order_number:'BS-2026-0134', user_name:'Julius Grönner', user_email:'julius.groenner@engelvoelkers.com', location:'Duisburg', items:[{"name":"Briefpapier CI","qty":1000},{"name":"Visitenkarten Standard","qty":500}], total_eur:418, cost_center:'KST-1004', status:'delivered'},
+    {created_at:dAgo(30,10,45), order_number:'BS-2026-0133', user_name:'Luis Shala', user_email:'luis.shala@engelvoelkers.com', location:'Duisburg', items:[{"name":"Messeplane 3x2m","qty":2},{"name":"Rollup Banner 85x200","qty":3}], total_eur:1186, cost_center:'KST-1004', status:'delivered'},
+  ],
+
+  // ── FINANZIERUNGSANFRAGEN ────────────────────────────────────────
+  finanz: [
+    {created_at:dAgo(0,10,30), berater_name:'Jamila Zuther', berater_email:'jamila.zuther@engelvoelkers.com', kn1_name:'Familie Aydin', kn2_name:'', obj_adresse:'Friedrich-Ebert-Str. 8, Duisburg', obj_art:'Eigentumswohnung', obj_kaufpreis:385000, fin_darlehen:340000, fin_ek_quote:12, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(1,13,15), berater_name:'Carola Meyer-Tüllmann', berater_email:'carola.meyertuellmann@engelvoelkers.com', kn1_name:'Dr. Lena Vogt', kn2_name:'Tobias Vogt', obj_adresse:'Königsallee 145, Bochum', obj_art:'Einfamilienhaus', obj_kaufpreis:620000, fin_darlehen:480000, fin_ek_quote:23, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(2,9,48), berater_name:'Lennart Tschuck', berater_email:'lennart.tschuck@engelvoelkers.com', kn1_name:'Michael Sorglos', kn2_name:'', obj_adresse:'Heggerstr. 19, Hattingen', obj_art:'Eigentumswohnung', obj_kaufpreis:265000, fin_darlehen:238000, fin_ek_quote:10, zielbank:'Sparkasse Dortmund', status:'gesendet'},
+    {created_at:dAgo(4,15,20), berater_name:'Daniela Schroers', berater_email:'daniela.schroers@engelvoelkers.com', kn1_name:'Familie Brömmel', kn2_name:'', obj_adresse:'Springorumstr. 44, Bochum', obj_art:'Doppelhaushälfte', obj_kaufpreis:445000, fin_darlehen:360000, fin_ek_quote:19, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(6,11,5), berater_name:'Meriç Parlak', berater_email:'meric.parlak@engelvoelkers.com', kn1_name:'Sandra Kléber', kn2_name:'Marc Kléber', obj_adresse:'Hattinger Str. 210, Bochum', obj_art:'Einfamilienhaus', obj_kaufpreis:530000, fin_darlehen:420000, fin_ek_quote:21, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(9,14,52), berater_name:'Lennart Potthoff', berater_email:'lennart.potthoff@engelvoelkers.com', kn1_name:'Familie Yilmaz', kn2_name:'', obj_adresse:'Augustastr. 45, Hattingen', obj_art:'Mehrfamilienhaus', obj_kaufpreis:890000, fin_darlehen:710000, fin_ek_quote:20, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(12,10,17), berater_name:'Daniel Wiese', berater_email:'daniel.wiese1@engelvoelkers.com', kn1_name:'Jan Hofmeister', kn2_name:'', obj_adresse:'Leineweberstr. 32, Mülheim', obj_art:'Eigentumswohnung', obj_kaufpreis:198000, fin_darlehen:178000, fin_ek_quote:10, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(15,16,40), berater_name:'Luis Shala', berater_email:'luis.shala@engelvoelkers.com', kn1_name:'Eheleute Großmann', kn2_name:'', obj_adresse:'Kremerstr. 5, Duisburg', obj_art:'Einfamilienhaus', obj_kaufpreis:575000, fin_darlehen:445000, fin_ek_quote:23, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(19,9,33), berater_name:'Phillip Roth', berater_email:'phillip.roth@engelvoelkers.com', kn1_name:'Carolin Pfeiffer', kn2_name:'', obj_adresse:'Königsallee 145, Bochum', obj_art:'Eigentumswohnung', obj_kaufpreis:312000, fin_darlehen:280000, fin_ek_quote:10, zielbank:'Sparkasse Dortmund', status:'gesendet'},
+    {created_at:dAgo(23,13,28), berater_name:'Daria Oberwies', berater_email:'daria.oberwies@engelvoelkers.com', kn1_name:'Familie Kowalczyk', kn2_name:'', obj_adresse:'Wanheimer Str. 3, Duisburg', obj_art:'Doppelhaushälfte', obj_kaufpreis:398000, fin_darlehen:330000, fin_ek_quote:17, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(28,11,9), berater_name:'Jana Leonov', berater_email:'jana.leonov@engelvoelkers.com', kn1_name:'Robert Linnemann', kn2_name:'Anja Linnemann', obj_adresse:'Königsallee 145, Bochum', obj_art:'Einfamilienhaus', obj_kaufpreis:485000, fin_darlehen:390000, fin_ek_quote:20, zielbank:'Engel & Völkers Finance', status:'gesendet'},
+    {created_at:dAgo(34,15,15), berater_name:'Jamila Zuther', berater_email:'jamila.zuther@engelvoelkers.com', kn1_name:'Familie Schramm', kn2_name:'', obj_adresse:'Friedrich-Ebert-Str. 8, Duisburg', obj_art:'Eigentumswohnung', obj_kaufpreis:228000, fin_darlehen:205000, fin_ek_quote:10, zielbank:'Volksbank Sprockhövel', status:'gesendet'},
+  ],
+
+  // ── WEEKLY CHECK-INS ─────────────────────────────────────────────
+  weekly: [
+    {created_at:dAgo(0,8,15), kw:_KW-0, jahr:_JAHR, user_name:'Lina Backes', rolle:'Immobilienberater', score_pct:82, score_note:'Gut', offene_punkte:[]},
+    {created_at:dAgo(0,8,15), kw:_KW-0, jahr:_JAHR, user_name:'Jamila Zuther', rolle:'Immobilienberater', score_pct:76, score_note:'Gut', offene_punkte:['Offener Punkt 1']},
+    {created_at:dAgo(1,9,15), kw:_KW-0, jahr:_JAHR, user_name:'Vivien Trojan', rolle:'Immobilienberater', score_pct:91, score_note:'Sehr gut', offene_punkte:[]},
+    {created_at:dAgo(1,9,15), kw:_KW-0, jahr:_JAHR, user_name:'Carola Meyer-Tüllmann', rolle:'Immobilienberater', score_pct:38, score_note:'Kritisch', offene_punkte:['Offener Punkt 1','Offener Punkt 2','Offener Punkt 3']},
+    {created_at:dAgo(2,10,15), kw:_KW-0, jahr:_JAHR, user_name:'Kilian Drewicke', rolle:'Immobilienberater', score_pct:64, score_note:'Ausbaufähig', offene_punkte:['Offener Punkt 1','Offener Punkt 2']},
+    {created_at:dAgo(2,10,15), kw:_KW-0, jahr:_JAHR, user_name:'Lennart Tschuck', rolle:'Immobilienberater', score_pct:88, score_note:'Sehr gut', offene_punkte:[]},
+    {created_at:dAgo(7,9,15), kw:_KW-1, jahr:_JAHR, user_name:'Claus Grünert', rolle:'Immobilienberater', score_pct:79, score_note:'Gut', offene_punkte:['Offener Punkt 1']},
+    {created_at:dAgo(7,9,15), kw:_KW-1, jahr:_JAHR, user_name:'Daniela Schroers', rolle:'Immobilienberater', score_pct:72, score_note:'Gut', offene_punkte:['Offener Punkt 1']},
+    {created_at:dAgo(8,10,15), kw:_KW-1, jahr:_JAHR, user_name:'Sandra Horr', rolle:'Immobilienberater', score_pct:55, score_note:'Ausbaufähig', offene_punkte:['Offener Punkt 1','Offener Punkt 2']},
+    {created_at:dAgo(8,10,15), kw:_KW-1, jahr:_JAHR, user_name:'Meriç Parlak', rolle:'Immobilienberater', score_pct:94, score_note:'Sehr gut', offene_punkte:[]},
+    {created_at:dAgo(9,11,15), kw:_KW-1, jahr:_JAHR, user_name:'Arijan Keshawarzian', rolle:'Immobilienberater', score_pct:42, score_note:'Ausbaufähig', offene_punkte:['Offener Punkt 1','Offener Punkt 2']},
+    {created_at:dAgo(14,10,15), kw:_KW-2, jahr:_JAHR, user_name:'Lennart Potthoff', rolle:'Immobilienberater', score_pct:81, score_note:'Gut', offene_punkte:[]},
+    {created_at:dAgo(14,10,15), kw:_KW-2, jahr:_JAHR, user_name:'Julia Heinemann', rolle:'Immobilienberater', score_pct:85, score_note:'Sehr gut', offene_punkte:[]},
+    {created_at:dAgo(15,11,15), kw:_KW-2, jahr:_JAHR, user_name:'Daniel Wiese', rolle:'Immobilienberater', score_pct:58, score_note:'Ausbaufähig', offene_punkte:['Offener Punkt 1','Offener Punkt 2']},
+    {created_at:dAgo(15,11,15), kw:_KW-2, jahr:_JAHR, user_name:'Julius Grönner', rolle:'Immobilienberater', score_pct:77, score_note:'Gut', offene_punkte:['Offener Punkt 1']},
+    {created_at:dAgo(21,11,15), kw:_KW-3, jahr:_JAHR, user_name:'Luis Shala', rolle:'Immobilienberater', score_pct:69, score_note:'Ausbaufähig', offene_punkte:['Offener Punkt 1']},
+    {created_at:dAgo(21,11,15), kw:_KW-3, jahr:_JAHR, user_name:'John König', rolle:'Immobilienberater', score_pct:48, score_note:'Ausbaufähig', offene_punkte:['Offener Punkt 1','Offener Punkt 2','Offener Punkt 3']},
+    {created_at:dAgo(22,12,15), kw:_KW-3, jahr:_JAHR, user_name:'Phillip Roth', rolle:'Immobilienberater', score_pct:90, score_note:'Sehr gut', offene_punkte:[]},
+    {created_at:dAgo(22,12,15), kw:_KW-3, jahr:_JAHR, user_name:'Melissa Munkert-Seyfert', rolle:'Immobilienberater', score_pct:35, score_note:'Kritisch', offene_punkte:['Offener Punkt 1','Offener Punkt 2','Offener Punkt 3','Offener Punkt 4']},
+    {created_at:dAgo(23,13,15), kw:_KW-3, jahr:_JAHR, user_name:'Daria Oberwies', rolle:'Immobilienberater', score_pct:87, score_note:'Sehr gut', offene_punkte:[]},
+  ],
+
+  // ── SOCIAL MEDIA ANFRAGEN ────────────────────────────────────────
+  socialmedia: [
+    {created_at:dAgo(0,10,5), sender_name:'Vivien Trojan', sender_email:'vivien.trojan@engelvoelkers.com', beitragsart:'Objekt-Reel', plattformen:['Instagram','Facebook'], ton:'Hochwertig', format:'Reel 9:16', dringlichkeit:'Sofort (heute)', status:'eingegangen'},
+    {created_at:dAgo(0,14,22), sender_name:'Lennart Tschuck', sender_email:'lennart.tschuck@engelvoelkers.com', beitragsart:'Verkauft-Story', plattformen:['Instagram'], ton:'Emotional', format:'Story', dringlichkeit:'Dringend (1-2 Tage)', status:'eingegangen'},
+    {created_at:dAgo(1,9,40), sender_name:'Sandra Horr', sender_email:'sandra.horr@engelvoelkers.com', beitragsart:'Team-Vorstellung', plattformen:['Instagram','LinkedIn'], ton:'Persönlich', format:'Karussell', dringlichkeit:'Normal (diese Woche)', status:'eingegangen'},
+    {created_at:dAgo(2,11,18), sender_name:'Lennart Potthoff', sender_email:'lennart.potthoff@engelvoelkers.com', beitragsart:'Objekt-Reel', plattformen:['Instagram','Facebook','TikTok'], ton:'Modern', format:'Reel 9:16', dringlichkeit:'Normal (diese Woche)', status:'erledigt'},
+    {created_at:dAgo(3,15,55), sender_name:'Julius Grönner', sender_email:'julius.groenner@engelvoelkers.com', beitragsart:'Markt-Update', plattformen:['LinkedIn'], ton:'Sachlich', format:'Single Post', dringlichkeit:'Kein Eildruck', status:'erledigt'},
+    {created_at:dAgo(5,10,30), sender_name:'Phillip Roth', sender_email:'phillip.roth@engelvoelkers.com', beitragsart:'Objekt-Reel', plattformen:['Instagram','Facebook'], ton:'Hochwertig', format:'Reel 9:16', dringlichkeit:'Dringend (1-2 Tage)', status:'erledigt'},
+    {created_at:dAgo(7,13,12), sender_name:'Martina Reckling', sender_email:'martina.reckling@engelvoelkers.com', beitragsart:'Tag-der-offenen-Tür', plattformen:['Instagram','Facebook'], ton:'Einladend', format:'Karussell', dringlichkeit:'Normal (diese Woche)', status:'erledigt'},
+    {created_at:dAgo(9,9,25), sender_name:'Jamila Zuther', sender_email:'jamila.zuther@engelvoelkers.com', beitragsart:'Standort-Eröffnung', plattformen:['Instagram','Facebook','LinkedIn'], ton:'Festlich', format:'Reel 9:16', dringlichkeit:'Normal (diese Woche)', status:'erledigt'},
+    {created_at:dAgo(12,16,8), sender_name:'Kilian Drewicke', sender_email:'kilian.drewicke@engelvoelkers.com', beitragsart:'Kundenstimme', plattformen:['Instagram','LinkedIn'], ton:'Authentisch', format:'Single Post', dringlichkeit:'Kein Eildruck', status:'erledigt'},
+    {created_at:dAgo(16,11,45), sender_name:'Daniela Schroers', sender_email:'daniela.schroers@engelvoelkers.com', beitragsart:'Objekt-Reel', plattformen:['Instagram'], ton:'Modern', format:'Reel 9:16', dringlichkeit:'Dringend (1-2 Tage)', status:'erledigt'},
+    {created_at:dAgo(20,14,33), sender_name:'Arijan Keshawarzian', sender_email:'arijan.keshawarzian@engelvoelkers.com', beitragsart:'Markt-Update', plattformen:['LinkedIn','Facebook'], ton:'Sachlich', format:'Karussell', dringlichkeit:'Normal (diese Woche)', status:'erledigt'},
+    {created_at:dAgo(25,10,50), sender_name:'Daniel Wiese', sender_email:'daniel.wiese1@engelvoelkers.com', beitragsart:'Verkauft-Story', plattformen:['Instagram'], ton:'Emotional', format:'Story', dringlichkeit:'Kein Eildruck', status:'erledigt'},
+  ],
+
+  // ── ONE-VORGÄNGE ─────────────────────────────────────────────────
+  one: {
+    gebote: [
+      {created_at:dAgo(0,11,20), berater_name:'Lina Backes', objekt:'Wanheimer Str. 3, Duisburg', bieter:'Familie Aydin', gebot_eur:378000, kaufpreis_eur:385000, status:'offen'},
+      {created_at:dAgo(1,14,8), berater_name:'Jamila Zuther', objekt:'Friedrich-Ebert-Str. 8, Duisburg', bieter:'M. Sorglos', gebot_eur:260000, kaufpreis_eur:265000, status:'offen'},
+      {created_at:dAgo(3,9,55), berater_name:'Vivien Trojan', objekt:'Königsallee 145, Bochum', bieter:'Familie Vogt', gebot_eur:610000, kaufpreis_eur:620000, status:'angenommen'},
+      {created_at:dAgo(6,16,30), berater_name:'Carola Meyer-Tüllmann', objekt:'Königsallee 145, Bochum', bieter:'Familie Brömmel', gebot_eur:440000, kaufpreis_eur:445000, status:'angenommen'},
+      {created_at:dAgo(11,10,12), berater_name:'Kilian Drewicke', objekt:'Wittener Str. 88, Bochum', bieter:'Eheleute Kléber', gebot_eur:515000, kaufpreis_eur:530000, status:'abgelehnt'},
+      {created_at:dAgo(18,13,40), berater_name:'Lennart Tschuck', objekt:'Heggerstr. 19, Hattingen', bieter:'C. Pfeiffer', gebot_eur:305000, kaufpreis_eur:312000, status:'angenommen'},
+      {created_at:dAgo(27,11,5), berater_name:'Claus Grünert', objekt:'Kemnader Str. 12, Bochum', bieter:'J. Hofmeister', gebot_eur:195000, kaufpreis_eur:198000, status:'angenommen'},
+    ],
+    kooperationen: [
+      {created_at:dAgo(2,10,15), berater_name:'Lina Backes', partner:'Sparkasse Dortmund', thema:'Finanzierungsvermittlung', status:'offen'},
+      {created_at:dAgo(5,14,42), berater_name:'Vivien Trojan', partner:'Notariat Dr. Wenner', thema:'Beurkundungstermine', status:'angenommen'},
+      {created_at:dAgo(10,9,30), berater_name:'Kilian Drewicke', partner:'Energieberatung Ruhr GmbH', thema:'Energieausweis-Erstellung', status:'angenommen'},
+      {created_at:dAgo(16,15,18), berater_name:'Claus Grünert', partner:'Umzugslogistik Niederrhein', thema:'Empfehlungspartnerschaft', status:'offen'},
+      {created_at:dAgo(24,11,50), berater_name:'Sandra Horr', partner:'Handwerk Plus Hattingen', thema:'Renovierung vor Verkauf', status:'angenommen'},
+    ],
+    qaa: [
+      {created_at:dAgo(1,10,40), berater_name:'Jamila Zuther', objekt:'Friedrich-Ebert-Str. 8, Duisburg', eigentuemer:'Erbengemeinschaft Sorglos', vollmacht:true, status:'in_bearbeitung'},
+      {created_at:dAgo(4,13,22), berater_name:'Lina Backes', objekt:'Wanheimer Str. 3, Duisburg', eigentuemer:'Familie Yilmaz', vollmacht:true, status:'freigegeben'},
+      {created_at:dAgo(8,9,15), berater_name:'Carola Meyer-Tüllmann', objekt:'Königsallee 145, Bochum', eigentuemer:'A. Kowalczyk', vollmacht:false, status:'freigegeben'},
+      {created_at:dAgo(13,16,5), berater_name:'Vivien Trojan', objekt:'Königsallee 145, Bochum', eigentuemer:'Eheleute Großmann', vollmacht:true, status:'freigegeben'},
+      {created_at:dAgo(20,11,33), berater_name:'Lennart Tschuck', objekt:'Heggerstr. 19, Hattingen', eigentuemer:'Nachlass Pfeiffer', vollmacht:true, status:'freigegeben'},
+      {created_at:dAgo(29,10,8), berater_name:'Kilian Drewicke', objekt:'Wittener Str. 88, Bochum', eigentuemer:'Familie Linnemann', vollmacht:false, status:'freigegeben'},
+    ],
+    expose: [
+      {created_at:dAgo(0,12,50), berater_name:'Lina Backes', objekt:'Wanheimer Str. 3, Duisburg', pruefer:'Clara Kretzmann', status:'in_pruefung'},
+      {created_at:dAgo(2,9,18), berater_name:'Vivien Trojan', objekt:'Königsallee 145, Bochum', pruefer:'Clara Kretzmann', status:'freigegeben'},
+      {created_at:dAgo(7,15,40), berater_name:'Carola Meyer-Tüllmann', objekt:'Königsallee 145, Bochum', pruefer:'Clara Kretzmann', status:'freigegeben'},
+      {created_at:dAgo(12,10,25), berater_name:'Jamila Zuther', objekt:'Friedrich-Ebert-Str. 8, Duisburg', pruefer:'Clara Kretzmann', status:'nachbesserung'},
+      {created_at:dAgo(19,13,12), berater_name:'Lennart Tschuck', objekt:'Heggerstr. 19, Hattingen', pruefer:'Clara Kretzmann', status:'freigegeben'},
+      {created_at:dAgo(26,11,55), berater_name:'Kilian Drewicke', objekt:'Wittener Str. 88, Bochum', pruefer:'Clara Kretzmann', status:'freigegeben'},
+    ],
+    status: [
+      {created_at:dAgo(1,11,30), berater_name:'Lina Backes', objekt:'Wanheimer Str. 3, Duisburg', alt:'Akquise', neu:'Coming Soon'},
+      {created_at:dAgo(3,14,15), berater_name:'Jamila Zuther', objekt:'Friedrich-Ebert-Str. 8, Duisburg', alt:'Coming Soon', neu:'Aktiv'},
+      {created_at:dAgo(6,9,48), berater_name:'Vivien Trojan', objekt:'Königsallee 145, Bochum', alt:'Aktiv', neu:'Reserviert'},
+      {created_at:dAgo(10,16,22), berater_name:'Carola Meyer-Tüllmann', objekt:'Königsallee 145, Bochum', alt:'Reserviert', neu:'Verkauft'},
+      {created_at:dAgo(15,10,5), berater_name:'Lennart Tschuck', objekt:'Heggerstr. 19, Hattingen', alt:'Aktiv', neu:'Reserviert'},
+      {created_at:dAgo(22,13,38), berater_name:'Kilian Drewicke', objekt:'Wittener Str. 88, Bochum', alt:'Coming Soon', neu:'Aktiv'},
+    ],
+    unterlagen: [
+      {created_at:dAgo(0,9,33), berater_name:'Jamila Zuther', objekt:'Friedrich-Ebert-Str. 8, Duisburg', behoerde:'Bauamt Duisburg', unterlage:'Baulastenauskunft', status:'angefragt'},
+      {created_at:dAgo(2,13,8), berater_name:'Lina Backes', objekt:'Wanheimer Str. 3, Duisburg', behoerde:'Katasteramt Bochum', unterlage:'Flurkarte / Liegenschaft', status:'angefragt'},
+      {created_at:dAgo(5,10,45), berater_name:'Carola Meyer-Tüllmann', objekt:'Königsallee 145, Bochum', behoerde:'Bauamt Hattingen', unterlage:'Baugenehmigung', status:'erhalten'},
+      {created_at:dAgo(9,15,20), berater_name:'Vivien Trojan', objekt:'Königsallee 145, Bochum', behoerde:'Grundbuchamt Mülheim', unterlage:'Grundbuchauszug', status:'erhalten'},
+      {created_at:dAgo(14,11,12), berater_name:'Lennart Tschuck', objekt:'Heggerstr. 19, Hattingen', behoerde:'Bauamt Duisburg', unterlage:'Teilungserklärung', status:'erhalten'},
+      {created_at:dAgo(21,9,55), berater_name:'Kilian Drewicke', objekt:'Wittener Str. 88, Bochum', behoerde:'Katasteramt Bochum', unterlage:'Lageplan', status:'erhalten'},
+    ]
+  }
+};
 
 // ── LOGIN ────────────────────────────────────────────────────────
 async function adminLogin() {
@@ -260,11 +411,26 @@ async function adminLogout() {
 // ── DATA LOAD ────────────────────────────────────────────────────
 async function loadData() {
   document.getElementById('admContent').innerHTML = '<div class="adm-loading"><div class="adm-spinner"></div><div style="font-size:.72rem;color:#444;">Daten werden geladen …</div></div>';
+  let live = null;
   try {
-    DATA = await EvDB.getAdminStats();
+    live = await EvDB.getAdminStats();
   } catch(e) {
-    DATA = { orders:[], finanz:[], weekly:[], socialmedia:[] };
     console.error('Ladefehler:', e);
+  }
+  // Fallback: Wenn keine Live-Daten vorliegen (Demo-/Präsentationsmodus),
+  // Demo-Daten verwenden. Echte Supabase-Einträge haben immer Vorrang.
+  const hasLive = live && ((live.orders&&live.orders.length) || (live.finanz&&live.finanz.length) ||
+                           (live.weekly&&live.weekly.length) || (live.socialmedia&&live.socialmedia.length));
+  if (hasLive) {
+    DATA = {
+      orders:      (live.orders&&live.orders.length)?           live.orders      : DEMO_DATA.orders,
+      finanz:      (live.finanz&&live.finanz.length)?           live.finanz      : DEMO_DATA.finanz,
+      weekly:      (live.weekly&&live.weekly.length)?           live.weekly      : DEMO_DATA.weekly,
+      socialmedia: (live.socialmedia&&live.socialmedia.length)? live.socialmedia : DEMO_DATA.socialmedia,
+      one:         (live.one)?                                  live.one         : DEMO_DATA.one
+    };
+  } else {
+    DATA = DEMO_DATA;
   }
   renderView(currentView);
 }
@@ -283,49 +449,62 @@ function renderView(v) {
     orders:   ['Brand-Shop Bestellungen', 'Werbemittel-Shop · Alle Bestellungen'],
     finanz:   ['Finanzierungsanfragen', 'Finanzierungsvermittlung · Alle Anfragen'],
     weekly:   ['Weekly Check-In Ergebnisse', 'Alle Einreichungen nach KW'],
-    social:   ['Social Media Anfragen', 'Alle Social-Media-Aufträge']
+    social:   ['Social Media Anfragen', 'Alle Social-Media-Aufträge'],
+    one:      ['ONE — Vorgangsübersicht', 'Gebote · Kooperationen · QAA · Exposé · Status · Unterlagen']
   };
   const [title, meta] = titles[v] || titles.overview;
   document.getElementById('admViewTitle').textContent  = title;
   document.getElementById('admViewMeta').textContent   = meta;
 
   const content = document.getElementById('admContent');
-  const cfgNote = !EvDB.isConfigured() ? `<div class="cfg-banner"><span>⚠</span><span><strong>Demo-Modus:</strong> Supabase nicht konfiguriert — Daten kommen aus dem localStorage. Trage deine Zugangsdaten in ev-supabase.js ein.</span></div>` : '';
+  const cfgNote = ''; // Demo-Banner entfernt – Anzeige bleibt clean für Präsentation
 
-  if (v === 'overview') { content.innerHTML = cfgNote + renderOverview(); animateBars(); }
-  else if (v === 'orders')  content.innerHTML = cfgNote + renderOrders();
-  else if (v === 'finanz')  content.innerHTML = cfgNote + renderFinanz();
-  else if (v === 'weekly')  content.innerHTML = cfgNote + renderWeekly();
-  else if (v === 'social')  content.innerHTML = cfgNote + renderSocial();
-  else if (v === 'one')     content.innerHTML = cfgNote + renderONE(); animateBars();
+  if (v === 'overview')    { content.innerHTML = cfgNote + renderOverview(); animateBars(); }
+  else if (v === 'orders') { content.innerHTML = cfgNote + renderOrders(); }
+  else if (v === 'finanz') { content.innerHTML = cfgNote + renderFinanz(); }
+  else if (v === 'weekly') { content.innerHTML = cfgNote + renderWeekly(); }
+  else if (v === 'social') { content.innerHTML = cfgNote + renderSocial(); }
+  else if (v === 'one')    { content.innerHTML = cfgNote + renderONE(); animateBars(); }
 }
 
 // ── OVERVIEW ─────────────────────────────────────────────────────
 
 // Static reference data (extended later from DB)
 const STANDORTE = [
-  {name:'Bochum',    umsatz:2140000, objekte:32, color:'#C41E3A'},
-  {name:'Hattingen', umsatz:1180000, objekte:18, color:'#4d9ef7'},
-  {name:'Duisburg',  umsatz:960000,  objekte:14, color:'#4ade80'},
-  {name:'Mülheim',   umsatz:540000,  objekte:9,  color:'#fbbf24'}
+  {name:'Bochum',    umsatz:1158000, objekte:22, color:'#C41E3A'},
+  {name:'Duisburg',  umsatz:523000,  objekte:9,  color:'#4ade80'},
+  {name:'Hattingen', umsatz:265000,  objekte:5,  color:'#4d9ef7'},
+  {name:'Mülheim',   umsatz:138000,  objekte:2,  color:'#fbbf24'}
 ];
 const TOTAL_UMSATZ = STANDORTE.reduce((a,s)=>a+s.umsatz,0);
 
 const MITARBEITER = [
-  {name:'Thomas Kretzmann',  rolle:'Geschäftsführer',     umsatz:680000, objekte:11, standort:'Bochum'},
-  {name:'Clara Kretzmann',   rolle:'Co-Geschäftsführerin',umsatz:520000, objekte:8,  standort:'Bochum'},
-  {name:'Sabine Hoffmann',   rolle:'Senior Beraterin',    umsatz:480000, objekte:7,  standort:'Hattingen'},
-  {name:'Markus Becker',     rolle:'Immobilienberater',   umsatz:415000, objekte:7,  standort:'Bochum'},
-  {name:'Julia Steinberg',   rolle:'Immobilienberaterin', umsatz:390000, objekte:6,  standort:'Duisburg'},
-  {name:'Andreas Müller',    rolle:'Senior Berater',      umsatz:355000, objekte:6,  standort:'Mülheim'},
-  {name:'Petra Winkler',     rolle:'Immobilienberaterin', umsatz:310000, objekte:5,  standort:'Hattingen'},
-  {name:'Lars Schneider',    rolle:'Immobilienberater',   umsatz:285000, objekte:4,  standort:'Bochum'},
-  {name:'Nicole Fischer',    rolle:'Immobilienberaterin', umsatz:240000, objekte:4,  standort:'Duisburg'},
-  {name:'Stefan Brandt',     rolle:'Immobilienberater',   umsatz:145000, objekte:3,  standort:'Mülheim'}
+  {name:'Lina Backes',            rolle:'Immobilienberater', umsatz:178000, objekte:3, standort:'Duisburg'},
+  {name:'Jamila Zuther',          rolle:'Immobilienberater', umsatz:165000, objekte:3, standort:'Duisburg'},
+  {name:'Vivien Trojan',          rolle:'Immobilienberater', umsatz:154000, objekte:3, standort:'Bochum'},
+  {name:'Carola Meyer-Tüllmann',  rolle:'Immobilienberater', umsatz:142000, objekte:3, standort:'Bochum'},
+  {name:'Kilian Drewicke',        rolle:'Immobilienberater', umsatz:131000, objekte:2, standort:'Bochum'},
+  {name:'Lennart Tschuck',        rolle:'Immobilienberater', umsatz:128000, objekte:2, standort:'Hattingen'},
+  {name:'Claus Grünert',          rolle:'Immobilienberater', umsatz:119000, objekte:2, standort:'Bochum'},
+  {name:'Daniela Schroers',       rolle:'Immobilienberater', umsatz:112000, objekte:2, standort:'Bochum'},
+  {name:'Sandra Horr',            rolle:'Immobilienberater', umsatz:104000, objekte:2, standort:'Bochum'},
+  {name:'Meriç Parlak',           rolle:'Immobilienberater', umsatz:98000,  objekte:2, standort:'Bochum'},
+  {name:'Arijan Keshawarzian',    rolle:'Immobilienberater', umsatz:93000,  objekte:2, standort:'Bochum'},
+  {name:'Lennart Potthoff',       rolle:'Immobilienberater', umsatz:88000,  objekte:2, standort:'Hattingen'},
+  {name:'Julia Heinemann',        rolle:'Immobilienberater', umsatz:82000,  objekte:1, standort:'Bochum'},
+  {name:'Daniel Wiese',           rolle:'Immobilienberater', umsatz:77000,  objekte:1, standort:'Mülheim'},
+  {name:'Julius Grönner',         rolle:'Immobilienberater', umsatz:71000,  objekte:1, standort:'Duisburg'},
+  {name:'Luis Shala',             rolle:'Immobilienberater', umsatz:66000,  objekte:1, standort:'Duisburg'},
+  {name:'John König',             rolle:'Immobilienberater', umsatz:61000,  objekte:1, standort:'Mülheim'},
+  {name:'Phillip Roth',           rolle:'Immobilienberater', umsatz:55000,  objekte:1, standort:'Bochum'},
+  {name:'Melissa Munkert-Seyfert',rolle:'Immobilienberater', umsatz:49000,  objekte:1, standort:'Hattingen'},
+  {name:'Daria Oberwies',         rolle:'Immobilienberater', umsatz:43000,  objekte:1, standort:'Duisburg'},
+  {name:'Martina Reckling',       rolle:'Immobilienberater', umsatz:37000,  objekte:1, standort:'Bochum'},
+  {name:'Jana Leonov',            rolle:'Immobilienberater', umsatz:31000,  objekte:1, standort:'Bochum'}
 ];
 
-const MONTHLY = [189,210,198,242,267,310,298,320,270,248,305,263]; // TEUR Jan-Dez
-const MONTHLY_PREV = [162,183,171,205,231,272,258,290,240,215,274,229];
+const MONTHLY = [126,140,132,162,178,207,199,214,180,166,204,176]; // TEUR Jan-Dez
+const MONTHLY_PREV = [110,123,116,142,156,181,174,187,158,145,179,154];
 const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
 function renderOverview() {
@@ -404,7 +583,7 @@ function renderOverview() {
   return `
 <!-- KPI BAND -->
 <div class="kpi2-grid">
-  <div class="kpi2"><div class="kpi2-val" style="color:var(--red);">${feS(TOTAL_UMSATZ)}</div><div class="kpi2-label">Gesamtumsatz YTD</div><div class="kpi2-sub"><span class="trend-up">↑ +14,3 %</span> vs. Vorjahr</div></div>
+  <div class="kpi2"><div class="kpi2-val" style="color:var(--red);">${feS(TOTAL_UMSATZ)}</div><div class="kpi2-label">Gesamtumsatz YTD</div><div class="kpi2-sub"><span class="trend-up">↑ +14,2 %</span> vs. Vorjahr</div></div>
   <div class="kpi2"><div class="kpi2-val" style="color:#4ade80;">${totalObjekte}</div><div class="kpi2-label">Vermarktete Objekte</div><div class="kpi2-sub">YTD 2026 · alle Standorte</div></div>
   <div class="kpi2"><div class="kpi2-val" style="color:#4d9ef7;">${f.length}</div><div class="kpi2-label">Finanzierungsanfragen</div><div class="kpi2-sub">${darlehenVol>0?feS(darlehenVol)+' Volumen':'Noch keine'}</div></div>
   <div class="kpi2"><div class="kpi2-val" style="color:#fbbf24;">${w.length}</div><div class="kpi2-label">Weekly Check-Ins</div><div class="kpi2-sub">Ø Score: ${avgScore} %</div></div>
@@ -668,23 +847,136 @@ function emptyState(icon, msg) {
 }
 
 // ── ONE OVERVIEW ─────────────────────────────────────────────────
+function oneStatusPill(s){
+  const map = {
+    offen:'amber', in_bearbeitung:'amber', in_pruefung:'amber', angefragt:'amber',
+    angenommen:'green', freigegeben:'green', erhalten:'green',
+    abgelehnt:'red', nachbesserung:'red'
+  };
+  const label = (s||'–').replace(/_/g,' ');
+  return `<span class="pill pill-${map[s]||'gray'}">${label}</span>`;
+}
+
 function renderONE(){
-  // Load ONE data from Supabase when available - for now show structure
+  const one = DATA.one || {};
+  const gebote=one.gebote||[], koop=one.kooperationen||[], qaa=one.qaa||[],
+        expose=one.expose||[], status=one.status||[], unterlagen=one.unterlagen||[];
+
+  if(!gebote.length && !koop.length && !qaa.length && !expose.length && !status.length && !unterlagen.length){
+    return emptyState('⚡','Noch keine ONE-Vorgänge vorhanden.');
+  }
+
+  const gebotVol = gebote.reduce((a,x)=>a+(parseFloat(x.gebot_eur)||0),0);
+  const verkauft = status.filter(x=>x.neu==='Verkauft').length;
+
   return `
-<div class="kpi2-grid" style="margin-bottom:16px;">
-  <div class="kpi2"><div class="kpi2-val" style="color:var(--red);">–</div><div class="kpi2-label">Gebote</div><div class="kpi2-sub">Kaufgebote eingereicht</div></div>
-  <div class="kpi2"><div class="kpi2-val" style="color:#4d9ef7;">–</div><div class="kpi2-label">Kooperationen</div><div class="kpi2-sub">Vorschläge eingegangen</div></div>
-  <div class="kpi2"><div class="kpi2-val" style="color:#4ade80;">–</div><div class="kpi2-label">QAA bestellt</div><div class="kpi2-sub">Maklerverträge beantragt</div></div>
-  <div class="kpi2"><div class="kpi2-val" style="color:#fbbf24;">–</div><div class="kpi2-label">Exposé-Freigaben</div><div class="kpi2-sub">Zur Prüfung eingereicht</div></div>
-  <div class="kpi2"><div class="kpi2-val" style="color:#a78bfa;">–</div><div class="kpi2-label">Statusänderungen</div><div class="kpi2-sub">Coming Soon / Aktiv</div></div>
-  <div class="kpi2"><div class="kpi2-val" style="color:#f87171;">–</div><div class="kpi2-label">Unterlagen bestellt</div><div class="kpi2-sub">Behördliche Anfragen</div></div>
+<div class="kpi2-grid" style="margin-bottom:20px;">
+  <div class="kpi2"><div class="kpi2-val" style="color:var(--red);">${gebote.length}</div><div class="kpi2-label">Gebote</div><div class="kpi2-sub">${gebote.filter(x=>x.status==='offen').length} offen · ${feS(gebotVol)} Volumen</div></div>
+  <div class="kpi2"><div class="kpi2-val" style="color:#4d9ef7;">${koop.length}</div><div class="kpi2-label">Kooperationen</div><div class="kpi2-sub">${koop.filter(x=>x.status==='offen').length} offen</div></div>
+  <div class="kpi2"><div class="kpi2-val" style="color:#4ade80;">${qaa.length}</div><div class="kpi2-label">QAA bestellt</div><div class="kpi2-sub">${qaa.filter(x=>x.vollmacht).length}× inkl. Vollmacht</div></div>
+  <div class="kpi2"><div class="kpi2-val" style="color:#fbbf24;">${expose.length}</div><div class="kpi2-label">Exposé-Freigaben</div><div class="kpi2-sub">${expose.filter(x=>x.status==='in_pruefung').length} in Prüfung</div></div>
+  <div class="kpi2"><div class="kpi2-val" style="color:#a78bfa;">${status.length}</div><div class="kpi2-label">Statusänderungen</div><div class="kpi2-sub">${verkauft}× auf „Verkauft"</div></div>
+  <div class="kpi2"><div class="kpi2-val" style="color:#f87171;">${unterlagen.length}</div><div class="kpi2-label">Unterlagen bestellt</div><div class="kpi2-sub">${unterlagen.filter(x=>x.status==='angefragt').length} ausstehend</div></div>
 </div>
+
+<!-- GEBOTE -->
 <div class="adm-section">
-  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> ONE-Daten werden live aus Supabase geladen sobald Einträge vorliegen</div></div>
-  <div style="background:#111;border:1px solid #1e1e1e;padding:32px;text-align:center;color:#333;font-size:.75rem;">
-    <div style="font-size:1.8rem;margin-bottom:12px;">⚡</div>
-    Die ONE-App-Tabellen (one_gebote, one_kooperationen, one_qaa_bestellungen etc.) werden automatisch befüllt sobald Berater Vorgänge einreichen. Bitte zuerst das SQL-Schema ev-schema-one.sql in Supabase ausführen.
-  </div>
+  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> Gebotsmeldungen</div><div class="adm-sec-count">${gebote.length} Einträge</div></div>
+  <div class="adm-table-wrap"><table>
+    <thead><tr><th>Datum</th><th>Berater</th><th>Objekt</th><th>Bieter</th><th>Gebot</th><th>Kaufpreis</th><th>Differenz</th><th>Status</th></tr></thead>
+    <tbody>${gebote.map(x=>{
+      const diff=(parseFloat(x.gebot_eur)||0)-(parseFloat(x.kaufpreis_eur)||0);
+      const dcol=diff>=0?'#4ade80':'#f87171';
+      return `<tr>
+        <td class="td-date">${fmtDate(x.created_at)}</td>
+        <td class="td-name" style="white-space:nowrap;">${x.berater_name||'–'}</td>
+        <td style="font-size:.72rem;max-width:200px;">${x.objekt||'–'}</td>
+        <td style="font-size:.72rem;">${x.bieter||'–'}</td>
+        <td class="td-num" style="color:#60a5fa;">${fe(x.gebot_eur||0)}</td>
+        <td class="td-num">${fe(x.kaufpreis_eur||0)}</td>
+        <td style="font-family:var(--serif);font-size:.95rem;color:${dcol};">${diff>=0?'+':''}${fe(diff)}</td>
+        <td>${oneStatusPill(x.status)}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>
+</div>
+
+<!-- QAA + VOLLMACHT -->
+<div class="adm-section">
+  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> QAA + Vollmacht</div><div class="adm-sec-count">${qaa.length} Einträge</div></div>
+  <div class="adm-table-wrap"><table>
+    <thead><tr><th>Datum</th><th>Berater</th><th>Objekt</th><th>Eigentümer</th><th>Vollmacht</th><th>Status</th></tr></thead>
+    <tbody>${qaa.map(x=>`<tr>
+      <td class="td-date">${fmtDate(x.created_at)}</td>
+      <td class="td-name" style="white-space:nowrap;">${x.berater_name||'–'}</td>
+      <td style="font-size:.72rem;max-width:200px;">${x.objekt||'–'}</td>
+      <td style="font-size:.72rem;">${x.eigentuemer||'–'}</td>
+      <td style="text-align:center;">${x.vollmacht?'<span class="pill pill-green">Ja</span>':'<span class="pill pill-gray">Nein</span>'}</td>
+      <td>${oneStatusPill(x.status)}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>
+</div>
+
+<!-- EXPOSÉ-FREIGABEN -->
+<div class="adm-section">
+  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> Exposé-Freigaben</div><div class="adm-sec-count">${expose.length} Einträge</div></div>
+  <div class="adm-table-wrap"><table>
+    <thead><tr><th>Datum</th><th>Berater</th><th>Objekt</th><th>Prüfer</th><th>Status</th></tr></thead>
+    <tbody>${expose.map(x=>`<tr>
+      <td class="td-date">${fmtDate(x.created_at)}</td>
+      <td class="td-name" style="white-space:nowrap;">${x.berater_name||'–'}</td>
+      <td style="font-size:.72rem;max-width:220px;">${x.objekt||'–'}</td>
+      <td style="font-size:.72rem;">${x.pruefer||'–'}</td>
+      <td>${oneStatusPill(x.status)}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>
+</div>
+
+<!-- STATUSWECHSEL -->
+<div class="adm-section">
+  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> Statuswechsel</div><div class="adm-sec-count">${status.length} Einträge</div></div>
+  <div class="adm-table-wrap"><table>
+    <thead><tr><th>Datum</th><th>Berater</th><th>Objekt</th><th>Vorher</th><th></th><th>Nachher</th></tr></thead>
+    <tbody>${status.map(x=>`<tr>
+      <td class="td-date">${fmtDate(x.created_at)}</td>
+      <td class="td-name" style="white-space:nowrap;">${x.berater_name||'–'}</td>
+      <td style="font-size:.72rem;max-width:200px;">${x.objekt||'–'}</td>
+      <td style="font-size:.7rem;color:#777;">${x.alt||'–'}</td>
+      <td style="color:var(--red);">→</td>
+      <td style="font-size:.72rem;color:#e0e0e0;font-weight:600;">${x.neu||'–'}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>
+</div>
+
+<!-- KOOPERATIONEN -->
+<div class="adm-section">
+  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> Kooperationsvorschläge</div><div class="adm-sec-count">${koop.length} Einträge</div></div>
+  <div class="adm-table-wrap"><table>
+    <thead><tr><th>Datum</th><th>Berater</th><th>Partner</th><th>Thema</th><th>Status</th></tr></thead>
+    <tbody>${koop.map(x=>`<tr>
+      <td class="td-date">${fmtDate(x.created_at)}</td>
+      <td class="td-name" style="white-space:nowrap;">${x.berater_name||'–'}</td>
+      <td style="font-size:.72rem;">${x.partner||'–'}</td>
+      <td style="font-size:.72rem;">${x.thema||'–'}</td>
+      <td>${oneStatusPill(x.status)}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>
+</div>
+
+<!-- UNTERLAGEN -->
+<div class="adm-section">
+  <div class="adm-sec-head"><div class="adm-sec-title"><span class="accent">●</span> Objektunterlagen-Bestellungen</div><div class="adm-sec-count">${unterlagen.length} Einträge</div></div>
+  <div class="adm-table-wrap"><table>
+    <thead><tr><th>Datum</th><th>Berater</th><th>Objekt</th><th>Behörde</th><th>Unterlage</th><th>Status</th></tr></thead>
+    <tbody>${unterlagen.map(x=>`<tr>
+      <td class="td-date">${fmtDate(x.created_at)}</td>
+      <td class="td-name" style="white-space:nowrap;">${x.berater_name||'–'}</td>
+      <td style="font-size:.72rem;max-width:180px;">${x.objekt||'–'}</td>
+      <td style="font-size:.72rem;">${x.behoerde||'–'}</td>
+      <td style="font-size:.72rem;">${x.unterlage||'–'}</td>
+      <td>${oneStatusPill(x.status)}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>
 </div>`;
 }
 
