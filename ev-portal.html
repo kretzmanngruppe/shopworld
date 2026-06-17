@@ -303,18 +303,30 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
 .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:2px;margin-bottom:2px;background:#eaeaea;border:1px solid #eaeaea;}
 .app-card{background:var(--white);padding:24px 22px;cursor:pointer;transition:all .22s;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:0;position:relative;border-bottom:none;}
 .app-card .card-badge{margin-bottom:12px;}
-.app-card .card-icon{margin-bottom:12px;font-size:1.8rem;filter:grayscale(100%);opacity:.7;transition:opacity .2s,filter .2s;}
+.app-card .card-icon{margin-bottom:12px;font-size:1.8rem;filter:grayscale(100%);opacity:.7;transition:opacity .2s,filter .2s,transform .2s;}
 .app-card:hover .card-icon{filter:grayscale(60%);opacity:.9;}
-.app-card.soon .card-icon{filter:grayscale(100%);opacity:.35;}
+.app-card.soon .card-icon{filter:grayscale(100%);opacity:.5;}
 .app-card .card-title{margin-bottom:8px;font-family:var(--serif);font-size:1.05rem;font-weight:600;color:#111;letter-spacing:-.2px;}
 .app-card .card-desc{font-size:.65rem;color:#888;line-height:1.6;}
 .app-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#eee;transition:background .2s;}
 .app-card:hover::before{background:var(--red);}
 .app-card:hover{background:#fafafa;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,.06);}
-.app-card.soon{opacity:.38;cursor:not-allowed;}
-.app-card.soon .card-title{color:#666!important;}
-.app-card.soon:hover{background:var(--white);transform:none;box-shadow:none;}
-.app-card.soon::before{background:#eee!important;}
+
+/* ── AKTIVE (Live) Kacheln: roter Rahmen + zarter rot-getönter Hintergrund ── */
+.app-card.is-live{background:#fdf5f6;box-shadow:inset 0 0 0 1px rgba(196,30,58,.45);z-index:1;}
+.app-card.is-live::before{background:var(--red);}
+.app-card.is-live .card-icon{filter:grayscale(0%);opacity:1;}
+.app-card.is-live:hover{background:#fceef0;box-shadow:inset 0 0 0 1px var(--red),0 6px 22px rgba(196,30,58,.14);transform:translateY(-2px);}
+
+/* ── INAKTIVE (Demnächst) Kacheln: sichtbar, aber gedämpft – mit deutlichem Hover ── */
+.app-card.soon{opacity:.62;cursor:not-allowed;background:#fbfbfa;}
+.app-card.soon .card-title{color:#555!important;}
+.app-card.soon .card-desc{color:#999;}
+.app-card.soon::before{background:#e2e2e2;}
+.app-card.soon:hover{opacity:1;background:var(--white);transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.1);}
+.app-card.soon:hover .card-icon{filter:grayscale(0%);opacity:1;transform:scale(1.06);}
+.app-card.soon:hover::before{background:#c9ccd1;}
+.app-card.soon:hover .card-title{color:#222!important;}
 .card-badge{display:inline-block;font-size:.53rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:2px 8px;align-self:flex-start;}
 .badge-live{background:#fdf0f2;color:var(--red);}
 .badge-soon{background:#f3f4f6;color:#9ca3af;}
@@ -749,7 +761,7 @@ footer{margin-top:0;}
     <div class="app-section-head collapsible" onclick="toggleAppSection('appsec-agents')">
       <div class="app-section-title">
         Applikationen Agents
-        <span class="app-section-count">4</span>
+        <span class="app-section-count">8</span>
       </div>
       <div class="app-section-line"></div>
       <span class="app-section-toggle">▾</span>
@@ -757,7 +769,7 @@ footer{margin-top:0;}
     <div class="app-section-body">
       <div class="app-grid" style="margin-top:0;">
 
-        <div class="app-card" onclick="openApp('finanzierung','Finanzierungsmanager','ev-finanzierung.html')">
+        <div class="app-card is-live" onclick="openApp('finanzierung','Finanzierungsmanager','ev-finanzierung.html')">
           <div class="app-card-before"></div>
           <span class="card-badge badge-live">Live</span>
           <div class="card-icon">🏦</div>
@@ -765,25 +777,53 @@ footer{margin-top:0;}
           <div class="card-desc">Kundendaten und Finanzierungswunsch strukturiert an Partnerbanken übermitteln.</div>
         </div>
 
-        <div class="app-card" onclick="openApp('umsatz','Umsatzplanung','ev-umsatzplanung.html')">
+        <div class="app-card is-live" onclick="openApp('umsatz','Umsatzplanung','ev-umsatzplanung.html')">
           <span class="card-badge badge-live">Live</span>
           <div class="card-icon">💰</div>
           <div class="card-title">Umsatzplanung</div>
           <div class="card-desc">Provisions- &amp; Gehaltsrechner für Fast Track und Club 500. Jahresaufstellung auf Knopfdruck.</div>
         </div>
 
-        <div class="app-card" onclick="openApp('weekly','Weekly','ev-weekly.html')">
+        <div class="app-card is-live" onclick="openApp('weekly','Weekly','ev-weekly.html')">
           <span class="card-badge badge-live">Live</span>
           <div class="card-icon">📋</div>
           <div class="card-title">Weekly</div>
           <div class="card-desc">Wöchentliche Qualitätssicherung und persönliche Weiterentwicklung für alle Berater.</div>
         </div>
 
-        <div class="app-card" onclick="openApp('social','Social Media Manager','ev-socialmedia.html')">
+        <div class="app-card is-live" onclick="openApp('social','Social Media Manager','ev-socialmedia.html')">
           <span class="card-badge badge-live">Live</span>
           <div class="card-icon">📲</div>
           <div class="card-title">Social Media Manager</div>
           <div class="card-desc">Content-Anfragen schnell und strukturiert ans Social-Media-Team übermitteln.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">📝</div>
+          <div class="card-title">Exposé-Generator</div>
+          <div class="card-desc">Hochwertige Objektexposés CI-konform erstellen und als PDF exportieren.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">📈</div>
+          <div class="card-title">Marktwert-Rechner</div>
+          <div class="card-desc">Indikative Immobilienbewertung anhand regionaler Vergleichsdaten im Ruhrgebiet.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">📅</div>
+          <div class="card-title">Terminbuchung</div>
+          <div class="card-desc">Besichtigungen und Beratungstermine online koordinieren und bestätigen.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🛋️</div>
+          <div class="card-title">Virtuelles Staging</div>
+          <div class="card-desc">Leere Räume digital möblieren und Objekte ansprechend in Szene setzen.</div>
         </div>
 
       </div>
@@ -795,7 +835,7 @@ footer{margin-top:0;}
     <div class="app-section-head collapsible" onclick="toggleAppSection('appsec-ssc')">
       <div class="app-section-title">
         Applikationen SSC
-        <span class="app-section-count">8</span>
+        <span class="app-section-count">12</span>
       </div>
       <div class="app-section-line"></div>
       <span class="app-section-toggle">▾</span>
@@ -803,8 +843,8 @@ footer{margin-top:0;}
     <div class="app-section-body">
       <div class="app-grid" style="margin-top:0;">
 
-        <div class="app-card" onclick="openApp('shop','Brand-Shop','ev-werbemittel.html')">
-          <span class="card-badge" style="background:#f5ede0;color:#B5713A;">Live</span>
+        <div class="app-card is-live" onclick="openApp('shop','Brand-Shop','ev-werbemittel.html')">
+          <span class="card-badge badge-live">Live</span>
           <div class="card-icon">🛍️</div>
           <div class="card-title">Brand-Shop</div>
           <div class="card-desc">CI-konforme Werbemittel, Visitenkarten und Drucksachen für alle Standorte bestellen.</div>
@@ -859,6 +899,34 @@ footer{margin-top:0;}
           <div class="card-desc">Support-Anfragen und technische Probleme schnell und strukturiert melden.</div>
         </div>
 
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🗓️</div>
+          <div class="card-title">Kalender</div>
+          <div class="card-desc">Gemeinsamer Teamkalender mit Terminen, Urlauben und Standort-Events.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🗂️</div>
+          <div class="card-title">Dokumentenarchiv</div>
+          <div class="card-desc">Verträge, Vorlagen und interne Dokumente zentral ablegen und durchsuchen.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🧾</div>
+          <div class="card-title">Reisekosten</div>
+          <div class="card-desc">Fahrten und Auslagen erfassen, belegen und zur Abrechnung einreichen.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">☎️</div>
+          <div class="card-title">Telefonliste</div>
+          <div class="card-desc">Aktuelle Durchwahlen und Ansprechpartner aller Standorte auf einen Blick.</div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -868,7 +936,7 @@ footer{margin-top:0;}
     <div class="app-section-head collapsible" onclick="toggleAppSection('appsec-gf')">
       <div class="app-section-title">
         Applikationen GF
-        <span class="app-section-count">3</span>
+        <span class="app-section-count">8</span>
       </div>
       <div class="app-section-line"></div>
       <span class="app-section-toggle">▾</span>
@@ -895,6 +963,41 @@ footer{margin-top:0;}
           <div class="card-icon">📊</div>
           <div class="card-title">Controlling</div>
           <div class="card-desc">Objektabschlüsse, Provisionsauswertungen und betriebswirtschaftliche Kennzahlen.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">📈</div>
+          <div class="card-title">Reporting-Dashboard</div>
+          <div class="card-desc">Standortübergreifende Umsatz- und Pipeline-Auswertungen in Echtzeit.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">📄</div>
+          <div class="card-title">Vertragsmanagement</div>
+          <div class="card-desc">Maklerverträge, Fristen und Verlängerungen zentral verwalten und überwachen.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🗺️</div>
+          <div class="card-title">Standort-Cockpit</div>
+          <div class="card-desc">Kennzahlen je Lizenzgebiet – Bochum, Hattingen, Mülheim, Duisburg, Bottrop.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🔍</div>
+          <div class="card-title">Konkurrenzanalyse</div>
+          <div class="card-desc">Wettbewerber und Marktanteile im Ruhrgebiet beobachten und auswerten.</div>
+        </div>
+
+        <div class="app-card soon">
+          <span class="card-badge badge-soon">Demnächst</span>
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Balanced Scorecard</div>
+          <div class="card-desc">Strategische Ziele über Finanz-, Kunden- und Prozessperspektiven steuern.</div>
         </div>
 
       </div>

@@ -507,17 +507,50 @@ function renderLoading(){
 function renderDemo(){
   const today = new Date();
   const d = (offset)=>new Date(today.getTime()+offset*86400000).toISOString().split('T')[0];
+  const h = (hours)=>new Date(Date.now()-hours*3600000).toISOString();
+  let _i=0; const id=()=>++_i;
   TICKETS = [
-    {id:1,ref:'demo_1',type:'gebot',    title:'Gebot: Kemnader Str. 12, Bochum', sub:'Käufer: Max Mustermann · 395.000 €',from:'Markus Becker',   due:d(2),  status:'open',       prio:'high',created_at:new Date(Date.now()-2*3600000).toISOString(),raw:{}},
-    {id:2,ref:'demo_2',type:'expose',   title:'Exposé-Freigabe: Altenhöfener Str. 7',sub:'ETW · 290.000 €',from:'Lars Schneider',  due:d(-1), status:'open',       prio:'med', created_at:new Date(Date.now()-5*3600000).toISOString(),raw:{}},
-    {id:3,ref:'demo_3',type:'unterlagen',title:'Unterlagen: Hattingen Stadtmitte',sub:'Grundbuch · Baulast · Dringend',from:'Petra Winkler',  due:d(1),  status:'open',       prio:'med', created_at:new Date(Date.now()-86400000).toISOString(),raw:{}},
-    {id:4,ref:'demo_4',type:'weekly',   title:'Weekly KW 20/2026',sub:'Immobilienberater · Score: 87 %',from:'Julia Steinberg',due:null, status:'open',       prio:'low', created_at:new Date(Date.now()-2*86400000).toISOString(),raw:{}},
-    {id:5,ref:'demo_5',type:'qaa',      title:'QAA: Springorumstr. 44, Bochum',sub:'EFH · Schmidt, Thomas · 6 Monate',from:'Andreas Müller', due:d(5),  status:'in_progress',prio:'med', created_at:new Date(Date.now()-3*86400000).toISOString(),raw:{}},
-    {id:6,ref:'demo_6',type:'finanz',   title:'Finanzierung: Querenburg, Bochum',sub:'M. Mustermann · 312.000 €',from:'Markus Becker',   due:null, status:'in_progress',prio:'med', created_at:new Date(Date.now()-4*86400000).toISOString(),raw:{}},
-    {id:7,ref:'demo_7',type:'social',   title:'Social: Immobilienportrait Instagram',sub:'Instagram · Facebook · Dringend',from:'Nicole Fischer',  due:d(-2), status:'waiting',    prio:'low', created_at:new Date(Date.now()-5*86400000).toISOString(),raw:{}},
-    {id:8,ref:'demo_8',type:'koop',     title:'Kooperation: Muster Finanzberatung GmbH',sub:'Unternehmen · Finanzberater',from:'Stefan Brandt',   due:null, status:'waiting',    prio:'low', created_at:new Date(Date.now()-6*86400000).toISOString(),raw:{}},
-    {id:9,ref:'demo_9',type:'abschluss',title:'Abschluss: Stiepeler Str. 88, Bochum',sub:'Verkauf · 420.000 € · 15.06.',from:'Sabine Hoffmann',  due:d(3),  status:'done',       prio:'high',created_at:new Date(Date.now()-7*86400000).toISOString(),raw:{}},
-    {id:10,ref:'demo_10',type:'umsatz', title:'Umsatzplanung 2026',sub:'Fast Track · 480.000 € Jahresumsatz',from:'Clara Kretzmann',  due:null, status:'done',       prio:'low', created_at:new Date(Date.now()-8*86400000).toISOString(),raw:{}},
+    // ── NEU / OFFEN ──────────────────────────────────────────────
+    {id:id(),ref:'demo_1', type:'gebot',     title:'Gebot: Kemnader Str. 12, Bochum',          sub:'Käufer: Max Mustermann · 395.000 €',         from:'Markus Becker',    due:d(2),  status:'open',        prio:'high',created_at:h(2),raw:{}},
+    {id:id(),ref:'demo_2', type:'gebot',     title:'Gebot: Hauptstr. 58, Hattingen',           sub:'Käufer: Familie Özdemir · 412.000 €',        from:'Petra Winkler',    due:d(1),  status:'open',        prio:'high',created_at:h(4),raw:{}},
+    {id:id(),ref:'demo_3', type:'expose',    title:'Exposé-Freigabe: Altenhöfener Str. 7',     sub:'ETW · 290.000 €',                            from:'Lars Schneider',   due:d(-1), status:'open',        prio:'med', created_at:h(5),raw:{}},
+    {id:id(),ref:'demo_4', type:'expose',    title:'Exposé-Freigabe: Wittener Str. 134, Bochum',sub:'MFH · 1.250.000 €',                         from:'Sabine Hoffmann',  due:d(2),  status:'open',        prio:'med', created_at:h(7),raw:{}},
+    {id:id(),ref:'demo_5', type:'unterlagen',title:'Unterlagen: Hattingen Stadtmitte',         sub:'Grundbuch · Baulast · Dringend',             from:'Petra Winkler',    due:d(1),  status:'open',        prio:'med', created_at:h(9),raw:{}},
+    {id:id(),ref:'demo_6', type:'unterlagen',title:'Unterlagen: Speldorf, Mülheim',            sub:'Energieausweis · Teilungserklärung',         from:'Nicole Fischer',   due:d(3),  status:'open',        prio:'low', created_at:h(11),raw:{}},
+    {id:id(),ref:'demo_7', type:'qaa',       title:'QAA: Springorumstr. 44, Bochum',           sub:'EFH · Schmidt, Thomas · 6 Monate',           from:'Andreas Müller',   due:d(5),  status:'open',        prio:'med', created_at:h(13),raw:{}},
+    {id:id(),ref:'demo_8', type:'social',    title:'Social: Immobilienportrait Instagram',     sub:'Instagram · Facebook · Dringend',            from:'Nicole Fischer',   due:d(0),  status:'open',        prio:'high',created_at:h(15),raw:{}},
+    {id:id(),ref:'demo_9', type:'weekly',    title:'Weekly KW 20/2026',                        sub:'Immobilienberater · Score: 87 %',            from:'Julia Steinberg',  due:null,  status:'open',        prio:'low', created_at:h(20),raw:{}},
+    {id:id(),ref:'demo_10',type:'finanz',    title:'Finanzierung: Querenburg, Bochum',         sub:'M. Mustermann · 312.000 €',                  from:'Markus Becker',    due:d(4),  status:'open',        prio:'med', created_at:h(22),raw:{}},
+    {id:id(),ref:'demo_11',type:'status',    title:'Objektstatus: Friedrichstr. 9, Bottrop',   sub:'Reserviert → Notartermin',                   from:'Daniel Krause',    due:d(2),  status:'open',        prio:'med', created_at:h(26),raw:{}},
+
+    // ── IN BEARBEITUNG ───────────────────────────────────────────
+    {id:id(),ref:'demo_12',type:'qaa',       title:'QAA: Hofstede, Bochum',                    sub:'DHH · Becker, Lena · 3 Monate',              from:'Andreas Müller',   due:d(6),  status:'in_progress', prio:'med', created_at:h(30),raw:{}},
+    {id:id(),ref:'demo_13',type:'finanz',    title:'Finanzierung: Altstadt, Duisburg',         sub:'Familie Yilmaz · 268.000 €',                 from:'Sven Albrecht',    due:d(3),  status:'in_progress', prio:'med', created_at:h(34),raw:{}},
+    {id:id(),ref:'demo_14',type:'gebot',     title:'Gebot: Saarner Str. 210, Mülheim',         sub:'Käufer: Dr. Wagner · 540.000 €',             from:'Sabine Hoffmann',  due:d(1),  status:'in_progress', prio:'high',created_at:h(38),raw:{}},
+    {id:id(),ref:'demo_15',type:'expose',    title:'Exposé-Freigabe: Innenstadt, Duisburg',    sub:'Gewerbe · 780.000 €',                        from:'Sven Albrecht',    due:d(0),  status:'in_progress', prio:'med', created_at:h(42),raw:{}},
+    {id:id(),ref:'demo_16',type:'unterlagen',title:'Unterlagen: Welheim, Bottrop',             sub:'Grundbuch · Flurkarte',                      from:'Daniel Krause',    due:d(4),  status:'in_progress', prio:'low', created_at:h(46),raw:{}},
+    {id:id(),ref:'demo_17',type:'social',    title:'Social: Reel Neueröffnung Mülheim',        sub:'Instagram · TikTok',                         from:'Nicole Fischer',   due:d(7),  status:'in_progress', prio:'low', created_at:h(50),raw:{}},
+    {id:id(),ref:'demo_18',type:'koop',      title:'Kooperation: Sparkasse Bochum',            sub:'Bank · Finanzierungspartner',                from:'Clara Kretzmann',  due:null,  status:'in_progress', prio:'med', created_at:h(54),raw:{}},
+    {id:id(),ref:'demo_19',type:'weekly',    title:'Weekly KW 20/2026',                        sub:'Back-Office · Score: 92 %',                  from:'Vivien Trojan',    due:null,  status:'in_progress', prio:'low', created_at:h(58),raw:{}},
+
+    // ── WARTET ───────────────────────────────────────────────────
+    {id:id(),ref:'demo_20',type:'social',    title:'Social: Immobilienportrait Instagram',     sub:'Instagram · Facebook · Dringend',            from:'Nicole Fischer',   due:d(-2), status:'waiting',     prio:'low', created_at:h(62),raw:{}},
+    {id:id(),ref:'demo_21',type:'koop',      title:'Kooperation: Muster Finanzberatung GmbH',  sub:'Unternehmen · Finanzberater',                from:'Stefan Brandt',    due:null,  status:'waiting',     prio:'low', created_at:h(66),raw:{}},
+    {id:id(),ref:'demo_22',type:'koop',      title:'Kooperation: Notariat Dr. Lehmann',        sub:'Notar · Beurkundung',                        from:'Clara Kretzmann',  due:null,  status:'waiting',     prio:'low', created_at:h(70),raw:{}},
+    {id:id(),ref:'demo_23',type:'finanz',    title:'Finanzierung: Stiepel, Bochum',            sub:'Eheleute Klein · 455.000 €',                 from:'Markus Becker',    due:d(-1), status:'waiting',     prio:'med', created_at:h(74),raw:{}},
+    {id:id(),ref:'demo_24',type:'unterlagen',title:'Unterlagen: Holthausen, Hattingen',        sub:'Wohnflächenberechnung',                      from:'Petra Winkler',    due:d(2),  status:'waiting',     prio:'low', created_at:h(78),raw:{}},
+    {id:id(),ref:'demo_25',type:'status',    title:'Objektstatus: Dorstener Str. 3, Bochum',   sub:'Vermarktung → Reserviert',                   from:'Lars Schneider',   due:null,  status:'waiting',     prio:'low', created_at:h(82),raw:{}},
+
+    // ── ERLEDIGT ─────────────────────────────────────────────────
+    {id:id(),ref:'demo_26',type:'abschluss', title:'Abschluss: Stiepeler Str. 88, Bochum',     sub:'Verkauf · 420.000 € · 15.06.',               from:'Sabine Hoffmann',  due:d(3),  status:'done',        prio:'high',created_at:h(90),raw:{}},
+    {id:id(),ref:'demo_27',type:'abschluss', title:'Abschluss: Heßlerstr. 17, Mülheim',        sub:'Verkauf · 365.000 € · 10.06.',               from:'Nicole Fischer',   due:d(-5), status:'done',        prio:'high',created_at:h(100),raw:{}},
+    {id:id(),ref:'demo_28',type:'abschluss', title:'Abschluss: Beecker Str. 40, Duisburg',     sub:'Zuführung · 298.000 € · 08.06.',             from:'Sven Albrecht',    due:d(-7), status:'done',        prio:'high',created_at:h(110),raw:{}},
+    {id:id(),ref:'demo_29',type:'umsatz',    title:'Umsatzplanung 2026',                       sub:'Fast Track · 480.000 € Jahresumsatz',        from:'Clara Kretzmann',  due:null,  status:'done',        prio:'low', created_at:h(120),raw:{}},
+    {id:id(),ref:'demo_30',type:'umsatz',    title:'Umsatzplanung 2026',                       sub:'Club 500 · 615.000 € Jahresumsatz',          from:'Markus Becker',    due:null,  status:'done',        prio:'low', created_at:h(130),raw:{}},
+    {id:id(),ref:'demo_31',type:'gebot',     title:'Gebot: Castroper Str. 145, Bochum',        sub:'Käufer: M. Schulz · 339.000 €',              from:'Lars Schneider',   due:d(-3), status:'done',        prio:'high',created_at:h(140),raw:{}},
+    {id:id(),ref:'demo_32',type:'qaa',       title:'QAA: Heven, Witten',                       sub:'EFH · Hartmann, Ute · 12 Monate',            from:'Andreas Müller',   due:d(-4), status:'done',        prio:'med', created_at:h(150),raw:{}},
+    {id:id(),ref:'demo_33',type:'weekly',    title:'Weekly KW 19/2026',                        sub:'Immobilienberater · Score: 95 %',            from:'Julia Steinberg',  due:null,  status:'done',        prio:'low', created_at:h(160),raw:{}},
+    {id:id(),ref:'demo_34',type:'expose',    title:'Exposé-Freigabe: Eppendorf, Bochum',       sub:'RH · 379.000 €',                             from:'Sabine Hoffmann',  due:d(-6), status:'done',        prio:'med', created_at:h(170),raw:{}},
   ];
   renderBoard();
 }
