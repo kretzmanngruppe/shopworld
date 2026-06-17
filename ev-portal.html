@@ -104,6 +104,110 @@ main{max-width:1080px;width:100%;margin:0 auto;padding:40px 24px 64px;}
 /* ═══ ONE + INBOX ROW ═══ */
 .one-inbox-row{display:grid;grid-template-columns:1fr 2fr;gap:2px;margin-bottom:2px;}
 
+/* ═══ OBJEKTLISTE ═══ */
+.objektliste{background:var(--white);border:1px solid #eaeaea;margin-bottom:2px;}
+.ol-header{
+  background:var(--dark);padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  position:relative;overflow:hidden;flex-wrap:wrap;
+}
+.ol-header::before{
+  content:'OBJEKTE';position:absolute;right:-6px;bottom:-14px;
+  font-family:var(--serif);font-size:3.6rem;font-weight:300;
+  color:rgba(255,255,255,.04);letter-spacing:-2px;pointer-events:none;line-height:1;
+}
+.ol-title-wrap{display:flex;flex-direction:column;gap:3px;position:relative;z-index:2;}
+.ol-eyebrow{font-size:.52rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);}
+.ol-title{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:#fff;letter-spacing:-.3px;line-height:1;}
+.ol-count{font-size:.62rem;color:#777;position:relative;z-index:2;white-space:nowrap;}
+.ol-count strong{color:#bbb;font-weight:600;}
+
+/* FILTERLEISTE */
+.ol-filters{
+  display:grid;grid-template-columns:repeat(4,1fr) auto;gap:0;
+  border-bottom:1px solid #eaeaea;background:#faf9f7;
+}
+.ol-filter{display:flex;flex-direction:column;gap:0;border-right:1px solid #eee;}
+.ol-filter:last-of-type{border-right:none;}
+.ol-filter label{
+  font-size:.5rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#aaa;padding:9px 14px 0;
+}
+.ol-filter select,.ol-filter input{
+  border:none;background:transparent;padding:6px 14px 10px;
+  font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--dark);
+  outline:none;cursor:pointer;width:100%;-webkit-appearance:none;appearance:none;
+}
+.ol-filter input{cursor:text;}
+.ol-filter input::placeholder{color:#ccc;font-weight:400;}
+.ol-filter.has-select{position:relative;}
+.ol-filter.has-select::after{
+  content:'▾';position:absolute;right:12px;bottom:11px;
+  font-size:.6rem;color:#bbb;pointer-events:none;
+}
+.ol-filter-reset{
+  display:flex;align-items:center;justify-content:center;padding:0 18px;
+  font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#aaa;cursor:pointer;background:none;border:none;border-left:1px solid #eee;
+  font-family:var(--sans);transition:color .2s;white-space:nowrap;
+}
+.ol-filter-reset:hover{color:var(--red);}
+
+/* TABELLE */
+.ol-table-wrap{overflow-x:auto;}
+.ol-table{width:100%;border-collapse:collapse;}
+.ol-table thead th{
+  font-size:.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#aaa;text-align:left;padding:11px 22px;border-bottom:1px solid #f0f0f0;
+  cursor:pointer;user-select:none;white-space:nowrap;transition:color .2s;
+}
+.ol-table thead th:hover{color:var(--red);}
+.ol-table thead th.num{text-align:right;}
+.ol-table thead th .sort-ind{color:var(--red);margin-left:3px;font-size:.6rem;}
+.ol-table tbody tr{border-bottom:1px solid #f8f8f8;transition:background .15s;}
+.ol-table tbody tr:last-child{border-bottom:none;}
+.ol-table tbody tr:hover{background:#faf9f7;}
+.ol-table td{padding:12px 22px;font-size:.8rem;color:var(--dark);vertical-align:middle;}
+.ol-id{font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.5px;color:#bbb;}
+.ol-art{
+  display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;padding:3px 9px;white-space:nowrap;
+}
+.ol-art.haus{background:#fdf0f2;color:var(--red);}
+.ol-art.wohnung{background:#eef4fb;color:#1a5fa8;}
+.ol-art.grundstück{background:#f0faf5;color:#2d7a4f;}
+.ol-adresse{font-weight:600;}
+.ol-stadt{color:#888;font-size:.72rem;}
+.ol-plz{color:#ccc;font-size:.68rem;}
+.ol-preis{text-align:right;font-family:var(--serif);font-size:1rem;font-weight:600;color:#111;white-space:nowrap;}
+.ol-datum{text-align:right;font-size:.66rem;color:#bbb;white-space:nowrap;}
+.ol-empty{padding:40px 22px;text-align:center;color:#ccc;font-size:.8rem;}
+
+/* PAGINATION */
+.ol-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 22px;border-top:1px solid #f0f0f0;background:#faf9f7;flex-wrap:wrap;
+}
+.ol-foot-info{font-size:.62rem;color:#aaa;letter-spacing:.5px;}
+.ol-foot-info strong{color:#777;font-weight:600;}
+.ol-pager{display:flex;align-items:center;gap:2px;}
+.ol-pg-btn{
+  min-width:30px;height:30px;padding:0 9px;border:1px solid #e6e6e6;background:var(--white);
+  font-family:var(--sans);font-size:.68rem;font-weight:600;color:#888;cursor:pointer;
+  transition:all .15s;display:flex;align-items:center;justify-content:center;
+}
+.ol-pg-btn:hover:not(:disabled):not(.active){border-color:var(--red);color:var(--red);}
+.ol-pg-btn.active{background:var(--dark);border-color:var(--dark);color:#fff;cursor:default;}
+.ol-pg-btn:disabled{opacity:.35;cursor:not-allowed;}
+.ol-pg-ellipsis{padding:0 6px;color:#ccc;font-size:.7rem;}
+
+@media(max-width:760px){
+  .ol-filters{grid-template-columns:1fr 1fr;}
+  .ol-filter:nth-child(2){border-right:none;}
+  .ol-filter-reset{grid-column:1/-1;border-left:none;border-top:1px solid #eee;padding:10px;}
+  .ol-table td,.ol-table thead th{padding-left:14px;padding-right:14px;}
+}
+
 /* ONE HERO */
 .one-hero{
   background:var(--dark);padding:26px 28px;
@@ -482,6 +586,64 @@ footer{margin-top:0;}
 
   </div>
 
+  <!-- ═══ OBJEKTLISTE ═══ -->
+  <div class="objektliste">
+    <div class="ol-header">
+      <div class="ol-title-wrap">
+        <div class="ol-eyebrow">Aktueller Bestand</div>
+        <div class="ol-title">Objektliste</div>
+      </div>
+      <div class="ol-count" id="olCount">–</div>
+    </div>
+
+    <div class="ol-filters">
+      <div class="ol-filter has-select">
+        <label>Standort</label>
+        <select id="olfStadt" onchange="olApplyFilters()"><option value="">Alle Standorte</option></select>
+      </div>
+      <div class="ol-filter has-select">
+        <label>Objektart</label>
+        <select id="olfArt" onchange="olApplyFilters()"><option value="">Alle Arten</option></select>
+      </div>
+      <div class="ol-filter has-select">
+        <label>Preis</label>
+        <select id="olfPreis" onchange="olApplyFilters()">
+          <option value="">Beliebig</option>
+          <option value="0-200000">bis 200.000 €</option>
+          <option value="200000-400000">200.000 – 400.000 €</option>
+          <option value="400000-600000">400.000 – 600.000 €</option>
+          <option value="600000-1000000">600.000 – 1 Mio. €</option>
+          <option value="1000000-999999999">über 1 Mio. €</option>
+        </select>
+      </div>
+      <div class="ol-filter">
+        <label>Suche</label>
+        <input type="text" id="olfSuche" placeholder="Straße, ID, PLZ …" oninput="olApplyFilters()"/>
+      </div>
+      <button class="ol-filter-reset" onclick="olResetFilters()">Zurücksetzen</button>
+    </div>
+
+    <div class="ol-table-wrap">
+      <table class="ol-table">
+        <thead>
+          <tr>
+            <th data-sort="id" onclick="olSort('id')">ID</th>
+            <th data-sort="art" onclick="olSort('art')">Art</th>
+            <th data-sort="adresse" onclick="olSort('adresse')">Adresse</th>
+            <th data-sort="stadt" onclick="olSort('stadt')">Standort</th>
+            <th class="num" data-sort="kp" onclick="olSort('kp')">Kaufpreis</th>
+            <th class="num" data-sort="geaendert" onclick="olSort('geaendert')">Geändert</th>
+          </tr>
+        </thead>
+        <tbody id="olBody"></tbody>
+      </table>
+    </div>
+
+    <div class="ol-foot">
+      <div class="ol-foot-info" id="olFootInfo"></div>
+      <div class="ol-pager" id="olPager"></div>
+    </div>
+  </div>
 
 
   <!-- QUICKLINKS -->
@@ -1130,6 +1292,146 @@ async function loadMyUmsatzPlan(){
   }
 }
 
+
+// ── OBJEKTLISTE ──────────────────────────────────────────────────
+const OL_DATA = [{"id": "W-049XOZ", "art": "Haus", "strasse": "Schützstraße", "hnr": "4", "kp": 699000, "stadt": "Hattingen", "plz": "45529", "geaendert": "2026-06-15"}, {"id": "W-049DAX", "art": "Haus", "strasse": "Rosenbaumweg", "hnr": "36", "kp": 579000, "stadt": "Bochum", "plz": "44805", "geaendert": "2026-06-16"}, {"id": "W-049XBC", "art": "Haus", "strasse": "Bunsenstraße", "hnr": "20", "kp": 570000, "stadt": "Bochum", "plz": "44793", "geaendert": "2026-06-11"}, {"id": "W-030CR0", "art": "Haus", "strasse": "Horsthauser Straße", "hnr": "37k", "kp": 629000, "stadt": "Herne", "plz": "44628", "geaendert": "2026-06-04"}, {"id": "W-049PWY", "art": "Wohnung", "strasse": "Wohlfahrtstraße", "hnr": "208", "kp": 184000, "stadt": "Bochum", "plz": "44799", "geaendert": "2026-06-11"}, {"id": "W-049AQE", "art": "Haus", "strasse": "Geitlingstraße", "hnr": "5", "kp": 679000, "stadt": "Bochum", "plz": "44866", "geaendert": "2026-06-12"}, {"id": "W-047MY5", "art": "Haus", "strasse": "Sunderholzer Weg", "hnr": "16", "kp": 349000, "stadt": "Gevelsberg", "plz": "58285", "geaendert": "2026-06-12"}, {"id": "W-048ST3", "art": "Haus", "strasse": "Fichtenstraße", "hnr": "13", "kp": 299000, "stadt": "Ennepetal", "plz": "58256", "geaendert": "2026-06-12"}, {"id": "W-0498UP", "art": "Wohnung", "strasse": "Lessingstraße", "hnr": "76", "kp": 749000, "stadt": "Bochum", "plz": "44791", "geaendert": "2026-06-04"}, {"id": "W-049CMG", "art": "Wohnung", "strasse": "Alte Bergstraße", "hnr": "1", "kp": 399000, "stadt": "Sprockhövel", "plz": "45549", "geaendert": "2026-05-22"}, {"id": "W-049G9R", "art": "Haus", "strasse": "Am Alten General", "hnr": "8", "kp": 879000, "stadt": "Bochum", "plz": "44879", "geaendert": "2026-06-10"}, {"id": "W-049KOZ", "art": "Haus", "strasse": "Ückendorfer Straße", "hnr": "98", "kp": 749000, "stadt": "Bochum", "plz": "44866", "geaendert": "2026-06-10"}, {"id": "W-048FAL", "art": "Wohnung", "strasse": "Markstraße", "hnr": "206", "kp": 279000, "stadt": "Bochum", "plz": "44799", "geaendert": "2026-06-08"}, {"id": "W-049388", "art": "Wohnung", "strasse": "August-Bebel-Straße", "hnr": "4", "kp": 232600, "stadt": "Hattingen", "plz": "45525", "geaendert": "2026-06-09"}, {"id": "W-049H55", "art": "Wohnung", "strasse": "Parkallee", "hnr": "17", "kp": 277500, "stadt": "Bochum", "plz": "44866", "geaendert": "2026-05-06"}, {"id": "W-02FGCM", "art": "Wohnung", "strasse": "Im Haarmannsbusch", "hnr": "57", "kp": 449000, "stadt": "Bochum", "plz": "44797", "geaendert": "2026-05-23"}, {"id": "W-048FAI", "art": "Wohnung", "strasse": "Lindengrabenstraße", "hnr": "65", "kp": 249000, "stadt": "Gevelsberg", "plz": "58285", "geaendert": "2026-04-07"}, {"id": "W-046CJ8", "art": "Wohnung", "strasse": "Leithestraße", "hnr": "50", "kp": 119000, "stadt": "Bochum", "plz": "44866", "geaendert": "2026-04-30"}, {"id": "W-047ESE", "art": "Wohnung", "strasse": "Feldsieper Straße", "hnr": "63", "kp": 159000, "stadt": "Bochum", "plz": "44809", "geaendert": "2026-05-19"}, {"id": "W-047NXD", "art": "Haus", "strasse": "Gleiwitzer Straße", "hnr": "2e", "kp": 999000, "stadt": "Bochum", "plz": "44795", "geaendert": "2026-05-11"}, {"id": "W-047Q4G", "art": "Wohnung", "strasse": "Hevener Straße", "hnr": "61B", "kp": 359000, "stadt": "Bochum", "plz": "44797", "geaendert": "2026-05-06"}, {"id": "W-030EW2", "art": "Wohnung", "strasse": "Wattenscheider Hellweg", "hnr": "227", "kp": 435000, "stadt": "Bochum", "plz": "44867", "geaendert": "2026-04-28"}, {"id": "W-02VLR9", "art": "Grundstück", "strasse": "Wohlfahrtstraße", "hnr": "166", "kp": 898000, "stadt": "Bochum", "plz": "44799", "geaendert": "2025-02-18"}, {"id": "W-049FFV", "art": "Wohnung", "strasse": "Teichacker", "hnr": "15", "kp": 189000, "stadt": "Voerde (Niederrhein)", "plz": "46562", "geaendert": "2026-05-26"}, {"id": "W-030TQC", "art": "Wohnung", "strasse": "Weidenstraße", "hnr": "2", "kp": 149000, "stadt": "Duisburg", "plz": "47199", "geaendert": "2026-05-26"}, {"id": "W-030H7N", "art": "Wohnung", "strasse": "Elsa-Brändström-Straße", "hnr": "36", "kp": 225000, "stadt": "Oberhausen", "plz": "46045", "geaendert": "2026-06-01"}, {"id": "W-049FPQ", "art": "Wohnung", "strasse": "Lösorter Straße", "hnr": "36", "kp": 99000, "stadt": "Duisburg", "plz": "47137", "geaendert": "2026-06-17"}, {"id": "W-048YLD", "art": "Haus", "strasse": "Merremstraße", "hnr": "13", "kp": 345000, "stadt": "Duisburg", "plz": "47053", "geaendert": "2026-06-08"}, {"id": "W-0493GW", "art": "Haus", "strasse": "Krefelder Straße", "hnr": "26", "kp": 499000, "stadt": "Oberhausen", "plz": "46147", "geaendert": "2026-05-12"}, {"id": "W-00FVGB", "art": "Haus", "strasse": "Saarnberg", "hnr": "64", "kp": 960000, "stadt": "Mülheim an der Ruhr", "plz": "45481", "geaendert": "2026-05-11"}, {"id": "W-048VW8", "art": "Haus", "strasse": "Schillerstraße", "hnr": "106", "kp": 429000, "stadt": "Duisburg", "plz": "47198", "geaendert": "2026-06-15"}, {"id": "W-04819U", "art": "Haus", "strasse": "Poststraße", "hnr": "42", "kp": 449000, "stadt": "Duisburg", "plz": "47198", "geaendert": "2026-04-28"}, {"id": "W-048JQD", "art": "Wohnung", "strasse": "Winsterstraße", "hnr": "55", "kp": 169000, "stadt": "Mülheim an der Ruhr", "plz": "45481", "geaendert": "2026-06-03"}, {"id": "W-048HQ8", "art": "Haus", "strasse": "Tannenstraße", "hnr": "46", "kp": 2950000, "stadt": "Mülheim an der Ruhr", "plz": "45478", "geaendert": "2026-05-20"}, {"id": "W-046QNP", "art": "Haus", "strasse": "Lindauer Straße", "hnr": "19", "kp": 695000, "stadt": "Duisburg", "plz": "47249", "geaendert": "2026-06-10"}, {"id": "W-046SS8", "art": "Haus", "strasse": "Landwehr", "hnr": "166", "kp": 349000, "stadt": "Oberhausen", "plz": "46045", "geaendert": "2026-06-10"}, {"id": "W-048ISY", "art": "Haus", "strasse": "Am Jägerloch", "hnr": "5", "kp": 399000, "stadt": "Duisburg", "plz": "47059", "geaendert": "2026-04-28"}, {"id": "W-0478GP", "art": "Wohnung", "strasse": "Spatenstraße", "hnr": "7", "kp": 170000, "stadt": "Duisburg", "plz": "47119", "geaendert": "2026-06-15"}, {"id": "W-046SNE", "art": "Wohnung", "strasse": "Pulverweg", "hnr": "39", "kp": 257500, "stadt": "Duisburg", "plz": "47051", "geaendert": "2026-04-28"}, {"id": "W-04710L", "art": "Wohnung", "strasse": "Pulverweg", "hnr": "39", "kp": 263000, "stadt": "Duisburg", "plz": "47051", "geaendert": "2026-04-28"}, {"id": "W-0474RR", "art": "Wohnung", "strasse": "Pulverweg", "hnr": "39", "kp": 266000, "stadt": "Duisburg", "plz": "47051", "geaendert": "2026-04-28"}, {"id": "W-0474RJ", "art": "Wohnung", "strasse": "Pulverweg", "hnr": "39", "kp": 257500, "stadt": "Duisburg", "plz": "47051", "geaendert": "2026-04-28"}, {"id": "W-0463XM", "art": "Haus", "strasse": "Humboldtstraße", "hnr": "10", "kp": 498000, "stadt": "Duisburg", "plz": "47198", "geaendert": "2026-04-28"}, {"id": "W-030UEC", "art": "Haus", "strasse": "Raiffeisenstraße", "hnr": "4", "kp": 599000, "stadt": "Dinslaken", "plz": "46535", "geaendert": "2026-05-27"}, {"id": "W-046F00", "art": "Haus", "strasse": "Im Höschegrund", "hnr": "36", "kp": 289000, "stadt": "Duisburg", "plz": "47259", "geaendert": "2026-06-15"}, {"id": "W-030HFE", "art": "Haus", "strasse": "Dümpter Straße", "hnr": "9", "kp": 628000, "stadt": "Duisburg", "plz": "47138", "geaendert": "2026-05-26"}, {"id": "W-02Y35S", "art": "Wohnung", "strasse": "Großenbaumer Straße", "hnr": "250", "kp": 2290000, "stadt": "Mülheim an der Ruhr", "plz": "45479", "geaendert": "2026-03-29"}, {"id": "W-02V537", "art": "Haus", "strasse": "Am Jägerloch", "hnr": "5", "kp": 399000, "stadt": "Duisburg", "plz": "47059", "geaendert": "2026-03-30"}];
+const OL_PER_PAGE = 10;
+let olState = { stadt:'', art:'', preis:'', suche:'', sortKey:'geaendert', sortDir:'desc', page:1 };
+
+function olFmtPreis(n){ return n.toLocaleString('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}); }
+function olFmtDatum(d){
+  const dt = new Date(d);
+  return dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+function olAdresse(o){ return o.strasse + (o.hnr ? ' ' + o.hnr : ''); }
+
+function olInitFilters(){
+  const staedte = [...new Set(OL_DATA.map(o=>o.stadt))].sort((a,b)=>a.localeCompare(b,'de'));
+  const arten   = [...new Set(OL_DATA.map(o=>o.art))].sort((a,b)=>a.localeCompare(b,'de'));
+  const selStadt = document.getElementById('olfStadt');
+  const selArt   = document.getElementById('olfArt');
+  staedte.forEach(s=>{ const op=document.createElement('option'); op.value=s; op.textContent=s; selStadt.appendChild(op); });
+  arten.forEach(a=>{ const op=document.createElement('option'); op.value=a; op.textContent=a; selArt.appendChild(op); });
+}
+
+function olFiltered(){
+  let rows = OL_DATA.slice();
+  if(olState.stadt) rows = rows.filter(o=>o.stadt===olState.stadt);
+  if(olState.art)   rows = rows.filter(o=>o.art===olState.art);
+  if(olState.preis){
+    const [min,max] = olState.preis.split('-').map(Number);
+    rows = rows.filter(o=>o.kp>=min && o.kp<=max);
+  }
+  if(olState.suche){
+    const q = olState.suche.toLowerCase().trim();
+    rows = rows.filter(o=>
+      o.id.toLowerCase().includes(q) ||
+      o.strasse.toLowerCase().includes(q) ||
+      o.stadt.toLowerCase().includes(q) ||
+      o.plz.includes(q) ||
+      olAdresse(o).toLowerCase().includes(q)
+    );
+  }
+  const k = olState.sortKey, dir = olState.sortDir==='asc'?1:-1;
+  rows.sort((a,b)=>{
+    let va, vb;
+    if(k==='adresse'){ va=olAdresse(a).toLowerCase(); vb=olAdresse(b).toLowerCase(); }
+    else if(k==='kp'){ va=a.kp; vb=b.kp; }
+    else { va=a[k]; vb=b[k]; }
+    if(typeof va==='number') return (va-vb)*dir;
+    return va.localeCompare(vb,'de')*dir;
+  });
+  return rows;
+}
+
+function olRender(){
+  const rows = olFiltered();
+  const total = rows.length;
+  const pages = Math.max(1, Math.ceil(total/OL_PER_PAGE));
+  if(olState.page>pages) olState.page=pages;
+  const start = (olState.page-1)*OL_PER_PAGE;
+  const pageRows = rows.slice(start, start+OL_PER_PAGE);
+
+  // Count-Badge
+  document.getElementById('olCount').innerHTML =
+    '<strong>'+total+'</strong> '+(total===1?'Objekt':'Objekte');
+
+  // Tabellenkörper
+  const body = document.getElementById('olBody');
+  if(!pageRows.length){
+    body.innerHTML = '<tr><td colspan="6" class="ol-empty">Keine Objekte für die gewählten Filter.</td></tr>';
+  } else {
+    body.innerHTML = pageRows.map(o=>{
+      const artCls = o.art.toLowerCase();
+      return '<tr>'+
+        '<td><span class="ol-id">'+o.id+'</span></td>'+
+        '<td><span class="ol-art '+artCls+'">'+o.art+'</span></td>'+
+        '<td><span class="ol-adresse">'+olAdresse(o)+'</span></td>'+
+        '<td><span class="ol-stadt">'+o.stadt+'</span> <span class="ol-plz">'+o.plz+'</span></td>'+
+        '<td class="ol-preis">'+olFmtPreis(o.kp)+'</td>'+
+        '<td class="ol-datum">'+olFmtDatum(o.geaendert)+'</td>'+
+      '</tr>';
+    }).join('');
+  }
+
+  // Sortier-Indikatoren
+  document.querySelectorAll('.ol-table thead th').forEach(th=>{
+    const ind = th.querySelector('.sort-ind'); if(ind) ind.remove();
+    if(th.dataset.sort===olState.sortKey){
+      const s=document.createElement('span'); s.className='sort-ind';
+      s.textContent = olState.sortDir==='asc'?'▲':'▼'; th.appendChild(s);
+    }
+  });
+
+  // Fußzeile
+  const from = total?start+1:0, to = Math.min(start+OL_PER_PAGE,total);
+  document.getElementById('olFootInfo').innerHTML =
+    total ? ('<strong>'+from+'–'+to+'</strong> von '+total) : 'Keine Treffer';
+  olRenderPager(pages);
+}
+
+function olRenderPager(pages){
+  const pager = document.getElementById('olPager');
+  if(pages<=1){ pager.innerHTML=''; return; }
+  const p = olState.page;
+  let html = '<button class="ol-pg-btn" '+(p===1?'disabled':'')+' onclick="olGoto('+(p-1)+')">‹</button>';
+  const nums = [];
+  for(let i=1;i<=pages;i++){
+    if(i===1||i===pages||(i>=p-1&&i<=p+1)) nums.push(i);
+    else if(nums[nums.length-1]!=='…') nums.push('…');
+  }
+  nums.forEach(n=>{
+    if(n==='…') html+='<span class="ol-pg-ellipsis">…</span>';
+    else html+='<button class="ol-pg-btn '+(n===p?'active':'')+'" onclick="olGoto('+n+')">'+n+'</button>';
+  });
+  html += '<button class="ol-pg-btn" '+(p===pages?'disabled':'')+' onclick="olGoto('+(p+1)+')">›</button>';
+  pager.innerHTML = html;
+}
+
+function olGoto(n){ olState.page=n; olRender(); }
+function olSort(k){
+  if(olState.sortKey===k){ olState.sortDir = olState.sortDir==='asc'?'desc':'asc'; }
+  else { olState.sortKey=k; olState.sortDir = (k==='kp'||k==='geaendert')?'desc':'asc'; }
+  olState.page=1; olRender();
+}
+function olApplyFilters(){
+  olState.stadt = document.getElementById('olfStadt').value;
+  olState.art   = document.getElementById('olfArt').value;
+  olState.preis = document.getElementById('olfPreis').value;
+  olState.suche = document.getElementById('olfSuche').value;
+  olState.page=1; olRender();
+}
+function olResetFilters(){
+  document.getElementById('olfStadt').value='';
+  document.getElementById('olfArt').value='';
+  document.getElementById('olfPreis').value='';
+  document.getElementById('olfSuche').value='';
+  olState.stadt=olState.art=olState.preis=olState.suche='';
+  olState.page=1; olRender();
+}
+function olInit(){ olInitFilters(); olRender(); }
+
+
 // ── SESSION RESTORE ─────────────────────────────────────────────
 (async function(){
   document.getElementById('headerDate').textContent =
@@ -1140,6 +1442,7 @@ async function loadMyUmsatzPlan(){
   }catch(_){}
   const saved = sessionStorage.getItem('evUser');
   if(saved){try{applyUser(JSON.parse(saved));document.getElementById('loginOverlay').style.display='none';loadInboxPreview();;}catch(e){}}
+  olInit();
 })();
 </script>
 </body>
